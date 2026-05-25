@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "snaface": {
+    "dyarna": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -89,10 +89,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "snaface:build:production"
+              "buildTarget": "dyarna:build:production"
             },
             "development": {
-              "buildTarget": "snaface:build:development"
+              "buildTarget": "dyarna:build:development"
             }
           },
           "defaultConfiguration": "development"
