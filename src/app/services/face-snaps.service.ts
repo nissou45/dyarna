@@ -1,7 +1,7 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { FaceSnap, Comment } from '../models/snap.model';
 import { SnapType } from '../models/snap-type-type';
-import { UnsplashService } from './unsplash.service';
+import { WikipediaService } from './wikipedia.service';
 
 // ── Palette de couleurs pour les placeholders ──
 const PALETTE = [
@@ -195,7 +195,7 @@ interface PhotoCache {
 })
 export class FaceSnapsService {
   private faceSnaps = signal<FaceSnap[]>(INITIAL_FACE_SNAPS);
-  private unsplash = inject(UnsplashService);
+  private wiki = inject(WikipediaService);
   private photosLoaded = false;
 
   private readonly LOCATIONS: Record<string, string> = {
@@ -221,30 +221,31 @@ export class FaceSnapsService {
     traditions: ['Moussem de Tan-Tan', 'Hammam Marocain', 'Artisanat du Zellige', 'Fantasia'],
   };
 
-  readonly searchQueries: Record<string, string> = {
-    'Marrakech': 'Marrakech Maroc medina',
-    'Fès': 'Fès Maroc medina tanneries',
-    'Meknès': 'Meknès Maroc Bab Mansour',
-    'Rabat': 'Rabat Maroc Tour Hassan',
-    'Essaouira': 'Essaouira Maroc port',
-    'Tanger': 'Tanger Maroc ville',
-    'Agadir': 'Agadir Maroc plage',
-    'Al Hoceïma': 'Al Hoceima Maroc plage',
-    'Chefchaouen': 'Chefchaouen Maroc ville bleue',
-    'Tétouan': 'Tétouan Maroc medina',
-    'Oujda': 'Oujda Maroc ville',
-    'Ouarzazate': 'Ouarzazate Maroc kasbah',
-    'Zagora': 'Zagora Maroc desert',
-    'Merzouga': 'Merzouga Maroc dunes Erg Chebbi',
-    'Tajine Marrakchi': 'tajine marocain cuisine',
-    'Couscous': 'couscous marocain plat',
-    'Pastilla': 'pastilla marocaine cuisine',
-    'Harira': 'harira marocaine soupe',
-    'Thé à la menthe': 'the a la menthe marocain',
-    'Moussem de Tan-Tan': 'moussem Tan-Tan Maroc',
-    'Hammam Marocain': 'hammam marocain tradition',
-    'Artisanat du Zellige': 'zellige marocain mosaique artisanat',
-    'Fantasia': 'fantasia Maroc cavaliers',
+  /** Mapping titre de l'entrée → titre de la page Wikipedia (anglaise) */
+  readonly wikiPages: Record<string, string> = {
+    'Marrakech': 'Marrakech',
+    'Fès': 'Fès',
+    'Meknès': 'Meknès',
+    'Rabat': 'Rabat',
+    'Essaouira': 'Essaouira',
+    'Tanger': 'Tanger',
+    'Agadir': 'Agadir',
+    'Al Hoceïma': 'Al Hoceima',
+    'Chefchaouen': 'Chefchaouen',
+    'Tétouan': 'Tétouan',
+    'Oujda': 'Oujda',
+    'Ouarzazate': 'Ouarzazate',
+    'Zagora': 'Zagora, Morocco',
+    'Merzouga': 'Merzouga',
+    'Tajine Marrakchi': 'Tajine',
+    'Couscous': 'Couscous',
+    'Pastilla': 'Pastilla',
+    'Harira': 'Harira',
+    'Thé à la menthe': 'Maghrebi mint tea',
+    'Moussem de Tan-Tan': 'Moussem of Tan-Tan',
+    'Hammam Marocain': 'Hammam',
+    'Artisanat du Zellige': 'Zellige',
+    'Fantasia': 'Fantasia (performance)',
   };
 
   /** Relations entre contenus : chaque ville renvoie aux plats, traditions et lieux associés */
@@ -355,36 +356,37 @@ export class FaceSnapsService {
       return;
     }
 
-    // 2. Fetch from Unsplash in batches
+    // 2. Fetch from Wikipedia REST API (pas besoin de clé API, pas de rate limit significatif)
     const snapList = this.faceSnaps();
     const urls: Record<string, string> = {};
-    const entries = snapList.filter(s => this.searchQueries[s.title]);
+    const entries = snapList.filter(s => this.wikiPages[s.title]);
+    let changed = false;
 
-    // Process in batches of 3 with 600ms delay between batches
-    const BATCH_SIZE = 3;
-    const DELAY_MS = 600;
+    // Récupération séquentielle (Wikipedia n'aime pas les rafales)
+    for (let i = 0; i < entries.length; i++) {
+      const snap = entries[i];
+      const pageTitle = this.wikiPages[snap.title];
+      if (!pageTitle) continue;
 
-    for (let i = 0; i < entries.length; i += BATCH_SIZE) {
-      const batch = entries.slice(i, i + BATCH_SIZE);
-      const results = await Promise.allSettled(
-        batch.map(snap => this.unsplash.getPhotoUrl(this.searchQueries[snap.title] ?? snap.title))
-      );
-
-      results.forEach((result, idx) => {
-        if (result.status === 'fulfilled' && result.value) {
-          urls[batch[idx].title] = result.value;
+      try {
+        const url = await this.wiki.getBestPhotoUrl(pageTitle);
+        if (url) {
+          urls[snap.title] = url;
+          snap.imageUrl = url;
+          changed = true;
         }
-      });
-
-      // Apply partial results immediately so the UI updates gradually
-      if (Object.keys(urls).length > 0) {
-        this.applyPhotos({ ...urls });
+      } catch {
+        // silencieux — on garde le placeholder
       }
 
-      // Delay between batches to respect rate limits
-      if (i + BATCH_SIZE < entries.length) {
-        await new Promise(r => setTimeout(r, DELAY_MS));
+      // Appliquer au fur et à mesure pour un effet progressif
+      if (changed && (i % 3 === 2 || i === entries.length - 1)) {
+        this.faceSnaps.update(snaps => [...snaps]);
+        changed = false;
       }
+
+      // Petit délai entre chaque requête pour respecter Wikipedia
+      await new Promise(r => setTimeout(r, 300));
     }
 
     // 3. Save to cache
