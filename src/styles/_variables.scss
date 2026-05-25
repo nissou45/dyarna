@@ -1,30 +1,47 @@
-$sn-bg:        #f6f3ec;
-$sn-surface:   #fbf9f4;
-$sn-surface-2: #efeae0;
-$sn-ink:       #1c1a17;
-$sn-ink-2:     #3a3631;
-$sn-muted:     #7a736a;
-$sn-line:      #e3ddd0;
-$sn-line-2:    #cdc4b2;
+// === PALETTE MAROC — couleurs chaudes et authentiques ===
+$sn-bg:        #f7f2ea;
+$sn-surface:   #fefcf8;
+$sn-surface-2: #f0e8db;
+$sn-ink:       #1e1b16;
+$sn-ink-2:     #3d352c;
+$sn-muted:     #8a7f6e;
+$sn-line:      #e4dbcc;
+$sn-line-2:    #cec0ab;
 
-$sn-accent:        oklch(0.62 0.13 45);
-$sn-accent-soft:   oklch(0.94 0.04 50);
-$sn-accent-ink:    oklch(0.42 0.10 40);
+// Accent : TERRACOTTA (rouge Marrakech terre cuite)
+$sn-accent:        #c8613c;
+$sn-accent-soft:   #f5e0d6;
+$sn-accent-ink:    #8a3f24;
 
-$sn-success: oklch(0.62 0.09 145);
-$sn-error:   oklch(0.58 0.13 25);
-$sn-warn:    oklch(0.72 0.12 80);
+// Secondaire : OR / SAFRAN
+$sn-gold:          #d4a03c;
+$sn-gold-soft:     #f5ecd6;
 
-$sn-tag-medina:      (#ecd1bb, #6a3318);
-$sn-tag-desert:      (#ecdcb6, #6a4818);
-$sn-tag-mer:         (#c8d4dc, #1f3a4c);
-$sn-tag-montagne:    (#d3dec0, #3e4a22);
-$sn-tag-architecture:(#d8d2c4, #3a342a);
-$sn-tag-souk:        (#ecd6a8, #6a4818);
-$sn-tag-culture:     (#ddc8d6, #4a2d44);
-$sn-tag-cuisine:     (#ecc8b8, #6a2a18);
-$sn-tag-nature:      (#d8d4b6, #44441e);
-$sn-tag-histoire:    (#d8c8a8, #4a3a1e);
+// Zellige BLEU
+$sn-blue:          #236b8c;
+$sn-blue-soft:     #d4e6f0;
+
+// Statuts
+$sn-success: #4a7c59;
+$sn-error:   #c83c3c;
+$sn-warn:    #d4a03c;
+
+// === TAGS ===
+$sn-tag-medina:      (#eddccc, #6a3a1e);
+$sn-tag-desert:      (#f0e4c8, #7a5a2a);
+$sn-tag-mer:         (#c8d8e4, #1a4a6a);
+$sn-tag-montagne:    (#d4dec8, #3a542a);
+$sn-tag-architecture:(#d4cbb8, #4a3a2a);
+$sn-tag-souk:        (#f0dcb0, #7a5a2a);
+$sn-tag-culture:     (#e4ccda, #5a3a4a);
+$sn-tag-cuisine:     (#f0ccb8, #7a3a1a);
+$sn-tag-nature:      (#d8dcb8, #4a5422);
+$sn-tag-histoire:    (#e0d0b0, #5a4a2a);
+$sn-tag-artisanat:   (#dcc8b0, #5a3a22);
+$sn-tag-patrimoine:  (#d4c4a8, #4a3a1e);
+$sn-tag-plage:       (#b8d4dc, #1a4a5a);
+$sn-tag-gastronomie: (#ecc0a8, #6a3a1a);
+$sn-tag-moderne:     (#c8c8c8, #3a3a3a);
 
 $sn-tags: (
   'medina':       $sn-tag-medina,
@@ -37,12 +54,19 @@ $sn-tags: (
   'cuisine':      $sn-tag-cuisine,
   'nature':       $sn-tag-nature,
   'histoire':     $sn-tag-histoire,
+  'artisanat':    $sn-tag-artisanat,
+  'patrimoine':   $sn-tag-patrimoine,
+  'plage':        $sn-tag-plage,
+  'gastronomie':  $sn-tag-gastronomie,
+  'moderne':      $sn-tag-moderne,
 );
 
+// === TYPO ===
 $sn-serif: 'Instrument Serif', Georgia, serif;
 $sn-sans:  'Geist', ui-sans-serif, system-ui, sans-serif;
 $sn-mono:  'Geist Mono', ui-monospace, monospace;
 
+// === TAILES ===
 $fs-xs: 11px; $fs-sm: 13px; $fs-md: 15px; $fs-lg: 18px;
 $fs-xl: 24px; $fs-2xl: 32px; $fs-3xl: 48px; $fs-4xl: 72px;
 
@@ -60,6 +84,7 @@ $t-fast: .15s; $t: .25s;
 
 $bp-sm:640px; $bp-md:880px; $bp-lg:1100px; $bp-xl:1320px;
 
+// === MIXINS ===
 @mixin sm { @media (min-width: $bp-sm) { @content; } }
 @mixin md { @media (min-width: $bp-md) { @content; } }
 @mixin lg { @media (min-width: $bp-lg) { @content; } }
