@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { FaceSnap } from '../models/snap.model';
+import { FaceSnap, Comment } from '../models/snap.model';
 import { SnapType } from '../models/snap-type-type';
 
 const INITIAL_FACE_SNAPS: FaceSnap[] = [
@@ -80,6 +80,30 @@ export class FaceSnapsService {
       const faceSnap = snaps.find(s => s.id === faceSnapId);
       if (faceSnap) {
         faceSnap.snap(snapType);
+      }
+      return [...snaps];
+    });
+  }
+
+  addFaceSnap(faceSnap: FaceSnap): void {
+    this.faceSnaps.update(snaps => [faceSnap, ...snaps]);
+  }
+
+  likeFaceSnap(faceSnapId: string): void {
+    this.faceSnaps.update(snaps => {
+      const snap = snaps.find(s => s.id === faceSnapId);
+      if (snap) {
+        snap.toggleLike();
+      }
+      return [...snaps];
+    });
+  }
+
+  addCommentToSnap(faceSnapId: string, comment: Comment): void {
+    this.faceSnaps.update(snaps => {
+      const snap = snaps.find(s => s.id === faceSnapId);
+      if (snap) {
+        snap.addComment(comment);
       }
       return [...snaps];
     });

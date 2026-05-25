@@ -1,8 +1,17 @@
 import { SnapType } from './snap-type-type';
 
+export interface Comment {
+  author: string;
+  text: string;
+  date: Date;
+}
+
 export class FaceSnap {
   location?: string;
   id: string;
+  likes: number = 0;
+  tags: string[] = [];
+  comments: Comment[] = [];
 
   constructor(
     public title: string,
@@ -32,5 +41,19 @@ export class FaceSnap {
 
   setLocation(location: string): void {
     this.location = location;
+  }
+
+  toggleLike(): void {
+    this.likes++;
+  }
+
+  addTag(tag: string): void {
+    if (!this.tags.includes(tag)) {
+      this.tags.push(tag);
+    }
+  }
+
+  addComment(comment: Comment): void {
+    this.comments.push(comment);
   }
 }

@@ -1,12 +1,39 @@
 export const FACE_SNAPS_UI = {
   SNAP: "J'adore!",
   UNSNAP: "Je n'adore plus",
-  BACK: "BACK",
-  VIEW: "VIEW",
-  CONTINUE: "Continuer vers SnapNest"
+  BACK: 'BACK',
+  VIEW: 'VIEW',
+  CONTINUE: 'Continuer vers SnapNest',
+  LIKE: '♥',
+  LIKED: '♥',
+  SEARCH_PLACEHOLDER: 'Rechercher par titre ou lieu…',
+  SEARCH_UNSPLASH: 'Rechercher une photo…',
+  NO_RESULTS: 'Aucun résultat trouvé',
+  SORT_DATE: 'Plus récents',
+  SORT_POPULARITY: 'Plus populaires',
+  FILTER_ALL: 'Tous',
+  FILTER_FACE: 'Face',
+  FILTER_IDEA: 'Idea',
+  COMMENT_PLACEHOLDER: 'Votre commentaire…',
+  COMMENT_BTN: 'Commenter',
+  PROFILE_TITLE: 'Mon Profil',
+  SAVE: 'Sauvegarder',
+  CANCEL: 'Annuler',
+  LOAD_MORE: 'Charger plus…',
+  CREATE_NEW_SNAP: 'Nouveau Snap',
+  CANCEL_CREATE: 'Annuler',
+  ADD_SNAP: 'Ajouter le Snap',
+  TITLE_PLACEHOLDER: 'Titre du snap',
+  DESC_PLACEHOLDER: 'Description…',
+  LOCATION_PLACEHOLDER: 'Lieu (optionnel)',
+  SEARCH_UNSPLASH_BTN: 'Rechercher',
+  LOADING: 'Chargement…',
+  SEARCH_RESULTS_FOR: 'Aucun résultat pour',
+  UNSPlASH_PHOTO: 'Photo Unsplash',
 };
 
 export const APP_ROUTES = {
   FACE_SNAPS: 'face-snaps',
-  LANDING: ''
+  LANDING: '',
+  PROFILE: 'profile',
 };
