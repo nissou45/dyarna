@@ -1,10 +1,9 @@
 import { UpperCasePipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FaceSnap } from '../models/snap.model';
 import { Router } from '@angular/router';
 import { FACE_SNAPS_UI, APP_ROUTES } from '../core/constants/face-snaps.constants';
-import { AppButtonComponent } from '../shared/components/button/button.component';
-import { AppCardComponent } from '../shared/components/card/card.component';
+import { AppButtonComponent, AppCardComponent } from '@shared';
 
 @Component({
   selector: 'app-face-snap',
@@ -15,11 +14,22 @@ import { AppCardComponent } from '../shared/components/card/card.component';
 })
 export class FaceSnapComponent {
   @Input() faceSnap!: FaceSnap;
+  @Input() isLiked: boolean = false;
+  @Output() likeClicked = new EventEmitter<string>();
+  @Output() tagClicked = new EventEmitter<string>();
   readonly uiConstants = FACE_SNAPS_UI;
 
   constructor(private router: Router) {}
 
   onViewFaceSnap(): void {
     this.router.navigateByUrl(`${APP_ROUTES.FACE_SNAPS}/${this.faceSnap.id}`);
+  }
+
+  onLikeClick(): void {
+    this.likeClicked.emit(this.faceSnap.id);
+  }
+
+  onTagClick(tag: string): void {
+    this.tagClicked.emit(tag);
   }
 }

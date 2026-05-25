@@ -1,5 +1,59 @@
 <div class="list-container">
-  @for (faceSnap of faceSnaps(); track faceSnap.id) {
-    <app-face-snap [faceSnap]="faceSnap"></app-face-snap>
+  <app-search-bar (searchChange)="onSearchChange($event)"></app-search-bar>
+
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <button class="create-btn" (click)="toggleCreateForm()">
+        {{ showCreateForm ? ui.CANCEL_CREATE : ui.CREATE_NEW_SNAP }}
+      </button>
+    </div>
+    <div class="toolbar-right">
+      <select [value]="sortBy" (change)="onSortChange($any($event.target).value)" class="sort-select">
+        <option value="date">{{ ui.SORT_DATE }}</option>
+        <option value="popularity">{{ ui.SORT_POPULARITY }}</option>
+      </select>
+      <select [value]="filterBySnapType" (change)="onFilterChange($any($event.target).value)" class="filter-select">
+        <option value="all">{{ ui.FILTER_ALL }}</option>
+        <option value="face">{{ ui.FILTER_FACE }}</option>
+        <option value="idea">{{ ui.FILTER_IDEA }}</option>
+      </select>
+    </div>
+  </div>
+
+  @if (activeTag) {
+    <div class="active-tag">
+      <span>Tag: <strong>{{ activeTag }}</strong></span>
+      <button class="clear-tag" (click)="clearTag()">&times;</button>
+    </div>
+  }
+
+  @if (showCreateForm) {
+    <div class="create-form">
+      <h3>{{ ui.CREATE_NEW_SNAP }}</h3>
+      <input [(ngModel)]="newSnap.title" [placeholder]="ui.TITLE_PLACEHOLDER" class="form-input" />
+      <textarea [(ngModel)]="newSnap.description" [placeholder]="ui.DESC_PLACEHOLDER" class="form-input"></textarea>
+      <input [(ngModel)]="newSnap.location" [placeholder]="ui.LOCATION_PLACEHOLDER" class="form-input" />
+      <app-unsplash-search (photoSelected)="onPhotoSelected($event)"></app-unsplash-search>
+      <div class="form-actions">
+        <button class="submit-btn" (click)="addNewSnap()">{{ ui.ADD_SNAP }}</button>
+      </div>
+    </div>
+  }
+
+  <div class="snaps-grid">
+    @for (faceSnap of displayedSnaps(); track faceSnap.id) {
+      <app-face-snap
+        [faceSnap]="faceSnap"
+        [isLiked]="isLiked(faceSnap.id)"
+        (likeClicked)="onLikeClick($event)"
+        (tagClicked)="onTagClick($event)"
+      />
+    }
+  </div>
+
+  @if (hasMore()) {
+    <div class="load-more-sentinel" appInfiniteScroll (scrolled)="loadMore()">
+      <span>{{ ui.LOAD_MORE }}</span>
+    </div>
   }
 </div>

@@ -6,18 +6,29 @@
     <p>📍 {{ faceSnap.location }}</p>
   }
   <p>{{ faceSnap.snaps }} snaps</p>
-  
+
   <div class="button-container">
-    <app-button 
-      [label]="snapButtonText" 
-      buttonType="card" 
-      (clicked)="onSnap()">
+    <app-button
+      [label]="snapButtonText"
+      buttonType="card"
+      (clicked)="onSnap()"
+    >
     </app-button>
 
-    <app-button 
-      [label]="uiConstants.BACK" 
-      buttonType="card" 
-      [routerLink]="'/' + routes.FACE_SNAPS">
+    <app-button
+      [label]="uiConstants.BACK"
+      buttonType="card"
+      [routerLink]="'/' + routes.FACE_SNAPS"
+    >
     </app-button>
   </div>
 </app-card>
+
+<app-unsplash-search (photoSelected)="onPhotoSelected($event)"></app-unsplash-search>
+
+<app-comments-section
+  [comments]="faceSnap.comments"
+  [snapId]="faceSnap.id"
+  (commentAdded)="onCommentAdded($event)"
+>
+</app-comments-section>

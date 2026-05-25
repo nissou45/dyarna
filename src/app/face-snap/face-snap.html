@@ -1,8 +1,27 @@
 <app-card>
   <h2>{{ faceSnap.title | uppercase }}</h2>
-  <app-button 
-    [label]="uiConstants.VIEW" 
-    buttonType="card" 
-    (clicked)="onViewFaceSnap()">
-  </app-button>
+
+  @if (faceSnap.tags.length) {
+    <div class="tags">
+      @for (tag of faceSnap.tags; track tag) {
+        <span class="tag" (click)="onTagClick(tag)">
+          {{ tag }}
+        </span>
+      }
+    </div>
+  }
+
+  <div class="actions">
+    <button class="like-btn" [class.liked]="isLiked" (click)="onLikeClick()">
+      {{ isLiked ? uiConstants.LIKED : uiConstants.LIKE }}
+      <span class="like-count">{{ faceSnap.likes }}</span>
+    </button>
+
+    <app-button
+      [label]="uiConstants.VIEW"
+      buttonType="card"
+      (clicked)="onViewFaceSnap()"
+    >
+    </app-button>
+  </div>
 </app-card>
