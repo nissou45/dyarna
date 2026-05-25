@@ -1,4 +1,8 @@
 {
+  "version": 2,
+  "buildCommand": "ng build",
+  "outputDirectory": "dist/dyarna",
+  "installCommand": "npm ci",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
