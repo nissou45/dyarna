@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { APP_ROUTES } from '../core/constants/face-snaps.constants';
+import { APP_ROUTES } from '@core';
 
 @Component({
   selector: 'app-header',

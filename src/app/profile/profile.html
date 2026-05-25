@@ -1,0 +1,36 @@
+<div class="profile-page">
+  <h1>{{ ui.PROFILE_TITLE }}</h1>
+
+  @if (!editing) {
+    <div class="profile-header">
+      <div class="avatar">{{ initials }}</div>
+      <h2>{{ profile.pseudo }}</h2>
+      <p class="bio">{{ profile.bio }}</p>
+      <button class="edit-btn" (click)="startEditing()">{{ ui.SAVE }}</button>
+    </div>
+  } @else {
+    <div class="profile-edit">
+      <label>
+        Pseudo
+        <input type="text" [(ngModel)]="editProfile.pseudo" />
+      </label>
+      <label>
+        Bio
+        <textarea [(ngModel)]="editProfile.bio"></textarea>
+      </label>
+      <div class="edit-actions">
+        <button class="save-btn" (click)="saveEditing()">{{ ui.SAVE }}</button>
+        <button class="cancel-btn" (click)="cancelEditing()">{{ ui.CANCEL }}</button>
+      </div>
+    </div>
+  }
+
+  <h2>Mes Snaps</h2>
+  <div class="snaps-list">
+    @for (snap of faceSnaps(); track snap.id) {
+      <div class="snap-item">
+        <a [routerLink]="['/face-snaps', snap.id]">{{ snap.title }}</a>
+      </div>
+    }
+  </div>
+</div>

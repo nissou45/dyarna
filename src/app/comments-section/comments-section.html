@@ -1,0 +1,23 @@
+<div class="comments-section">
+  <h3>Commentaires</h3>
+
+  <div class="comments-list">
+    @for (comment of comments; track comment.date) {
+      <div class="comment">
+        <span class="comment-author">{{ comment.author }}</span>
+        <span class="comment-date">{{ comment.date | date:'short' }}</span>
+        <p class="comment-text">{{ comment.text }}</p>
+      </div>
+    }
+  </div>
+
+  <div class="comment-form">
+    <input
+      type="text"
+      [(ngModel)]="newCommentText"
+      [placeholder]="ui.COMMENT_PLACEHOLDER"
+      class="comment-input"
+    />
+    <button class="comment-btn" (click)="addComment()">{{ ui.COMMENT_BTN }}</button>
+  </div>
+</div>

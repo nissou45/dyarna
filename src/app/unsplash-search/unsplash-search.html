@@ -1,0 +1,36 @@
+<div class="unsplash-search">
+  <div class="search-bar">
+    <input
+      [(ngModel)]="query"
+      (keyup.enter)="search()"
+      [placeholder]="ui.SEARCH_UNSPLASH"
+      class="search-input"
+    />
+    <button (click)="search()" class="search-btn" [disabled]="loading">
+      {{ loading ? '…' : ui.SEARCH_UNSPLASH_BTN }}
+    </button>
+  </div>
+
+  @if (loading) {
+    <div class="loading">{{ ui.LOADING }}</div>
+  }
+
+  @if (!loading && searched && photos.length === 0) {
+    <div class="no-results">{{ ui.SEARCH_RESULTS_FOR }} « {{ query }} »</div>
+  }
+
+  @if (!loading && photos.length > 0) {
+    <div class="photo-grid">
+      @for (photo of photos; track photo.id) {
+        <div class="photo-item" (click)="selectPhoto(photo.urls.regular)">
+          <img
+            [src]="photo.urls.thumb"
+            [alt]="photo.alt_description || ui.UNSPlASH_PHOTO"
+            class="photo-thumb"
+          />
+          <span class="photo-author">{{ photo.user.name }}</span>
+        </div>
+      }
+    </div>
+  }
+</div>

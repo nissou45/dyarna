@@ -1,0 +1,126 @@
+@use 'styles/variables' as *;
+
+.profile-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: $spacing-card-padding;
+}
+
+h1 {
+  text-align: center;
+  color: $primary-text-color;
+  font-family: $font-main;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: $spacing-card-margin;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: $primary-color;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0 auto $spacing-btn-margin;
+}
+
+h2 {
+  color: $primary-text-color;
+  font-family: $font-main;
+  font-size: $font-size-h2;
+}
+
+.bio {
+  color: $secondary-text-color;
+  font-family: $font-sans;
+  line-height: $line-height-main;
+}
+
+.edit-btn {
+  padding: $spacing-btn-padding;
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  border-radius: $radius-btn-global;
+  cursor: pointer;
+  font-family: $font-sans;
+  font-size: $font-size-btn;
+}
+
+.profile-edit {
+  margin-bottom: $spacing-card-margin;
+}
+
+label {
+  display: block;
+  margin-bottom: 12px;
+  color: $primary-text-color;
+  font-family: $font-sans;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: $spacing-btn-padding;
+  border: 1px solid #ccc;
+  border-radius: $radius-btn-card;
+  font-family: $font-sans;
+  font-size: $font-size-p;
+  margin-top: 4px;
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.save-btn,
+.cancel-btn {
+  padding: $spacing-btn-padding;
+  border: none;
+  border-radius: $radius-btn-global;
+  cursor: pointer;
+  font-family: $font-sans;
+  font-size: $font-size-btn;
+}
+
+.save-btn {
+  background-color: $primary-color;
+  color: white;
+}
+
+.cancel-btn {
+  background-color: #ccc;
+  color: $primary-text-color;
+}
+
+.snaps-list {
+  margin-top: $spacing-btn-margin;
+}
+
+.snap-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+
+  a {
+    color: $link-color;
+    text-decoration: none;
+    font-family: $font-sans;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
