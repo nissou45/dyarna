@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
   }
 
   private loadProfile(): void {
-    const stored = localStorage.getItem('snapnest-profile');
+    const stored = localStorage.getItem('dyarna-profile');
     if (stored) {
       try {
         const parsed = JSON.parse(stored) as UserProfile;
@@ -51,7 +51,7 @@ export class ProfileComponent implements OnInit {
   }
 
   private saveProfile(): void {
-    localStorage.setItem('snapnest-profile', JSON.stringify(this.profile));
+    localStorage.setItem('dyarna-profile', JSON.stringify(this.profile));
   }
 
   get initials(): string {

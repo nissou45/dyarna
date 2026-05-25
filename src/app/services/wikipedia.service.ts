@@ -29,7 +29,7 @@ export class WikipediaService {
     const encoded = encodeURIComponent(term);
     try {
       const response = await fetch(`${this.BASE}/${encoded}`, {
-        headers: { 'User-Agent': 'MarocGuide/1.0 (travel-app)' },
+        headers: { 'User-Agent': 'Dyarna/1.0 (travel-app)' },
         signal: AbortSignal.timeout(8000),
       });
 

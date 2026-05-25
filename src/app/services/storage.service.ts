@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class StorageService {
-  private readonly LIKED_SNAPS_KEY = 'snapnest_liked_snaps';
+  private readonly LIKED_SNAPS_KEY = 'dyarna_liked_snaps';
 
   getLikedSnapIds(): string[] {
     return (this.getObject(this.LIKED_SNAPS_KEY) as string[]) ?? [];

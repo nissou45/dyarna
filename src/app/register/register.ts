@@ -12,7 +12,7 @@ import { APP_ROUTES } from '../core/constants/face-snaps.constants';
     <div style="max-width:400px; margin:60px auto; padding:0 24px;">
       <h1 class="h2" style="margin-bottom:8px;">Créer un compte</h1>
       <p style="color:var(--sn-muted); margin-bottom:32px;">
-        Rejoignez MarocGuide et partagez vos découvertes.
+        Rejoignez Dyarna et partagez vos découvertes.
       </p>
 
       @if (error) {

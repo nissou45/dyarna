@@ -182,7 +182,7 @@ const INITIAL_FACE_SNAPS: FaceSnap[] = [
   ),
 ];
 
-const PHOTOS_CACHE_KEY = 'marocguide_photos_cache';
+const PHOTOS_CACHE_KEY = 'dyarna_photos_cache';
 const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 1 semaine
 
 interface PhotoCache {

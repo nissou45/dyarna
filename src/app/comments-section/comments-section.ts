@@ -27,7 +27,7 @@ export class CommentsSectionComponent implements OnInit {
   }
 
   private loadCommentsFromStorage(): void {
-    const key = `marocguide-comments-${this.snapId}`;
+    const key = `dyarna-comments-${this.snapId}`;
     const stored = localStorage.getItem(key);
     if (stored) {
       try {
@@ -42,7 +42,7 @@ export class CommentsSectionComponent implements OnInit {
   }
 
   private saveCommentsToStorage(): void {
-    const key = `marocguide-comments-${this.snapId}`;
+    const key = `dyarna-comments-${this.snapId}`;
     localStorage.setItem(key, JSON.stringify(this.comments));
   }
 

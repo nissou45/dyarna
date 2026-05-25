@@ -10,7 +10,7 @@ export interface User {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly STORAGE_KEY = 'marocguide_user';
+  private readonly STORAGE_KEY = 'dyarna_user';
   private userSignal = signal<User | null>(this.loadUser());
 
   /** L'utilisateur connecté (ou null) */
@@ -41,13 +41,13 @@ export class AuthService {
   /** Inscription */
   register(email: string, pseudo: string, password: string): { success: boolean; error?: string } {
     // Vérifier si l'email existe déjà
-    const existing = localStorage.getItem(`marocguide_user_${email}`);
+    const existing = localStorage.getItem(`dyarna_user_${email}`);
     if (existing) {
       return { success: false, error: 'Cet email est déjà utilisé.' };
     }
 
     // Stocker le mot de passe (version simplifiée — en production on hashe)
-    localStorage.setItem(`marocguide_user_${email}`, JSON.stringify({ email, pseudo, password }));
+    localStorage.setItem(`dyarna_user_${email}`, JSON.stringify({ email, pseudo, password }));
 
     // Connecter l'utilisateur
     const user: User = { id: crypto.randomUUID().substring(0, 8), email, pseudo };
@@ -58,7 +58,7 @@ export class AuthService {
 
   /** Connexion */
   login(email: string, password: string): { success: boolean; error?: string } {
-    const stored = localStorage.getItem(`marocguide_user_${email}`);
+    const stored = localStorage.getItem(`dyarna_user_${email}`);
     if (!stored) {
       return { success: false, error: 'Email ou mot de passe incorrect.' };
     }
