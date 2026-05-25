@@ -22,11 +22,13 @@ export class FaceSnapComponent {
     this.router.navigateByUrl(`${APP_ROUTES.FACE_SNAPS}/${this.faceSnap.id}`);
   }
 
-  onLikeClick(): void {
+  onLikeClick(event: Event): void {
+    event.stopPropagation();
     this.likeClicked.emit(this.faceSnap.id);
   }
 
-  onTagClick(tag: string): void {
+  onTagClick(event: Event, tag: string): void {
+    event.stopPropagation();
     this.tagClicked.emit(tag);
   }
 }

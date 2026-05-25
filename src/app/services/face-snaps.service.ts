@@ -247,6 +247,80 @@ export class FaceSnapsService {
     'Fantasia': 'fantasia Maroc cavaliers',
   };
 
+  /** Relations entre contenus : chaque ville renvoie aux plats, traditions et lieux associés */
+  readonly RELATED: Record<string, { cuisine: string[]; traditions: string[]; activities: string[] }> = {
+    Marrakech: {
+      cuisine: ['Tajine Marrakchi', 'Couscous', 'Pastilla', 'Thé à la menthe'],
+      traditions: ['Hammam Marocain', 'Artisanat du Zellige', 'Fantasia'],
+      activities: ['Merzouga', 'Ouarzazate'],
+    },
+    Fès: {
+      cuisine: ['Couscous', 'Pastilla', 'Harira'],
+      traditions: ['Artisanat du Zellige', 'Hammam Marocain'],
+      activities: ['Meknès', 'Merzouga'],
+    },
+    Meknès: {
+      cuisine: ['Couscous', 'Harira'],
+      traditions: ['Fantasia', 'Artisanat du Zellige'],
+      activities: ['Fès', 'Volubilis'],
+    },
+    Rabat: {
+      cuisine: ['Pastilla', 'Harira', 'Thé à la menthe'],
+      traditions: ['Artisanat du Zellige'],
+      activities: ['Tanger', 'Essaouira'],
+    },
+    Essaouira: {
+      cuisine: ['Pastilla', 'Tajine Marrakchi', 'Harira'],
+      traditions: ['Hammam Marocain', 'Artisanat du Zellige'],
+      activities: ['Marrakech', 'Agadir'],
+    },
+    Tanger: {
+      cuisine: ['Pastilla', 'Thé à la menthe', 'Couscous'],
+      traditions: ['Hammam Marocain'],
+      activities: ['Chefchaouen', 'Tétouan'],
+    },
+    Agadir: {
+      cuisine: ['Tajine Marrakchi', 'Couscous', 'Harira'],
+      traditions: ['Hammam Marocain'],
+      activities: ['Essaouira', 'Merzouga'],
+    },
+    'Al Hoceïma': {
+      cuisine: ['Pastilla', 'Harira'],
+      traditions: ['Fantasia'],
+      activities: ['Chefchaouen', 'Tétouan'],
+    },
+    Chefchaouen: {
+      cuisine: ['Couscous', 'Thé à la menthe', 'Harira'],
+      traditions: ['Artisanat du Zellige', 'Hammam Marocain'],
+      activities: ['Tanger', 'Tétouan'],
+    },
+    Tétouan: {
+      cuisine: ['Pastilla', 'Couscous'],
+      traditions: ['Artisanat du Zellige', 'Fantasia'],
+      activities: ['Chefchaouen', 'Tanger'],
+    },
+    Oujda: {
+      cuisine: ['Couscous', 'Harira'],
+      traditions: ['Fantasia', 'Moussem de Tan-Tan'],
+      activities: ['Merzouga'],
+    },
+    Ouarzazate: {
+      cuisine: ['Tajine Marrakchi', 'Thé à la menthe'],
+      traditions: ['Fantasia', 'Moussem de Tan-Tan'],
+      activities: ['Merzouga', 'Zagora'],
+    },
+    Zagora: {
+      cuisine: ['Tajine Marrakchi', 'Thé à la menthe'],
+      traditions: ['Moussem de Tan-Tan', 'Fantasia'],
+      activities: ['Merzouga', 'Ouarzazate'],
+    },
+    Merzouga: {
+      cuisine: ['Tajine Marrakchi', 'Thé à la menthe', 'Couscous'],
+      traditions: ['Moussem de Tan-Tan', 'Fantasia'],
+      activities: ['Zagora', 'Ouarzazate'],
+    },
+  };
+
   constructor() {
     this.faceSnaps.update(snaps => {
       snaps.forEach(snap => {
@@ -368,6 +442,27 @@ export class FaceSnapsService {
       throw new Error('FaceSnap not found!');
     }
     return foundFaceSnap;
+  }
+
+  /** Récupère les entrées liées à un snap (cuisine, traditions, activités) */
+  getRelatedSnaps(faceSnapId: string): { cuisine: FaceSnap[]; traditions: FaceSnap[]; activities: FaceSnap[] } {
+    const snap = this.getFaceSnapById(faceSnapId);
+    const relations = this.RELATED[snap.title];
+    if (!relations) return { cuisine: [], traditions: [], activities: [] };
+
+    const all = this.faceSnaps();
+    const find = (titles: string[]) => titles.map(t => all.find(s => s.title === t)).filter(Boolean) as FaceSnap[];
+
+    return {
+      cuisine: find(relations.cuisine),
+      traditions: find(relations.traditions),
+      activities: find(relations.activities),
+    };
+  }
+
+  /** Trouve un snap par son titre (pratique pour les relations) */
+  getSnapByTitle(title: string): FaceSnap | undefined {
+    return this.faceSnaps().find(s => s.title === title);
   }
 
   snapFaceSnapById(faceSnapId: string, snapType: SnapType): void {

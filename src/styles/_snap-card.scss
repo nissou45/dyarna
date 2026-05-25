@@ -1,7 +1,7 @@
 @use 'variables' as v;
 .sn-card {
   background:var(--sn-surface); border:1px solid var(--sn-line);
-  border-radius:var(--sn-r-lg); overflow:hidden;
+  border-radius:var(--sn-r-lg); overflow:hidden; cursor:pointer;
   transition:transform v.$t v.$ease, box-shadow v.$t, border-color v.$t;
   &:hover { transform:translateY(-3px); box-shadow:var(--sn-sh-2); border-color:var(--sn-line-2); }
 }

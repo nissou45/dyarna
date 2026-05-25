@@ -1,7 +1,7 @@
-<article class="sn-card sn-fade-in">
+<article class="sn-card sn-fade-in" (click)="onViewFaceSnap()" role="link" tabindex="0" (keydown.enter)="onViewFaceSnap()">
   <div class="sn-card__media">
     <img [src]="faceSnap.imageUrl" [alt]="faceSnap.title" loading="lazy" />
-    <button class="sn-heart" [class.is-liked]="isLiked" (click)="onLikeClick()">
+    <button class="sn-heart" [class.is-liked]="isLiked" (click)="onLikeClick($event)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M12 21C12 21 3 15 3 9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-9 12-9 12Z" stroke-linejoin="round"/>
       </svg>
@@ -21,10 +21,10 @@
     }
     <div class="sn-card__tags">
       @for (tag of faceSnap.tags; track tag) {
-        <span class="sn-tag" [class]="'sn-tag ' + tag" (click)="onTagClick(tag)">{{ tag }}</span>
+        <span class="sn-tag" [class]="'sn-tag ' + tag" (click)="onTagClick($event, tag)">{{ tag }}</span>
       }
     </div>
-    <div class="sn-card__footer" (click)="onViewFaceSnap()">
+    <div class="sn-card__footer">
       <span>{{ faceSnap.snaps }} snaps</span>
     </div>
   </div>

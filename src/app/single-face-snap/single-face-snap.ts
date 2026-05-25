@@ -23,6 +23,9 @@ export class SingleFaceSnapComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
   faceSnap!: FaceSnap;
+  relatedCuisine: FaceSnap[] = [];
+  relatedTraditions: FaceSnap[] = [];
+  relatedActivities: FaceSnap[] = [];
   snapButtonText!: string;
   userHasSnapped!: boolean;
   readonly uiConstants = FACE_SNAPS_UI;
@@ -41,6 +44,10 @@ export class SingleFaceSnapComponent implements OnInit {
   private getFaceSnap() {
     const faceSnapId = this.route.snapshot.params['id'];
     this.faceSnap = this.faceSnapsService.getFaceSnapById(faceSnapId);
+    const related = this.faceSnapsService.getRelatedSnaps(faceSnapId);
+    this.relatedCuisine = related.cuisine;
+    this.relatedTraditions = related.traditions;
+    this.relatedActivities = related.activities;
   }
 
   onSnap() {
