@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
 
 export interface UnsplashPhoto {
   id: string;
@@ -22,9 +21,9 @@ interface UnsplashSearchResponse {
   providedIn: 'root',
 })
 export class UnsplashService {
-  /** The API key from environment (gitignored). Returns empty string if not set. */
+  /** The Unsplash API key. Configure via localStorage or set a default. */
   private get apiKey(): string {
-    return environment?.unsplashAccessKey ?? '';
+    return ''; // Set your Unsplash Access Key here or configure via env
   }
 
   private get isConfigured(): boolean {
