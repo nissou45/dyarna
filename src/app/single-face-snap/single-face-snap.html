@@ -1,34 +1,41 @@
-<app-card [isSnapped]="userHasSnapped">
-  <h2>{{ faceSnap.title | uppercase }}</h2>
-  <img [src]="faceSnap.imageUrl" [alt]="faceSnap.title" />
-  <p>{{ faceSnap.description }}</p>
-  @if (faceSnap.location) {
-    <p>📍 {{ faceSnap.location }}</p>
-  }
-  <p>{{ faceSnap.snaps }} snaps</p>
+<div>
+  <div class="sn-detail__hero" [style.background-image]="'url(' + faceSnap.imageUrl + ')'"></div>
 
-  <div class="button-container">
-    <app-button
-      [label]="snapButtonText"
-      buttonType="card"
-      (clicked)="onSnap()"
-    >
-    </app-button>
+  <div class="sn-detail__layout">
+    <div>
+      <h1 class="sn-detail__title">{{ faceSnap.title }}</h1>
+      @if (faceSnap.location) {
+        <div class="sn-detail__location">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7Z"/>
+            <circle cx="12" cy="9" r="2.5"/>
+          </svg>
+          {{ faceSnap.location }}
+        </div>
+      }
+      <p class="sn-detail__lede">{{ faceSnap.description }}</p>
 
-    <app-button
-      [label]="uiConstants.BACK"
-      buttonType="card"
-      [routerLink]="'/' + routes.FACE_SNAPS"
-    >
-    </app-button>
+      <div class="sn-section">
+        <h3 class="h3" style="margin-bottom:12px;">Changer la photo</h3>
+        <app-unsplash-search (photoSelected)="onPhotoSelected($event)"></app-unsplash-search>
+      </div>
+
+      <app-comments-section
+        [comments]="faceSnap.comments"
+        [snapId]="faceSnap.id"
+        (commentAdded)="onCommentAdded($event)"
+      />
+    </div>
+
+    <div>
+      <div style="position:sticky; top:24px; display:flex; flex-direction:column; gap:12px;">
+        <button class="sn-btn block ghost" routerLink="/decouvertes">
+          ← {{ uiConstants.BACK }}
+        </button>
+        <button class="sn-btn block accent" (click)="onSnap()">
+          {{ snapButtonText }}
+        </button>
+      </div>
+    </div>
   </div>
-</app-card>
-
-<app-unsplash-search (photoSelected)="onPhotoSelected($event)"></app-unsplash-search>
-
-<app-comments-section
-  [comments]="faceSnap.comments"
-  [snapId]="faceSnap.id"
-  (commentAdded)="onCommentAdded($event)"
->
-</app-comments-section>
+</div>

@@ -1,0 +1,12 @@
+@use 'variables' as v;
+.sn-avatar { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; font:500 13px/1 v.$sn-sans; color:#fff; background:var(--sn-ink); flex:0 0 auto; }
+.sn-profile__header { padding:v.$sp-12 v.$sp-12 v.$sp-8; display:grid; grid-template-columns:auto 1fr; gap:v.$sp-6; align-items:center; border-bottom:1px solid var(--sn-line);
+  @include v.md { grid-template-columns:auto 1fr auto; gap:28px; }
+}
+.sn-profile__name { font-family:v.$sn-serif; font-size:52px; margin:2px 0 8px; line-height:1; }
+.sn-profile__bio { margin:0; font-size:15px; color:var(--sn-ink-2); max-width:560px; line-height:1.5; }
+.sn-tabs { display:flex; gap:24px; border-bottom:1px solid var(--sn-line); margin-bottom:24px;
+  a { font-size:14px; padding:14px 2px; text-decoration:none; color:var(--sn-muted); border-bottom:2px solid transparent; margin-bottom:-1px;
+    &.active { color:var(--sn-ink); border-bottom-color:var(--sn-ink); font-weight:500; }
+  }
+}

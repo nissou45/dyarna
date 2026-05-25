@@ -1,23 +1,23 @@
-<div class="comments-section">
-  <h3>Commentaires</h3>
+<div class="sn-section">
+  <h3 class="h3" style="margin-bottom:16px;">Conseils voyageurs</h3>
 
-  <div class="comments-list">
+  <div>
     @for (comment of comments; track comment.date) {
-      <div class="comment">
-        <span class="comment-author">{{ comment.author }}</span>
-        <span class="comment-date">{{ comment.date | date:'short' }}</span>
-        <p class="comment-text">{{ comment.text }}</p>
+      <div class="sn-comment">
+        <div class="sn-avatar">{{ comment.author[0] }}</div>
+        <div class="body">
+          <span class="name">{{ comment.author }}</span>
+          <span class="when">{{ comment.date | date:'short' }}</span>
+          <p class="text">{{ comment.text }}</p>
+        </div>
       </div>
     }
   </div>
 
-  <div class="comment-form">
-    <input
-      type="text"
-      [(ngModel)]="newCommentText"
-      [placeholder]="ui.COMMENT_PLACEHOLDER"
-      class="comment-input"
-    />
-    <button class="comment-btn" (click)="addComment()">{{ ui.COMMENT_BTN }}</button>
+  <div class="sn-comment-composer">
+    <div class="field">
+      <textarea [(ngModel)]="newCommentText" [placeholder]="ui.COMMENT_PLACEHOLDER"></textarea>
+    </div>
+    <button class="sn-btn sm" (click)="addComment()">{{ ui.COMMENT_BTN }}</button>
   </div>
 </div>

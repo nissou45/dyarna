@@ -1,27 +1,31 @@
-<app-card>
-  <h2>{{ faceSnap.title | uppercase }}</h2>
-
-  @if (faceSnap.tags.length) {
-    <div class="tags">
+<article class="sn-card sn-fade-in">
+  <div class="sn-card__media">
+    <img [src]="faceSnap.imageUrl" [alt]="faceSnap.title" loading="lazy" />
+    <button class="sn-heart" [class.is-liked]="isLiked" (click)="onLikeClick()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 21C12 21 3 15 3 9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-9 12-9 12Z" stroke-linejoin="round"/>
+      </svg>
+      <span>{{ faceSnap.likes }}</span>
+    </button>
+  </div>
+  <div class="sn-card__body">
+    <h3 class="sn-card__title">{{ faceSnap.title }}</h3>
+    @if (faceSnap.location) {
+      <div class="sn-card__location">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7Z"/>
+          <circle cx="12" cy="9" r="2.5"/>
+        </svg>
+        {{ faceSnap.location }}
+      </div>
+    }
+    <div class="sn-card__tags">
       @for (tag of faceSnap.tags; track tag) {
-        <span class="tag" (click)="onTagClick(tag)">
-          {{ tag }}
-        </span>
+        <span class="sn-tag" [class]="'sn-tag ' + tag" (click)="onTagClick(tag)">{{ tag }}</span>
       }
     </div>
-  }
-
-  <div class="actions">
-    <button class="like-btn" [class.liked]="isLiked" (click)="onLikeClick()">
-      {{ isLiked ? uiConstants.LIKED : uiConstants.LIKE }}
-      <span class="like-count">{{ faceSnap.likes }}</span>
-    </button>
-
-    <app-button
-      [label]="uiConstants.VIEW"
-      buttonType="card"
-      (clicked)="onViewFaceSnap()"
-    >
-    </app-button>
+    <div class="sn-card__footer" (click)="onViewFaceSnap()">
+      <span>{{ faceSnap.snaps }} snaps</span>
+    </div>
   </div>
-</app-card>
+</article>

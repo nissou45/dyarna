@@ -1,0 +1,9 @@
+@use 'variables' as v;
+.sn-grid { column-count:1; column-gap:16px;
+  @include v.sm { column-count:2; }
+  @include v.lg { column-count:3; }
+  > * { break-inside:avoid; margin-bottom:16px; }
+}
+.sn-grid__sentinel { margin-top:8px; padding:24px 0 8px; text-align:center; color:var(--sn-muted); font-size:13px; display:flex; align-items:center; justify-content:center; gap:10px; }
+.sn-spinner { display:inline-block; width:14px; height:14px; border-radius:50%; border:2px solid var(--sn-line-2); border-top-color:var(--sn-accent); animation:sn-spin 1s linear infinite; }
+@keyframes sn-spin { to { transform:rotate(360deg); } }

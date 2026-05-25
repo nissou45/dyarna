@@ -1,35 +1,48 @@
-<div class="profile-page">
-  <h1>{{ ui.PROFILE_TITLE }}</h1>
-
-  @if (!editing) {
-    <div class="profile-header">
-      <div class="avatar">{{ initials }}</div>
-      <h2>{{ profile.pseudo }}</h2>
-      <p class="bio">{{ profile.bio }}</p>
-      <button class="edit-btn" (click)="startEditing()">{{ ui.SAVE }}</button>
+<div>
+  <div class="sn-profile__header">
+    <div class="sn-avatar" style="width:72px; height:72px; font-size:28px;">{{ initials }}</div>
+    <div>
+      <h1 class="sn-profile__name">{{ profile.pseudo || 'Voyageur' }}</h1>
+      <p class="sn-profile__bio">{{ profile.bio || 'Carnet de voyage Maroc' }}</p>
     </div>
-  } @else {
-    <div class="profile-edit">
-      <label>
-        Pseudo
-        <input type="text" [(ngModel)]="editProfile.pseudo" />
+    @if (!editing) {
+      <button class="sn-btn ghost sm" (click)="startEditing()">{{ ui.SAVE }}</button>
+    }
+  </div>
+
+  @if (editing) {
+    <div style="padding: 24px 28px;">
+      <label class="sn-field">
+        <span class="sn-label">Pseudo</span>
+        <input class="sn-input" [(ngModel)]="editProfile.pseudo" />
       </label>
-      <label>
-        Bio
-        <textarea [(ngModel)]="editProfile.bio"></textarea>
+      <label class="sn-field">
+        <span class="sn-label">Bio</span>
+        <textarea class="sn-area" [(ngModel)]="editProfile.bio"></textarea>
       </label>
-      <div class="edit-actions">
-        <button class="save-btn" (click)="saveEditing()">{{ ui.SAVE }}</button>
-        <button class="cancel-btn" (click)="cancelEditing()">{{ ui.CANCEL }}</button>
+      <div style="display:flex; gap:8px; margin-top:16px;">
+        <button class="sn-btn accent sm" (click)="saveEditing()">{{ ui.SAVE }}</button>
+        <button class="sn-btn ghost sm" (click)="cancelEditing()">{{ ui.CANCEL }}</button>
       </div>
     </div>
   }
 
-  <h2>Mes Snaps</h2>
-  <div class="snaps-list">
+  <div class="sn-tabs">
+    <a href="#" class="active">Mes découvertes</a>
+  </div>
+
+  <div class="sn-grid sn-stagger" style="padding: 0 28px 28px;">
     @for (snap of faceSnaps(); track snap.id) {
-      <div class="snap-item">
-        <a [routerLink]="['/face-snaps', snap.id]">{{ snap.title }}</a>
+      <div class="sn-card sn-fade-in" style="cursor:pointer;" [routerLink]="['/decouvertes', snap.id]">
+        <div class="sn-card__media">
+          <img [src]="snap.imageUrl" [alt]="snap.title" loading="lazy" />
+        </div>
+        <div class="sn-card__body">
+          <h3 class="sn-card__title">{{ snap.title }}</h3>
+          @if (snap.location) {
+            <div class="sn-card__location">{{ snap.location }}</div>
+          }
+        </div>
       </div>
     }
   </div>

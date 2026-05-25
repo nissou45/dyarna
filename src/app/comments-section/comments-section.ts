@@ -1,13 +1,14 @@
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Comment } from '../models/snap.model';
 import { FACE_SNAPS_UI } from '@core';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-comments-section',
   standalone: true,
-  imports: [CommonModule, FormsModule, DatePipe],
+  imports: [FormsModule, DatePipe],
   templateUrl: './comments-section.html',
   styleUrl: './comments-section.scss',
 })
@@ -17,6 +18,8 @@ export class CommentsSectionComponent implements OnInit {
   @Output() commentAdded = new EventEmitter<Comment>();
 
   readonly ui = FACE_SNAPS_UI;
+  private auth = inject(AuthService);
+
   newCommentText: string = '';
 
   ngOnInit(): void {
@@ -24,7 +27,7 @@ export class CommentsSectionComponent implements OnInit {
   }
 
   private loadCommentsFromStorage(): void {
-    const key = `snapnest-comments-${this.snapId}`;
+    const key = `marocguide-comments-${this.snapId}`;
     const stored = localStorage.getItem(key);
     if (stored) {
       try {
@@ -34,12 +37,12 @@ export class CommentsSectionComponent implements OnInit {
         if (Array.isArray(parsed) && parsed.length > 0) {
           this.comments = [...parsed, ...this.comments];
         }
-      } catch {}
+      } catch { /* ignore */ }
     }
   }
 
   private saveCommentsToStorage(): void {
-    const key = `snapnest-comments-${this.snapId}`;
+    const key = `marocguide-comments-${this.snapId}`;
     localStorage.setItem(key, JSON.stringify(this.comments));
   }
 
@@ -48,7 +51,7 @@ export class CommentsSectionComponent implements OnInit {
     if (!text) return;
 
     const comment: Comment = {
-      author: 'You',
+      author: this.auth.currentPseudo(), // ← dynamique : utilisateur connecté
       text,
       date: new Date(),
     };

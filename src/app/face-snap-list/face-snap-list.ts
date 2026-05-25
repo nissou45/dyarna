@@ -4,9 +4,7 @@ import { FaceSnap } from '../models/snap.model';
 import { FaceSnapComponent } from '../face-snap/face-snap';
 import { FaceSnapsService } from '../services/face-snaps.service';
 import { StorageService } from '../services/storage.service';
-import { SearchBarComponent } from '../search-bar/search-bar';
 import { UnsplashSearchComponent } from '../unsplash-search/unsplash-search';
-import { InfiniteScrollDirective } from '../directives/infinite-scroll.directive';
 import { FACE_SNAPS_UI } from '@core';
 
 @Component({
@@ -15,9 +13,7 @@ import { FACE_SNAPS_UI } from '@core';
   imports: [
     FormsModule,
     FaceSnapComponent,
-    SearchBarComponent,
     UnsplashSearchComponent,
-    InfiniteScrollDirective,
   ],
   templateUrl: './face-snap-list.html',
   styleUrl: './face-snap-list.scss',
@@ -32,42 +28,48 @@ export class FaceSnapListComponent {
 
   searchQuery = '';
   activeTag: string | null = null;
-  sortBy: 'date' | 'popularity' = 'date';
-  filterBySnapType = 'all';
-  currentPage = 1;
-  pageSize = 6;
+  sortBy: 'date' | 'popularity' | 'alpha' = 'popularity';
 
   showCreateForm = false;
   newSnap = {
     title: '',
     description: '',
     location: '',
-    imageUrl: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800',
+    imageUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=800',
   };
 
+  /** Tous les tags disponibles dans les données */
+  readonly allTags = [
+    'ville', 'cuisine', 'tradition', 'medina', 'desert', 'montagne',
+    'mer', 'souk', 'culture', 'nature', 'histoire', 'architecture',
+    'artisanat', 'patrimoine', 'plage', 'gastronomie', 'moderne',
+  ];
+
+  /** Snaps filtrés + triés — TOUS affichés (pas de pagination) */
   filteredSnaps = computed(() => {
     let snaps = this.faceSnaps();
 
+    // Filtre recherche
     if (this.searchQuery) {
       const q = this.searchQuery.toLowerCase();
       snaps = snaps.filter(
         s =>
           s.title.toLowerCase().includes(q) ||
-          (s.location && s.location.toLowerCase().includes(q)),
+          (s.location && s.location.toLowerCase().includes(q)) ||
+          s.description.toLowerCase().includes(q),
       );
     }
 
+    // Filtre par tag
     if (this.activeTag) {
       snaps = snaps.filter(s => s.tags.includes(this.activeTag!));
     }
 
-    if (this.filterBySnapType !== 'all') {
-      const tag = this.filterBySnapType.toLowerCase();
-      snaps = snaps.filter(s => s.tags.some(t => t.toLowerCase() === tag));
-    }
-
+    // Tri
     if (this.sortBy === 'date') {
       snaps = [...snaps].sort((a, b) => b.createAt.getTime() - a.createAt.getTime());
+    } else if (this.sortBy === 'alpha') {
+      snaps = [...snaps].sort((a, b) => a.title.localeCompare(b.title));
     } else {
       snaps = [...snaps].sort((a, b) => b.likes - a.likes);
     }
@@ -75,29 +77,16 @@ export class FaceSnapListComponent {
     return snaps;
   });
 
-  displayedSnaps = computed(() =>
-    this.filteredSnaps().slice(0, this.pageSize * this.currentPage),
-  );
-
-  hasMore = computed(() => this.displayedSnaps().length < this.filteredSnaps().length);
-
-  loadMore(): void {
-    this.currentPage++;
-  }
-
   onSearchChange(query: string): void {
     this.searchQuery = query;
-    this.currentPage = 1;
   }
 
   onTagClick(tag: string): void {
     this.activeTag = this.activeTag === tag ? null : tag;
-    this.currentPage = 1;
   }
 
   clearTag(): void {
     this.activeTag = null;
-    this.currentPage = 1;
   }
 
   onLikeClick(snapId: string): void {
@@ -110,13 +99,7 @@ export class FaceSnapListComponent {
   }
 
   onSortChange(value: string): void {
-    this.sortBy = value as 'date' | 'popularity';
-    this.currentPage = 1;
-  }
-
-  onFilterChange(value: string): void {
-    this.filterBySnapType = value;
-    this.currentPage = 1;
+    this.sortBy = value as 'date' | 'popularity' | 'alpha';
   }
 
   toggleCreateForm(): void {
@@ -145,9 +128,8 @@ export class FaceSnapListComponent {
       title: '',
       description: '',
       location: '',
-      imageUrl: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800',
+      imageUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=800',
     };
     this.showCreateForm = false;
-    this.currentPage = 1;
   }
 }

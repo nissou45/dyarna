@@ -20,10 +20,10 @@ export class UnsplashSearchComponent {
   photos: UnsplashPhoto[] = [];
   loading = false;
   searched = false;
+  selectedUrl: string | null = null;
 
   async search(): Promise<void> {
     if (!this.query.trim()) return;
-
     this.loading = true;
     this.searched = true;
     this.photos = await this.unsplashService.searchPhotos(this.query.trim());
@@ -31,6 +31,7 @@ export class UnsplashSearchComponent {
   }
 
   selectPhoto(url: string): void {
+    this.selectedUrl = url;
     this.photoSelected.emit(url);
   }
 }

@@ -1,0 +1,21 @@
+@use 'variables' as v;
+.sn-nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:22px 24px; border-bottom:1px solid var(--sn-line); background:var(--sn-bg);
+  @include v.md { padding:22px 40px; }
+}
+.sn-logo {
+  display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:inherit;
+  .name { font-family:v.$sn-serif; font-size:24px; letter-spacing:-0.01em; line-height:1; }
+}
+.sn-nav__links {
+  display:flex; align-items:center; gap:2px;
+  a { color:var(--sn-ink-2); font:500 14px/1 v.$sn-sans; text-decoration:none; padding:10px 16px; border-radius:var(--sn-r-pill); transition:background v.$t-fast;
+    &:hover { background:rgba(28,26,23,.05); }
+    &.active { background:var(--sn-ink); color:var(--sn-bg); }
+    &.cta { background:var(--sn-accent); color:#fff; }
+  }
+}
+.sn-footer { border-top:1px solid var(--sn-line); padding:28px 40px; display:flex; align-items:center; justify-content:space-between; background:var(--sn-bg); font-size:13px; color:var(--sn-muted); flex-wrap:wrap; gap:16px;
+  a { color:var(--sn-ink-2); text-decoration:none; margin-right:24px; &:hover { color:var(--sn-ink); } }
+}

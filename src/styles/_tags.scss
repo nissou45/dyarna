@@ -1,0 +1,12 @@
+@use 'variables' as v;
+@use 'sass:map';
+@use 'sass:list';
+.sn-tag {
+  display:inline-flex; align-items:center;
+  font:500 11px/1 v.$sn-sans; letter-spacing:.04em;
+  padding:5px 9px; border-radius:var(--sn-r-pill);
+  background:#ece5d3; color:var(--sn-ink-2);
+}
+@each $name, $pair in v.$sn-tags {
+  .sn-tag.#{$name} { background:list.nth($pair,1); color:list.nth($pair,2); }
+}

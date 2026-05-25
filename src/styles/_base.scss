@@ -1,0 +1,17 @@
+@use 'variables' as v;
+:root {
+  --sn-bg:#{v.$sn-bg}; --sn-surface:#{v.$sn-surface}; --sn-surface-2:#{v.$sn-surface-2};
+  --sn-ink:#{v.$sn-ink}; --sn-ink-2:#{v.$sn-ink-2}; --sn-muted:#{v.$sn-muted};
+  --sn-line:#{v.$sn-line}; --sn-line-2:#{v.$sn-line-2};
+  --sn-accent:#{v.$sn-accent}; --sn-accent-soft:#{v.$sn-accent-soft}; --sn-accent-ink:#{v.$sn-accent-ink};
+  --sn-success:#{v.$sn-success}; --sn-error:#{v.$sn-error}; --sn-warn:#{v.$sn-warn};
+  --sn-r-sm:#{v.$r-sm}; --sn-r:#{v.$r}; --sn-r-lg:#{v.$r-lg}; --sn-r-pill:#{v.$r-pill};
+  --sn-sh-1:#{v.$sh-1}; --sn-sh-2:#{v.$sh-2}; --sn-sh-3:#{v.$sh-3};
+}
+[data-theme="dark"] { @include v.dark-tokens; }
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin:0; background:var(--sn-bg); color:var(--sn-ink); font-family:v.$sn-sans; font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+img { max-width:100%; display:block; }
+button { font:inherit; }
+a { color:inherit; }
+:focus-visible { outline:2px solid var(--sn-accent); outline-offset:2px; border-radius:4px; }

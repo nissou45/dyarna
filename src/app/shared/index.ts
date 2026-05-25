@@ -1,2 +1,1 @@
-export * from './components/button/button.component';
-export * from './components/card/card.component';
+// Shared barrel — plus de composants legacy (remplacés par le design system global)

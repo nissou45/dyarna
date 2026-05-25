@@ -1,59 +1,73 @@
 <div class="list-container">
-  <app-search-bar (searchChange)="onSearchChange($event)"></app-search-bar>
+  <!-- Search -->
+  <div class="sn-search">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="search" [placeholder]="ui.SEARCH_PLACEHOLDER" (input)="onSearchChange($any($event.target).value)">
+  </div>
 
-  <div class="toolbar">
-    <div class="toolbar-left">
-      <button class="create-btn" (click)="toggleCreateForm()">
-        {{ showCreateForm ? ui.CANCEL_CREATE : ui.CREATE_NEW_SNAP }}
-      </button>
+  <!-- Filters bar -->
+  <div class="sn-filters">
+    <div class="sn-filters__pills">
+      <button class="sn-pill" [attr.aria-pressed]="activeTag === null" (click)="clearTag()">{{ ui.FILTER_ALL }}</button>
+      @for (tag of allTags; track tag) {
+        <button class="sn-pill" [attr.aria-pressed]="activeTag === tag" (click)="onTagClick(tag)">{{ tag }}</button>
+      }
     </div>
-    <div class="toolbar-right">
-      <select [value]="sortBy" (change)="onSortChange($any($event.target).value)" class="sort-select">
-        <option value="date">{{ ui.SORT_DATE }}</option>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <select class="sn-pill" [value]="sortBy" (change)="onSortChange($any($event.target).value)" style="height:34px; cursor:pointer;">
         <option value="popularity">{{ ui.SORT_POPULARITY }}</option>
+        <option value="date">{{ ui.SORT_DATE }}</option>
+        <option value="alpha">A–Z</option>
       </select>
-      <select [value]="filterBySnapType" (change)="onFilterChange($any($event.target).value)" class="filter-select">
-        <option value="all">{{ ui.FILTER_ALL }}</option>
-        <option value="face">{{ ui.FILTER_FACE }}</option>
-        <option value="idea">{{ ui.FILTER_IDEA }}</option>
-      </select>
+      <button class="sn-btn sm ghost" (click)="toggleCreateForm()">
+        {{ showCreateForm ? ui.CANCEL_CREATE : '+' }}
+      </button>
     </div>
   </div>
 
-  @if (activeTag) {
-    <div class="active-tag">
-      <span>Tag: <strong>{{ activeTag }}</strong></span>
-      <button class="clear-tag" (click)="clearTag()">&times;</button>
-    </div>
-  }
+  <!-- Results count -->
+  <div style="font-size:13px; color:var(--sn-muted); margin-bottom:16px;">
+    {{ filteredSnaps().length }} découvertes
+  </div>
 
+  <!-- Create form -->
   @if (showCreateForm) {
     <div class="create-form">
-      <h3>{{ ui.CREATE_NEW_SNAP }}</h3>
-      <input [(ngModel)]="newSnap.title" [placeholder]="ui.TITLE_PLACEHOLDER" class="form-input" />
-      <textarea [(ngModel)]="newSnap.description" [placeholder]="ui.DESC_PLACEHOLDER" class="form-input"></textarea>
-      <input [(ngModel)]="newSnap.location" [placeholder]="ui.LOCATION_PLACEHOLDER" class="form-input" />
+      <h3 class="h3" style="margin-bottom:16px;">{{ ui.CREATE_NEW_SNAP }}</h3>
+      <label class="sn-field">
+        <span class="sn-label">{{ ui.TITLE_PLACEHOLDER }}</span>
+        <input class="sn-input" [(ngModel)]="newSnap.title" [placeholder]="ui.TITLE_PLACEHOLDER" />
+      </label>
+      <label class="sn-field">
+        <span class="sn-label">{{ ui.DESC_PLACEHOLDER }}</span>
+        <textarea class="sn-area" [(ngModel)]="newSnap.description" [placeholder]="ui.DESC_PLACEHOLDER"></textarea>
+      </label>
+      <label class="sn-field">
+        <span class="sn-label">{{ ui.LOCATION_PLACEHOLDER }}</span>
+        <input class="sn-input" [(ngModel)]="newSnap.location" [placeholder]="ui.LOCATION_PLACEHOLDER" />
+      </label>
       <app-unsplash-search (photoSelected)="onPhotoSelected($event)"></app-unsplash-search>
-      <div class="form-actions">
-        <button class="submit-btn" (click)="addNewSnap()">{{ ui.ADD_SNAP }}</button>
+      <div style="margin-top:20px;">
+        <button class="sn-btn accent" (click)="addNewSnap()">{{ ui.ADD_SNAP }}</button>
       </div>
     </div>
   }
 
-  <div class="snaps-grid">
-    @for (faceSnap of displayedSnaps(); track faceSnap.id) {
+  <!-- Grid — toutes les villes affichées -->
+  <div class="sn-grid sn-stagger">
+    @for (faceSnap of filteredSnaps(); track faceSnap.id) {
       <app-face-snap
         [faceSnap]="faceSnap"
         [isLiked]="isLiked(faceSnap.id)"
         (likeClicked)="onLikeClick($event)"
         (tagClicked)="onTagClick($event)"
       />
+    } @empty {
+      <div style="grid-column:1/-1; text-align:center; padding:60px 0; color:var(--sn-muted);">
+        {{ ui.NO_RESULTS }}
+      </div>
     }
   </div>
-
-  @if (hasMore()) {
-    <div class="load-more-sentinel" appInfiniteScroll (scrolled)="loadMore()">
-      <span>{{ ui.LOAD_MORE }}</span>
-    </div>
-  }
 </div>

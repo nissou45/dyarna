@@ -1,0 +1,10 @@
+@use 'variables' as v;
+.sn-label { display:block; font:500 11px/1 v.$sn-sans; letter-spacing:.12em; text-transform:uppercase; color:var(--sn-muted); margin-bottom:6px; }
+.sn-input, .sn-area { width:100%; background:transparent; color:var(--sn-ink); font:400 15px/1.4 v.$sn-sans; border:none; border-bottom:1px solid var(--sn-line-2); padding:14px 2px 12px; outline:none; transition:border-color v.$t-fast;
+  &::placeholder { color:var(--sn-muted); }
+  &:focus { border-bottom-color:var(--sn-ink); }
+}
+.sn-field { display:flex; flex-direction:column; margin-bottom:v.$sp-5; }
+.sn-chips { display:flex; flex-wrap:wrap; gap:6px; padding:8px 0 6px; border-bottom:1px solid var(--sn-line-2);
+  input { border:0; outline:none; background:transparent; flex:1 1 120px; font:400 13px/1 v.$sn-sans; padding:4px 2px; }
+}
