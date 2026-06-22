@@ -6,6 +6,7 @@ import { ProfileComponent } from './profile/profile';
 import { LoginComponent } from './login/login';
 import { RegisterComponent } from './register/register';
 import { MapComponent } from './map/map.component';
+import { FavoritesComponent } from './favorites/favorites.component';
 import { authGuard } from './guards/auth.guard';
 import { APP_ROUTES } from './core/constants/face-snaps.constants';
 
@@ -38,5 +39,10 @@ export const routes: Routes = [
   {
     path: APP_ROUTES.MAP,
     component: MapComponent,
+  },
+  {
+    path: APP_ROUTES.FAVORITES,
+    component: FavoritesComponent,
+    canActivate: [authGuard],
   },
 ];

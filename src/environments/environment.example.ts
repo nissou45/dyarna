@@ -1,8 +1,8 @@
-// Pour utiliser Unsplash, copie ce fichier en environment.ts (ou environment.development.ts)
-// et remplace la valeur par ta clé Unsplash Access Key.
+// Copie ce fichier en environment.ts et configure les valeurs.
 // https://unsplash.com/oauth/applications
 
 export const environment = {
   production: false,
+  apiUrl: 'http://localhost:4000/api',
   unsplashAccessKey: 'VOTRE_CLE_API_UNSPLASH',
 };

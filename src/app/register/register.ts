@@ -24,7 +24,7 @@ import { APP_ROUTES } from '../core/constants/face-snaps.constants';
       <form (ngSubmit)="onRegister()">
         <label class="sn-field">
           <span class="sn-label">Pseudo</span>
-          <input class="sn-input" [(ngModel)]="pseudo" name="pseudo" placeholder="Votre pseudo" required />
+          <input class="sn-input" [(ngModel)]="displayName" name="displayName" placeholder="Votre pseudo" required />
         </label>
         <label class="sn-field">
           <span class="sn-label">Email</span>
@@ -32,9 +32,9 @@ import { APP_ROUTES } from '../core/constants/face-snaps.constants';
         </label>
         <label class="sn-field">
           <span class="sn-label">Mot de passe</span>
-          <input class="sn-input" type="password" [(ngModel)]="password" name="password" placeholder="Au moins 6 caractères" required minlength="6" />
+          <input class="sn-input" type="password" [(ngModel)]="password" name="password" placeholder="Au moins 8 caractères" required minlength="8" />
         </label>
-        <button class="sn-btn accent block" style="margin-top:8px;" type="submit">Créer mon compte</button>
+        <button class="sn-btn accent block" style="margin-top:8px;" type="submit" [disabled]="loading">Créer mon compte</button>
       </form>
 
       <p style="text-align:center; margin-top:24px; font-size:14px; color:var(--sn-muted);">
@@ -48,22 +48,23 @@ export class RegisterComponent {
   private auth = inject(AuthService);
   private router = inject(Router);
 
-  pseudo = '';
+  displayName = '';
   email = '';
   password = '';
   error = '';
+  loading = false;
 
   onRegister(): void {
     this.error = '';
-    if (this.password.length < 6) {
-      this.error = 'Le mot de passe doit faire au moins 6 caractères.';
-      return;
-    }
-    const result = this.auth.register(this.email, this.pseudo, this.password);
-    if (result.success) {
-      this.router.navigateByUrl('/' + APP_ROUTES.FACE_SNAPS);
-    } else {
-      this.error = result.error ?? 'Erreur inconnue';
-    }
+    this.loading = true;
+    this.auth.register(this.email, this.password, this.displayName).subscribe({
+      next: () => {
+        this.router.navigateByUrl('/' + APP_ROUTES.FACE_SNAPS);
+      },
+      error: (err) => {
+        this.error = err.error?.error || 'Erreur lors de l\'inscription.';
+        this.loading = false;
+      },
+    });
   }
 }

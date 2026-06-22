@@ -9,6 +9,7 @@
     <a routerLink="/carte" routerLinkActive="active">Carte</a>
     <a routerLink="/decouvertes" routerLinkActive="active">Découvertes</a>
     @if (auth.isLoggedIn()) {
+      <a routerLink="/favoris" routerLinkActive="active">Favoris</a>
       <a routerLink="/profil" routerLinkActive="active">{{ auth.currentPseudo() }}</a>
       <a href="#" (click)="logout($event)">Déconnexion</a>
     } @else {

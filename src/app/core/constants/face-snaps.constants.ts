@@ -37,4 +37,5 @@ export const APP_ROUTES = {
   LOGIN: 'connexion',
   REGISTER: 'inscription',
   MAP: 'carte',
+  FAVORITES: 'favoris',
 };
