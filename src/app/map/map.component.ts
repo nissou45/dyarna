@@ -1,11 +1,14 @@
-import { Component, AfterViewInit, OnDestroy, inject } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import * as L from 'leaflet';
 import { City, CITIES } from '../data/cities';
 import { ReviewsService } from '../services/reviews.service';
 import { ReviewSummary } from '../core/types';
 import { APP_ROUTES } from '../core/constants/face-snaps.constants';
+import { CitySearchComponent } from '../components/city-search/city-search.component';
 
 const ICON = L.icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -15,10 +18,20 @@ const ICON = L.icon({
   popupAnchor: [1, -34],
 });
 
+const SEARCH_ICON = L.icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  iconSize: [30, 49],
+  iconAnchor: [15, 49],
+  popupAnchor: [1, -40],
+  className: 'marker-search',
+});
+
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FormsModule, CitySearchComponent],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
 })
@@ -27,6 +40,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private reviewsService = inject(ReviewsService);
 
   readonly allCities = CITIES;
+  readonly featuredCities = CITIES.filter((c) => c.featured);
   readonly regions = [...new Set(CITIES.map(c => c.region))].sort();
   readonly categories: City['category'][] = ['imperiale', 'cotiere', 'montagne', 'desert', 'moderne'];
 
@@ -35,6 +49,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   private map: L.Map | null = null;
   private markersLayer: L.LayerGroup = L.layerGroup();
+  private searchMarker: L.Marker | null = null;
   private clickHandler: ((e: Event) => void) | null = null;
   private ratingCache = new Map<string, ReviewSummary>();
 
@@ -61,15 +76,24 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   private preloadRatings(): void {
-    CITIES.forEach((city) => {
-      this.reviewsService.getSummary(city.id).subscribe({
-        next: (s) => {
-          this.ratingCache.set(city.id, s);
-          this.updateMarkers();
-        },
-        error: () => {},
+    const concurrency = 6;
+    const ids = CITIES.map((c) => c.id);
+    for (let i = 0; i < ids.length; i += concurrency) {
+      const batch = ids.slice(i, i + concurrency).map((id) =>
+        this.reviewsService.getSummary(id).pipe(
+          catchError(() => of(null)),
+        )
+      );
+      forkJoin(batch).subscribe((results) => {
+        for (let j = 0; j < results.length; j++) {
+          const s = results[j];
+          if (s) {
+            this.ratingCache.set(ids[i + j], s);
+          }
+        }
+        this.updateMarkers();
       });
-    });
+    }
   }
 
   private initMap(): void {
@@ -154,10 +178,30 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   private getFilteredCities(): City[] {
     return this.allCities.filter(city => {
+      if (!city.featured) return false;
       if (this.selectedRegion && city.region !== this.selectedRegion) return false;
       if (this.selectedCategory && city.category !== this.selectedCategory) return false;
       return true;
     });
+  }
+
+  onSearchSelected(city: City): void {
+    this.removeSearchMarker();
+
+    const marker = L.marker([city.lat, city.lng], { icon: SEARCH_ICON });
+    marker.bindPopup(this.buildPopupContent(city));
+    marker.addTo(this.map!);
+    marker.openPopup();
+    this.searchMarker = marker;
+
+    this.map!.flyTo([city.lat, city.lng], 11, { duration: 1 });
+  }
+
+  private removeSearchMarker(): void {
+    if (this.searchMarker) {
+      this.searchMarker.remove();
+      this.searchMarker = null;
+    }
   }
 
   onFilterChange(): void {
