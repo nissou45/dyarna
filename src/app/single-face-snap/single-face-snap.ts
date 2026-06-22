@@ -11,7 +11,10 @@ import { RatingSummaryComponent } from '../reviews/rating-summary.component';
 import { ReviewListComponent } from '../reviews/review-list.component';
 import { ReviewFormComponent } from '../reviews/review-form.component';
 import { CityCultureSectionComponent } from '../culture/city-culture-section.component';
-import { Review, ReviewSummary } from '../core/types';
+import { WeatherWidgetComponent } from '../weather/weather-widget.component';
+import { BestSeasonChartComponent } from '../weather/best-season-chart.component';
+import { WeatherService } from '../services/weather.service';
+import { Review, ReviewSummary, FullWeatherInfo } from '../core/types';
 
 @Component({
   selector: 'app-single-face-snap',
@@ -24,6 +27,8 @@ import { Review, ReviewSummary } from '../core/types';
     ReviewListComponent,
     ReviewFormComponent,
     CityCultureSectionComponent,
+    WeatherWidgetComponent,
+    BestSeasonChartComponent,
   ],
   templateUrl: './single-face-snap.html',
   styleUrl: './single-face-snap.scss',
@@ -31,6 +36,7 @@ import { Review, ReviewSummary } from '../core/types';
 export class SingleFaceSnapComponent implements OnInit {
   private faceSnapsService = inject(FaceSnapsService);
   private reviewsService = inject(ReviewsService);
+  private weatherService = inject(WeatherService);
   private route = inject(ActivatedRoute);
 
   faceSnap!: FaceSnap;
@@ -49,6 +55,8 @@ export class SingleFaceSnapComponent implements OnInit {
   editingReview: Review | null = null;
   loadingReviews = false;
 
+  weatherInfo: FullWeatherInfo | null = null;
+
   get cityId(): string {
     return this.route.snapshot.params['id'];
   }
@@ -58,6 +66,7 @@ export class SingleFaceSnapComponent implements OnInit {
     this.getFaceSnap();
     this.loadReviewSummary();
     this.loadReviews();
+    this.loadWeather();
   }
 
   private prepareInterface() {
@@ -150,6 +159,13 @@ export class SingleFaceSnapComponent implements OnInit {
         this.loadReviews(1);
         this.loadReviewSummary();
       },
+      error: () => {},
+    });
+  }
+
+  private loadWeather(): void {
+    this.weatherService.getFullWeatherInfo(this.cityId).subscribe({
+      next: (info) => (this.weatherInfo = info),
       error: () => {},
     });
   }

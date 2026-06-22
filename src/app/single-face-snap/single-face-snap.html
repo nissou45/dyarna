@@ -22,6 +22,23 @@
 
       <p class="sn-detail__lede">{{ faceSnap.description }}</p>
 
+      <!-- MÉTÉO & MEILLEURE SAISON -->
+      @if (weatherInfo) {
+        <div class="sn-section">
+          <h3 class="sn-section__title">Météo & climat</h3>
+          <app-weather-widget
+            [weather]="weatherInfo.current"
+            [stale]="weatherInfo.stale"
+          />
+          <div style="margin-top:16px;">
+            <app-best-season-chart
+              [months]="weatherInfo.bestSeason.months"
+              [bestMonths]="weatherInfo.bestSeason.bestMonths"
+            />
+          </div>
+        </div>
+      }
+
       <!-- STORYTELLING CULTUREL -->
       <app-city-culture-section [cityId]="cityId" />
 

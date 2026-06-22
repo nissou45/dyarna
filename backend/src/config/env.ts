@@ -11,6 +11,7 @@ const envSchema = z.object({
   GOOGLE_CALLBACK_URL: z.string().url().min(1, 'GOOGLE_CALLBACK_URL is required'),
   FRONTEND_URL: z.string().url().min(1, 'FRONTEND_URL is required'),
   ANTHROPIC_API_KEY: z.string().optional(),
+  OPENWEATHER_API_KEY: z.string().optional(),
 });
 
 function loadEnv() {

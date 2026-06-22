@@ -75,3 +75,35 @@ export interface CityCultureResponse {
   sourceUrl?: string;
   lastFetchedAt?: string;
 }
+
+export interface CurrentWeather {
+  temp: number;
+  feelsLike: number;
+  condition: string;
+  conditionLabel: string;
+  humidity: number;
+  windSpeed: number;
+  icon: string;
+}
+
+export interface MonthScore {
+  month: number;
+  score: number;
+  label: 'ideal' | 'good' | 'average' | 'avoid';
+}
+
+export interface BestSeasonResult {
+  bestMonths: number[];
+  months: MonthScore[];
+}
+
+export interface FullWeatherInfo {
+  current: CurrentWeather | null;
+  stale: boolean;
+  bestSeason: BestSeasonResult;
+}
+
+export interface CurrentWeatherResponse {
+  current: CurrentWeather;
+  stale: boolean;
+}
