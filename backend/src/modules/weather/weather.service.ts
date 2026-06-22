@@ -1,7 +1,7 @@
 import { WeatherCache, IWeatherCache, CurrentWeather } from './weather.model';
 import { fetchCurrentWeather } from './providers/openweather.provider';
 import { getClimateData, MonthlyClimate } from './data/climate-reference';
-import { getCityById } from '../culture/cities.data';
+import { CITIES } from '../../data/cities';
 import { AppError } from '../../utils/AppError';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
@@ -74,7 +74,7 @@ export class WeatherService {
     current: CurrentWeather;
     stale: boolean;
   }> {
-    const city = getCityById(cityId);
+    const city = CITIES[cityId];
     if (!city) throw new AppError('Ville introuvable.', 404);
 
     const cached = await WeatherCache.findOne({ cityId });
@@ -85,7 +85,7 @@ export class WeatherService {
       }
     }
 
-    const lat = this.getCityCoords(cityId);
+    const { lat, lng } = CITIES[cityId];
     if (!lat) throw new AppError('Coordonnées de la ville introuvables.', 500);
 
     const apiKey = process.env.OPENWEATHER_API_KEY;
@@ -95,7 +95,7 @@ export class WeatherService {
     }
 
     try {
-      const raw = await fetchCurrentWeather(lat.lat, lat.lng, apiKey);
+      const raw = await fetchCurrentWeather(lat, lng, apiKey);
       const now = new Date();
 
       await WeatherCache.findOneAndUpdate(
@@ -136,23 +136,7 @@ export class WeatherService {
     };
   }
 
-  private getCityCoords(cityId: string): { lat: number; lng: number } | undefined {
-    const coords: Record<string, { lat: number; lng: number }> = {
-      marrakech: { lat: 31.6295, lng: -7.9811 },
-      fes: { lat: 34.0181, lng: -5.0078 },
-      rabat: { lat: 34.0209, lng: -6.8416 },
-      casablanca: { lat: 33.5731, lng: -7.5898 },
-      tanger: { lat: 35.7673, lng: -5.7998 },
-      chefchaouen: { lat: 35.1717, lng: -5.2636 },
-      essaouira: { lat: 31.5085, lng: -9.7595 },
-      agadir: { lat: 30.4278, lng: -9.5981 },
-      ouarzazate: { lat: 30.9193, lng: -6.9006 },
-      merzouga: { lat: 31.0958, lng: -4.0081 },
-      meknes: { lat: 33.8935, lng: -5.5473 },
-      ifrane: { lat: 33.5228, lng: -5.1109 },
-    };
-    return coords[cityId];
-  }
+
 }
 
 export const weatherService = new WeatherService();

@@ -11,6 +11,9 @@ import reviewRoutes from './modules/reviews/review.routes';
 import cultureRoutes from './modules/culture/culture.routes';
 import weatherRoutes from './modules/weather/weather.routes';
 import galleryRoutes from './modules/gallery/photo.routes';
+import itineraryRoutes from './modules/itinerary/itinerary.routes';
+import quizRoutes from './modules/quiz/quiz.routes';
+import citiesRoutes from './modules/cities/cities.routes';
 import { initCloudinary } from './modules/gallery/providers/cloudinary.provider';
 import { requireAuth } from './middlewares/requireAuth';
 import { errorHandler } from './middlewares/errorHandler';
@@ -44,6 +47,9 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/culture', cultureRoutes);
 app.use('/api/weather', weatherRoutes);
 app.use('/api/gallery', galleryRoutes);
+app.use('/api/itineraries', itineraryRoutes);
+app.use('/api/quiz', quizRoutes);
+app.use('/api/cities', citiesRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
