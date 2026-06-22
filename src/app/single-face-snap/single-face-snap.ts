@@ -13,8 +13,12 @@ import { ReviewFormComponent } from '../reviews/review-form.component';
 import { CityCultureSectionComponent } from '../culture/city-culture-section.component';
 import { WeatherWidgetComponent } from '../weather/weather-widget.component';
 import { BestSeasonChartComponent } from '../weather/best-season-chart.component';
+import { PhotoUploadFormComponent } from '../gallery/photo-upload-form.component';
+import { PhotoGridComponent } from '../gallery/photo-grid.component';
+import { PhotoLightboxComponent } from '../gallery/photo-lightbox.component';
 import { WeatherService } from '../services/weather.service';
-import { Review, ReviewSummary, FullWeatherInfo } from '../core/types';
+import { GalleryService } from '../services/gallery.service';
+import { Review, ReviewSummary, FullWeatherInfo, GalleryPhoto } from '../core/types';
 
 @Component({
   selector: 'app-single-face-snap',
@@ -29,6 +33,9 @@ import { Review, ReviewSummary, FullWeatherInfo } from '../core/types';
     CityCultureSectionComponent,
     WeatherWidgetComponent,
     BestSeasonChartComponent,
+    PhotoUploadFormComponent,
+    PhotoGridComponent,
+    PhotoLightboxComponent,
   ],
   templateUrl: './single-face-snap.html',
   styleUrl: './single-face-snap.scss',
@@ -37,6 +44,7 @@ export class SingleFaceSnapComponent implements OnInit {
   private faceSnapsService = inject(FaceSnapsService);
   private reviewsService = inject(ReviewsService);
   private weatherService = inject(WeatherService);
+  private galleryService = inject(GalleryService);
   private route = inject(ActivatedRoute);
 
   faceSnap!: FaceSnap;
@@ -57,6 +65,13 @@ export class SingleFaceSnapComponent implements OnInit {
 
   weatherInfo: FullWeatherInfo | null = null;
 
+  galleryPhotos: GalleryPhoto[] = [];
+  galleryPage = 1;
+  galleryTotalPages = 1;
+  selectedPhoto: GalleryPhoto | null = null;
+  photoLikes: Record<string, boolean> = {};
+  currentUserId = '';
+
   get cityId(): string {
     return this.route.snapshot.params['id'];
   }
@@ -67,6 +82,7 @@ export class SingleFaceSnapComponent implements OnInit {
     this.loadReviewSummary();
     this.loadReviews();
     this.loadWeather();
+    this.loadGallery();
   }
 
   private prepareInterface() {
@@ -168,5 +184,43 @@ export class SingleFaceSnapComponent implements OnInit {
       next: (info) => (this.weatherInfo = info),
       error: () => {},
     });
+  }
+
+  private loadGallery(page: number = 1): void {
+    this.galleryService.getByCity(this.cityId, page).subscribe({
+      next: (res) => {
+        this.galleryPhotos = page === 1 ? res.photos : [...this.galleryPhotos, ...res.photos];
+        this.galleryPage = res.page;
+        this.galleryTotalPages = res.totalPages;
+      },
+      error: () => {},
+    });
+  }
+
+  loadMorePhotos(): void {
+    if (this.galleryPage < this.galleryTotalPages) {
+      this.loadGallery(this.galleryPage + 1);
+    }
+  }
+
+  onPhotoDeleted(photoId: string): void {
+    this.galleryPhotos = this.galleryPhotos.filter((p) => p._id !== photoId);
+  }
+
+  onPhotoLiked(e: { photoId: string; likesCount: number }): void {
+    const photo = this.galleryPhotos.find((p) => p._id === e.photoId);
+    if (photo) photo.likesCount = e.likesCount;
+  }
+
+  onPhotoUploaded(): void {
+    this.loadGallery(1);
+  }
+
+  setSelectedPhoto(photo: GalleryPhoto): void {
+    this.selectedPhoto = photo;
+  }
+
+  closeLightbox(): void {
+    this.selectedPhoto = null;
   }
 }

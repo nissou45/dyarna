@@ -107,3 +107,32 @@ export interface CurrentWeatherResponse {
   current: CurrentWeather;
   stale: boolean;
 }
+
+export interface GalleryPhoto {
+  _id: string;
+  userId: { _id: string; displayName: string; avatarUrl?: string };
+  cityId: string;
+  url: string;
+  thumbnailUrl: string;
+  caption?: string;
+  status: 'pending' | 'approved' | 'rejected';
+  likesCount: number;
+  width: number;
+  height: number;
+  createdAt: string;
+}
+
+export interface PaginatedPhotos {
+  photos: GalleryPhoto[];
+  total: number;
+  page: number;
+  totalPages: number;
+}
+
+export interface PhotoLikeResponse {
+  likesCount: number;
+}
+
+export interface PhotoLikesBatchResponse {
+  likes: Record<string, boolean>;
+}

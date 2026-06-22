@@ -10,6 +10,8 @@ import favoriteRoutes from './modules/favorites/favorite.routes';
 import reviewRoutes from './modules/reviews/review.routes';
 import cultureRoutes from './modules/culture/culture.routes';
 import weatherRoutes from './modules/weather/weather.routes';
+import galleryRoutes from './modules/gallery/photo.routes';
+import { initCloudinary } from './modules/gallery/providers/cloudinary.provider';
 import { requireAuth } from './middlewares/requireAuth';
 import { errorHandler } from './middlewares/errorHandler';
 import { globalLimiter } from './middlewares/rateLimiter';
@@ -28,11 +30,20 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(globalLimiter);
 
+if (env.CLOUDINARY_CLOUD_NAME && env.CLOUDINARY_API_KEY && env.CLOUDINARY_API_SECRET) {
+  initCloudinary({
+    cloudName: env.CLOUDINARY_CLOUD_NAME,
+    apiKey: env.CLOUDINARY_API_KEY,
+    apiSecret: env.CLOUDINARY_API_SECRET,
+  });
+}
+
 app.use('/api/auth', authRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/culture', cultureRoutes);
 app.use('/api/weather', weatherRoutes);
+app.use('/api/gallery', galleryRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });

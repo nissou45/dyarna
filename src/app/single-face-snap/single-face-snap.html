@@ -128,6 +128,31 @@
         <app-unsplash-search (photoSelected)="onPhotoSelected($event)"></app-unsplash-search>
       </div>
 
+      <!-- GALERIE COMMUNAUTAIRE -->
+      <div class="sn-section">
+        <h3 class="sn-section__title">Galerie photos</h3>
+        <app-photo-upload-form [cityId]="cityId" (uploaded)="onPhotoUploaded()" />
+        <app-photo-grid
+          [photos]="galleryPhotos"
+          [currentUserId]="currentUserId"
+          (open)="setSelectedPhoto($event)"
+        />
+        @if (galleryPage < galleryTotalPages) {
+          <div style="text-align:center; padding:8px 0;">
+            <button class="sn-btn ghost" (click)="loadMorePhotos()">Voir plus de photos</button>
+          </div>
+        }
+      </div>
+
+      @if (selectedPhoto) {
+        <app-photo-lightbox
+          [photo]="selectedPhoto"
+          (close)="closeLightbox()"
+          (deleted)="onPhotoDeleted($event)"
+          (liked)="onPhotoLiked($event)"
+        />
+      }
+
       <!-- REVIEWS SECTION -->
       <div class="sn-section">
         <h3 class="sn-section__title">Avis et notes</h3>
