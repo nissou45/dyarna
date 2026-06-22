@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import * as L from 'leaflet';
 import { City, CITIES } from '../data/cities';
+import { ReviewsService } from '../services/reviews.service';
+import { ReviewSummary } from '../core/types';
 import { APP_ROUTES } from '../core/constants/face-snaps.constants';
 
 const ICON = L.icon({
@@ -22,6 +24,7 @@ const ICON = L.icon({
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
   private router = inject(Router);
+  private reviewsService = inject(ReviewsService);
 
   readonly allCities = CITIES;
   readonly regions = [...new Set(CITIES.map(c => c.region))].sort();
@@ -33,6 +36,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private map: L.Map | null = null;
   private markersLayer: L.LayerGroup = L.layerGroup();
   private clickHandler: ((e: Event) => void) | null = null;
+  private ratingCache = new Map<string, ReviewSummary>();
 
   private readonly CATEGORY_LABELS: Record<City['category'], string> = {
     imperiale: 'Ville impériale',
@@ -48,11 +52,24 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.initMap();
+    this.preloadRatings();
   }
 
   ngOnDestroy(): void {
     this.removePopupHandler();
     this.map?.remove();
+  }
+
+  private preloadRatings(): void {
+    CITIES.forEach((city) => {
+      this.reviewsService.getSummary(city.id).subscribe({
+        next: (s) => {
+          this.ratingCache.set(city.id, s);
+          this.updateMarkers();
+        },
+        error: () => {},
+      });
+    });
   }
 
   private initMap(): void {
@@ -114,12 +131,18 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   private buildPopupContent(city: City): string {
+    const rating = this.ratingCache.get(city.id);
+    const ratingHtml = rating && rating.totalReviews > 0
+      ? `<span style="font-size:12px; color:#8a7f6e;">★ ${rating.averageRating}/5 (${rating.totalReviews} avis)</span>`
+      : '';
+
     return `
       <div class="map-popup">
         <img src="${city.thumbnailUrl}" alt="${city.name}" class="map-popup__img" loading="lazy" />
         <div class="map-popup__body">
           <h3 class="map-popup__title">${city.name}</h3>
           <span class="map-popup__region">${city.region} · ${this.CATEGORY_LABELS[city.category]}</span>
+          ${ratingHtml}
           <p class="map-popup__desc">${city.shortDescription}</p>
           <button class="map-popup__btn" data-city-id="${city.id}">
             Voir la fiche complète

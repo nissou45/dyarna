@@ -22,6 +22,14 @@
 
       <p class="sn-detail__lede">{{ faceSnap.description }}</p>
 
+      <!-- RATING SUMMARY -->
+      @if (reviewSummary && reviewSummary.totalReviews > 0) {
+        <div class="sn-section">
+          <h3 class="sn-section__title">Avis voyageurs</h3>
+          <app-rating-summary [summary]="reviewSummary" />
+        </div>
+      }
+
       <!-- CONTENU ASSOCIÉ CUISINE -->
       @if (relatedCuisine.length > 0) {
         <div class="sn-section">
@@ -100,6 +108,31 @@
         <app-unsplash-search (photoSelected)="onPhotoSelected($event)"></app-unsplash-search>
       </div>
 
+      <!-- REVIEWS SECTION -->
+      <div class="sn-section">
+        <h3 class="sn-section__title">Avis et notes</h3>
+
+        <app-review-form
+          [existingReview]="editingReview"
+          (submitted)="onReviewSubmitted($event)"
+          (cancelEdit)="onCancelEdit()"
+        />
+
+        <app-review-list
+          [reviews]="reviews"
+          (edit)="onEditReview($event)"
+          (delete)="onDeleteReview($event)"
+        />
+
+        @if (currentPage < totalPages) {
+          <div style="text-align:center; padding:16px 0;">
+            <button class="sn-btn ghost" (click)="loadMore()" [disabled]="loadingReviews">
+              {{ loadingReviews ? 'Chargement…' : 'Afficher plus d\'avis' }}
+            </button>
+          </div>
+        }
+      </div>
+
       <app-comments-section
         [comments]="faceSnap.comments"
         [snapId]="faceSnap.id"
@@ -117,6 +150,9 @@
         </button>
         <div style="font-size:13px; color:var(--sn-muted); text-align:center; padding:8px 0;">
           {{ faceSnap.snaps }} snaps · {{ faceSnap.likes }} ♥
+          @if (reviewSummary && reviewSummary.totalReviews > 0) {
+            <br />{{ reviewSummary.averageRating }}/5 ({{ reviewSummary.totalReviews }} avis)
+          }
         </div>
       </div>
     </div>
