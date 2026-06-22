@@ -1,0 +1,43 @@
+<div class="map-page">
+  <div class="map-filters">
+    <h2 class="map-filters__title">Explore le Maroc</h2>
+
+    <div class="map-filters__bar">
+      <div class="map-filters__group">
+        <label class="map-filters__label" for="region-select">Région</label>
+        <select
+          id="region-select"
+          class="sn-pill"
+          [value]="selectedRegion"
+          (change)="selectedRegion = $any($event.target).value; onFilterChange()"
+        >
+          <option value="">Toutes les régions</option>
+          @for (r of regions; track r) {
+            <option [value]="r">{{ r }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="map-filters__group">
+        <label class="map-filters__label" for="category-select">Catégorie</label>
+        <select
+          id="category-select"
+          class="sn-pill"
+          [value]="selectedCategory"
+          (change)="selectedCategory = $any($event.target).value; onFilterChange()"
+        >
+          <option value="">Toutes les catégories</option>
+          @for (c of categories; track c) {
+            <option [value]="c">{{ categoryLabel(c) }}</option>
+          }
+        </select>
+      </div>
+
+      <button class="sn-btn ghost sm" (click)="resetFilters()">
+        Réinitialiser
+      </button>
+    </div>
+  </div>
+
+  <div id="map" class="map-container"></div>
+</div>

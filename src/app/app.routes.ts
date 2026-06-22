@@ -5,6 +5,7 @@ import { SingleFaceSnapComponent } from './single-face-snap/single-face-snap';
 import { ProfileComponent } from './profile/profile';
 import { LoginComponent } from './login/login';
 import { RegisterComponent } from './register/register';
+import { MapComponent } from './map/map.component';
 import { authGuard } from './guards/auth.guard';
 import { APP_ROUTES } from './core/constants/face-snaps.constants';
 
@@ -33,5 +34,9 @@ export const routes: Routes = [
   {
     path: APP_ROUTES.LANDING,
     component: LandingPage,
+  },
+  {
+    path: APP_ROUTES.MAP,
+    component: MapComponent,
   },
 ];

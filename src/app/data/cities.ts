@@ -1,0 +1,133 @@
+export interface City {
+  id: string;
+  name: string;
+  region: string;
+  category: 'imperiale' | 'cotiere' | 'montagne' | 'desert' | 'moderne';
+  lat: number;
+  lng: number;
+  shortDescription: string;
+  thumbnailUrl: string;
+}
+
+export const CITIES: City[] = [
+  {
+    id: 'marrakech',
+    name: 'Marrakech',
+    region: 'Marrakech-Safi',
+    category: 'imperiale',
+    lat: 31.6295,
+    lng: -7.9811,
+    shortDescription: 'La Ville Rouge, joyau du sud marocain. Sa médina classée à l\'UNESCO et la place Jemaa el-Fnaa.',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=400&h=300&fit=crop',
+  },
+  {
+    id: 'fes',
+    name: 'Fès',
+    region: 'Fès-Meknès',
+    category: 'imperiale',
+    lat: 34.0181,
+    lng: -5.0078,
+    shortDescription: 'Capitale spirituelle du Maroc, abritant la plus vieille université du monde et une médina millénaire.',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1550034713-0ab70f0e3e0b?w=400&h=300&fit=crop',
+  },
+  {
+    id: 'rabat',
+    name: 'Rabat',
+    region: 'Rabat-Salé-Kénitra',
+    category: 'moderne',
+    lat: 34.0209,
+    lng: -6.8416,
+    shortDescription: 'Capitale moderne du Royaume, alliant patrimoine historique et vie animée sur l\'Atlantique.',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=400&h=300&fit=crop',
+  },
+  {
+    id: 'casablanca',
+    name: 'Casablanca',
+    region: 'Casablanca-Settat',
+    category: 'moderne',
+    lat: 33.5731,
+    lng: -7.5898,
+    shortDescription: 'Plus grande ville du Maroc, centre économique abritant la majestueuse mosquée Hassan II.',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=400&h=300&fit=crop',
+  },
+  {
+    id: 'tanger',
+    name: 'Tanger',
+    region: 'Tanger-Tétouan-Al Hoceïma',
+    category: 'cotiere',
+    lat: 35.7673,
+    lng: -5.7998,
+    shortDescription: 'Porte de l\'Afrique, où la Méditerranée rencontre l\'Atlantique. Ville d\'artistes et de légendes.',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=400&h=300&fit=crop',
+  },
+  {
+    id: 'chefchaouen',
+    name: 'Chefchaouen',
+    region: 'Tanger-Tétouan-Al Hoceïma',
+    category: 'montagne',
+    lat: 35.1717,
+    lng: -5.2636,
+    shortDescription: 'La perle bleue du Rif, célèbre pour sa médina peinte en bleu et son atmosphère paisible.',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=400&h=300&fit=crop',
+  },
+  {
+    id: 'essaouira',
+    name: 'Essaouira',
+    region: 'Marrakech-Safi',
+    category: 'cotiere',
+    lat: 31.5085,
+    lng: -9.7595,
+    shortDescription: 'Cité des vents aux remparts portugais, médina bleue et blanche, surf et art.',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=400&h=300&fit=crop',
+  },
+  {
+    id: 'agadir',
+    name: 'Agadir',
+    region: 'Souss-Massa',
+    category: 'cotiere',
+    lat: 30.4278,
+    lng: -9.5981,
+    shortDescription: 'Station balnéaire par excellence avec sa magnifique baie en arc de cercle et ses plages de sable fin.',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=400&h=300&fit=crop',
+  },
+  {
+    id: 'ouarzazate',
+    name: 'Ouarzazate',
+    region: 'Drâa-Tafilalet',
+    category: 'desert',
+    lat: 30.9193,
+    lng: -6.9006,
+    shortDescription: 'Porte du désert et capitale du cinéma marocain, célèbre pour la Kasbah Aït Ben Haddou.',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=400&h=300&fit=crop',
+  },
+  {
+    id: 'merzouga',
+    name: 'Merzouga',
+    region: 'Drâa-Tafilalet',
+    category: 'desert',
+    lat: 31.0958,
+    lng: -4.0081,
+    shortDescription: 'Portes du Sahara et majestueuses dunes de l\'Erg Chebbi. Couchers de soleil inoubliables.',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=400&h=300&fit=crop',
+  },
+  {
+    id: 'meknes',
+    name: 'Meknès',
+    region: 'Fès-Meknès',
+    category: 'imperiale',
+    lat: 33.8935,
+    lng: -5.5473,
+    shortDescription: 'Le Versailles marocain, ville aux 40 portes fondée par Moulay Ismail.',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=400&h=300&fit=crop',
+  },
+  {
+    id: 'ifrane',
+    name: 'Ifrane',
+    region: 'Fès-Meknès',
+    category: 'montagne',
+    lat: 33.5228,
+    lng: -5.1109,
+    shortDescription: 'Le petit Suisse marocain, station de ski et ville alpine au cœur du Moyen Atlas.',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=400&h=300&fit=crop',
+  },
+];

@@ -6,6 +6,7 @@
     <span class="name">Dyarna</span>
   </a>
   <div class="sn-nav__links">
+    <a routerLink="/carte" routerLinkActive="active">Carte</a>
     <a routerLink="/decouvertes" routerLinkActive="active">Découvertes</a>
     @if (auth.isLoggedIn()) {
       <a routerLink="/profil" routerLinkActive="active">{{ auth.currentPseudo() }}</a>
