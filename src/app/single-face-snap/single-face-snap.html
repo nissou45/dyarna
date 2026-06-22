@@ -22,6 +22,9 @@
 
       <p class="sn-detail__lede">{{ faceSnap.description }}</p>
 
+      <!-- STORYTELLING CULTUREL -->
+      <app-city-culture-section [cityId]="cityId" />
+
       <!-- RATING SUMMARY -->
       @if (reviewSummary && reviewSummary.totalReviews > 0) {
         <div class="sn-section">

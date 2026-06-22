@@ -54,3 +54,24 @@ export interface PaginatedReviews {
 export interface ErrorResponse {
   error: string;
 }
+
+export interface CityCultureCuisine {
+  name: string;
+  description: string;
+}
+
+export interface CityCultureLegend {
+  title: string;
+  content: string;
+}
+
+export interface CityCultureResponse {
+  status: 'ready' | 'unavailable';
+  cityId: string;
+  history?: string;
+  traditions?: string[];
+  legend?: CityCultureLegend | null;
+  cuisine?: CityCultureCuisine[];
+  sourceUrl?: string;
+  lastFetchedAt?: string;
+}

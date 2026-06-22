@@ -8,6 +8,7 @@ import './config/passport';
 import authRoutes from './modules/auth/auth.routes';
 import favoriteRoutes from './modules/favorites/favorite.routes';
 import reviewRoutes from './modules/reviews/review.routes';
+import cultureRoutes from './modules/culture/culture.routes';
 import { requireAuth } from './middlewares/requireAuth';
 import { errorHandler } from './middlewares/errorHandler';
 import { globalLimiter } from './middlewares/rateLimiter';
@@ -29,6 +30,7 @@ app.use(globalLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/culture', cultureRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });

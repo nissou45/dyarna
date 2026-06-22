@@ -10,6 +10,7 @@ import { UnsplashSearchComponent } from '../unsplash-search/unsplash-search';
 import { RatingSummaryComponent } from '../reviews/rating-summary.component';
 import { ReviewListComponent } from '../reviews/review-list.component';
 import { ReviewFormComponent } from '../reviews/review-form.component';
+import { CityCultureSectionComponent } from '../culture/city-culture-section.component';
 import { Review, ReviewSummary } from '../core/types';
 
 @Component({
@@ -22,6 +23,7 @@ import { Review, ReviewSummary } from '../core/types';
     RatingSummaryComponent,
     ReviewListComponent,
     ReviewFormComponent,
+    CityCultureSectionComponent,
   ],
   templateUrl: './single-face-snap.html',
   styleUrl: './single-face-snap.scss',
