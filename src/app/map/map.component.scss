@@ -21,6 +21,11 @@
     align-items: flex-end;
   }
 
+  &__search {
+    flex: 1 1 280px;
+    min-width: 200px;
+  }
+
   &__group {
     display: flex;
     flex-direction: column;

@@ -3,6 +3,11 @@
     <h2 class="map-filters__title">Explore le Maroc</h2>
 
     <div class="map-filters__bar">
+      <app-city-search
+        class="map-filters__search"
+        (citySelected)="onSearchSelected($event)"
+      />
+
       <div class="map-filters__group">
         <label class="map-filters__label" for="region-select">Région</label>
         <select
