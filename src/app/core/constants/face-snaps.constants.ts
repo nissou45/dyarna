@@ -38,4 +38,5 @@ export const APP_ROUTES = {
   REGISTER: 'inscription',
   MAP: 'carte',
   FAVORITES: 'favoris',
+  ITINERARIES: 'itineraires',
 };

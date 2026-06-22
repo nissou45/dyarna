@@ -7,6 +7,10 @@ import { LoginComponent } from './login/login';
 import { RegisterComponent } from './register/register';
 import { MapComponent } from './map/map.component';
 import { FavoritesComponent } from './favorites/favorites.component';
+import { ItineraryBuilderComponent } from './itinerary/itinerary-builder.component';
+import { ItineraryPublicComponent } from './itinerary/itinerary-public.component';
+import { QuizGameComponent } from './quiz/quiz-game.component';
+import { LeaderboardComponent } from './quiz/leaderboard.component';
 import { authGuard } from './guards/auth.guard';
 import { APP_ROUTES } from './core/constants/face-snaps.constants';
 
@@ -44,5 +48,27 @@ export const routes: Routes = [
     path: APP_ROUTES.FAVORITES,
     component: FavoritesComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: `${APP_ROUTES.ITINERARIES}/partage/:token`,
+    component: ItineraryPublicComponent,
+  },
+  {
+    path: `${APP_ROUTES.ITINERARIES}/nouveau`,
+    component: ItineraryBuilderComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: `${APP_ROUTES.ITINERARIES}/:id`,
+    component: ItineraryBuilderComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'quiz',
+    component: QuizGameComponent,
+  },
+  {
+    path: 'classement',
+    component: LeaderboardComponent,
   },
 ];
