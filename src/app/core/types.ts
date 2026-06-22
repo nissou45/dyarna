@@ -136,3 +136,97 @@ export interface PhotoLikeResponse {
 export interface PhotoLikesBatchResponse {
   likes: Record<string, boolean>;
 }
+
+export interface ItineraryDay {
+  dayNumber: number;
+  cityId: string;
+  nightsCount: number;
+  notes?: string;
+}
+
+export interface Itinerary {
+  _id: string;
+  userId: string;
+  title: string;
+  days: ItineraryDay[];
+  isPublic: boolean;
+  shareToken?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ItinerarySegment {
+  from: string;
+  to: string;
+  distanceKm: number;
+  travelTime: { hours: number; minutes: number };
+}
+
+export interface ItineraryComputed {
+  segments: ItinerarySegment[];
+  totalDistance: number;
+  totalNights: number;
+}
+
+export interface ItineraryResponse {
+  itinerary: Itinerary;
+  computed: ItineraryComputed;
+}
+
+export interface CitySuggestion {
+  cityId: string;
+  name: string;
+  distanceKm: number;
+}
+
+export interface QuizChoice {
+  id: string;
+  name: string;
+}
+
+export interface CurrentQuestion {
+  questionIndex: number;
+  totalQuestions: number;
+  type: 'photo' | 'culture_fact' | 'climate_fact';
+  clue: string;
+  choices: QuizChoice[];
+  score: number;
+}
+
+export interface StartQuizResponse {
+  sessionId: string;
+  currentQuestion: CurrentQuestion;
+}
+
+export interface AnswerResult {
+  isCorrect: boolean;
+  correctCityId: string;
+  correctCityName: string;
+  pointsGained: number;
+  totalScore: number;
+  questionIndex: number;
+  totalQuestions: number;
+  isLastQuestion: boolean;
+}
+
+export interface QuizResult {
+  score: number;
+  totalQuestions: number;
+  correctAnswers: number;
+  averageTimeMs: number;
+  isNewBestScore: boolean;
+}
+
+export interface LeaderboardEntry {
+  rank: number;
+  userId: string;
+  displayName: string;
+  bestScore: number;
+  gamesPlayed: number;
+}
+
+export interface UserRank {
+  rank: number;
+  score: number;
+  totalPlayers: number;
+}
