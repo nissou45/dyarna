@@ -23,11 +23,29 @@ describe('calculateMonthScore', () => {
     });
     expect(result).toBeLessThanOrEqual(30);
   });
+
+  it('should bound score between 0 and 100', () => {
+    const veryBad = calculateMonthScore({
+      month: 1,
+      avgTempMin: 0,
+      avgTempMax: 5,
+      avgRainfallMm: 300,
+      sunHours: 30,
+    });
+    expect(veryBad).toBeGreaterThanOrEqual(0);
+    expect(veryBad).toBeLessThanOrEqual(100);
+  });
 });
 
 describe('getMonthLabel', () => {
   it('should return ideal for score >= 75', () => {
     expect(getMonthLabel(80)).toBe('ideal');
+  });
+  it('should return good for score >= 55', () => {
+    expect(getMonthLabel(60)).toBe('good');
+  });
+  it('should return average for score >= 35', () => {
+    expect(getMonthLabel(40)).toBe('average');
   });
   it('should return avoid for score < 35', () => {
     expect(getMonthLabel(20)).toBe('avoid');
