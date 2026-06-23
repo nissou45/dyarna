@@ -1,38 +1,51 @@
 @if (isDish && dish) {
-  <div class="dish-wrapper">
-    <app-dish-detail [dish]="dish" />
-    <div class="dish-back">
-      <button class="sn-btn ghost" routerLink="/decouvertes">← {{ uiConstants.BACK }}</button>
-    </div>
+  <app-dish-detail [dish]="dish" />
+  <div style="max-width:1120px; margin:0 auto; padding:0 24px 40px;">
+    <button class="sn-btn ghost" routerLink="/decouvertes" style="display:inline-flex;">← {{ uiConstants.BACK }}</button>
   </div>
 } @else {
-  <div class="sn-detail__hero" [style.background-image]="'url(' + faceSnap.imageUrl + ')'"></div>
-
-  <div class="sn-detail__layout">
-    <div>
-      <h1 class="sn-detail__title">{{ faceSnap.title }}</h1>
-      @if (faceSnap.location) {
-        <div class="sn-detail__location">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7Z"/>
-            <circle cx="12" cy="9" r="2.5"/>
-          </svg>
-          {{ faceSnap.location }}
+  <!-- HERO full-width -->
+  <section class="detail-hero" [style.background-image]="'url(' + faceSnap.imageUrl + ')'">
+    <div class="detail-hero__shade"></div>
+    <span dir="rtl" lang="ar" class="detail-hero__arabic">مراكش</span>
+    <div class="detail-hero__bottom">
+      <div class="detail-hero__inner">
+        <div class="detail-hero__type">
+          @if (faceSnap.tags.length > 0) {
+            <span class="detail-hero__cat">{{ faceSnap.tags[0] }}</span>
+            @if (faceSnap.tags[1]) {
+              <span class="detail-hero__cat">· {{ faceSnap.tags[1] }}</span>
+            }
+          }
         </div>
-      }
-
-      <div class="sn-detail__tags">
-        @for (tag of faceSnap.tags; track tag) {
-          <span class="sn-tag" [class]="'sn-tag ' + tag">{{ tag }}</span>
+        <h1 class="detail-hero__title">{{ faceSnap.title }}</h1>
+        @if (faceSnap.location) {
+          <div class="detail-hero__loc">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7Z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+            {{ faceSnap.location }}
+          </div>
         }
       </div>
+    </div>
+  </section>
 
-      <p class="sn-detail__lede">{{ faceSnap.description }}</p>
+  <!-- CONTENT 2-column -->
+  <div class="detail-body">
+    <main class="detail-main">
 
-      <!-- MÉTÉO & MEILLEURE SAISON -->
+      <!-- Description -->
+      <p class="detail-lede">{{ faceSnap.description }}</p>
+
+      <!-- MÉTÉO -->
       @if (weatherInfo) {
-        <div class="sn-section">
-          <h3 class="sn-section__title">Météo & climat</h3>
+        <section class="detail-section">
+          <h3 class="detail-section__title">
+            <span class="detail-section__dot"></span>
+            Météo & climat
+          </h3>
           <app-weather-widget
             [weather]="weatherInfo.current"
             [stale]="weatherInfo.stale"
@@ -43,101 +56,98 @@
               [bestMonths]="weatherInfo.bestSeason.bestMonths"
             />
           </div>
-        </div>
+        </section>
       }
 
-      <!-- STORYTELLING CULTUREL -->
-      <app-city-culture-section [cityId]="cityId" />
+      <!-- CULTURE -->
+      <section class="detail-section">
+        <h3 class="detail-section__title">
+          <span class="detail-section__dot"></span>
+          Culture
+        </h3>
+        <app-city-culture-section [cityId]="cityId" />
+      </section>
 
-      <!-- RATING SUMMARY -->
+      <!-- RATINGS -->
       @if (reviewSummary && reviewSummary.totalReviews > 0) {
-        <div class="sn-section">
-          <h3 class="sn-section__title">Avis voyageurs</h3>
+        <section class="detail-section">
+          <h3 class="detail-section__title">
+            <span class="detail-section__dot"></span>
+            Avis voyageurs
+          </h3>
           <app-rating-summary [summary]="reviewSummary" />
-        </div>
+        </section>
       }
 
-      <!-- CONTENU ASSOCIÉ CUISINE -->
+      <!-- CUISINE -->
       @if (relatedCuisine.length > 0) {
-        <div class="sn-section">
-          <h3 class="sn-section__title">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V6l-3-4H6Z"/>
-              <path d="M3 6h18"/>
-              <path d="M16 10a4 4 0 0 1-8 0"/>
-            </svg>
+        <section class="detail-section">
+          <h3 class="detail-section__title">
+            <span class="detail-section__dot"></span>
             Gastronomie
           </h3>
-          <div class="sn-related-grid">
+          <div class="detail-grid-2">
             @for (item of relatedCuisine; track item.id) {
-              <a class="sn-related-card" [routerLink]="'/' + routes.FACE_SNAPS + '/' + item.id">
-                <div class="sn-related-card__img" [style.background-image]="'url(' + item.imageUrl + ')'"></div>
-                <div class="sn-related-card__body">
+              <a class="detail-card" [routerLink]="'/' + routes.FACE_SNAPS + '/' + item.id">
+                <div class="detail-card__img" [style.background-image]="'url(' + item.imageUrl + ')'"></div>
+                <div class="detail-card__body">
                   <strong>{{ item.title }}</strong>
                   <span>{{ item.snaps }} snaps</span>
                 </div>
               </a>
             }
           </div>
-        </div>
+        </section>
       }
 
-      <!-- CONTENU ASSOCIÉ TRADITIONS -->
+      <!-- TRADITIONS -->
       @if (relatedTraditions.length > 0) {
-        <div class="sn-section">
-          <h3 class="sn-section__title">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 2L2 7l10 5 10-5-10-5Z"/>
-              <path d="M2 17l10 5 10-5"/>
-              <path d="M2 12l10 5 10-5"/>
-            </svg>
+        <section class="detail-section">
+          <h3 class="detail-section__title">
+            <span class="detail-section__dot"></span>
             Traditions
           </h3>
-          <div class="sn-related-grid">
+          <div class="detail-grid-2">
             @for (item of relatedTraditions; track item.id) {
-              <a class="sn-related-card" [routerLink]="'/' + routes.FACE_SNAPS + '/' + item.id">
-                <div class="sn-related-card__img" [style.background-image]="'url(' + item.imageUrl + ')'"></div>
-                <div class="sn-related-card__body">
+              <a class="detail-card" [routerLink]="'/' + routes.FACE_SNAPS + '/' + item.id">
+                <div class="detail-card__img" [style.background-image]="'url(' + item.imageUrl + ')'"></div>
+                <div class="detail-card__body">
                   <strong>{{ item.title }}</strong>
                   <span>{{ item.snaps }} snaps</span>
                 </div>
               </a>
             }
           </div>
-        </div>
+        </section>
       }
 
-      <!-- CONTENU ASSOCIÉ ACTIVITÉS -->
+      <!-- À DÉCOUVRIR AUSSI -->
       @if (relatedActivities.length > 0) {
-        <div class="sn-section">
-          <h3 class="sn-section__title">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1v-8.5Z"/>
-            </svg>
+        <section class="detail-section">
+          <h3 class="detail-section__title">
+            <span class="detail-section__dot"></span>
             À découvrir aussi
           </h3>
-          <div class="sn-related-grid">
+          <div class="detail-grid-2">
             @for (item of relatedActivities; track item.id) {
-              <a class="sn-related-card" [routerLink]="'/' + routes.FACE_SNAPS + '/' + item.id">
-                <div class="sn-related-card__img" [style.background-image]="'url(' + item.imageUrl + ')'"></div>
-                <div class="sn-related-card__body">
-                  <strong>{{ item.title }}</strong>
-                  <span>{{ item.snaps }} snaps</span>
+              <a class="detail-card detail-card--cover" [routerLink]="'/' + routes.FACE_SNAPS + '/' + item.id">
+                <div class="detail-card__cover" [style.background-image]="'url(' + item.imageUrl + ')'"></div>
+                <div class="detail-card__label">
+                  <div class="detail-card__label-name">{{ item.title }}</div>
+                  <div class="detail-card__label-meta">{{ item.snaps }} snaps</div>
                 </div>
               </a>
             }
           </div>
-        </div>
+        </section>
       }
 
-      <div class="sn-section">
-        <h3 class="sn-section__title" style="margin-bottom:12px;">Changer la photo</h3>
-        <app-unsplash-search (photoSelected)="onPhotoSelected($event)"></app-unsplash-search>
-      </div>
-
-      <!-- GALERIE COMMUNAUTAIRE -->
-      <div class="sn-section">
-        <h3 class="sn-section__title">Galerie photos</h3>
+      <!-- GALERIE -->
+      <section class="detail-section">
+        <h3 class="detail-section__title">
+          <span class="detail-section__dot"></span>
+          Galerie photos
+        </h3>
         <app-photo-upload-form [cityId]="cityId" (uploaded)="onPhotoUploaded()" />
         <app-photo-grid
           [photos]="galleryPhotos"
@@ -149,7 +159,7 @@
             <button class="sn-btn ghost" (click)="loadMorePhotos()">Voir plus de photos</button>
           </div>
         }
-      </div>
+      </section>
 
       @if (selectedPhoto) {
         <app-photo-lightbox
@@ -160,22 +170,22 @@
         />
       }
 
-      <!-- REVIEWS SECTION -->
-      <div class="sn-section">
-        <h3 class="sn-section__title">Avis et notes</h3>
-
+      <!-- REVIEWS -->
+      <section class="detail-section">
+        <h3 class="detail-section__title">
+          <span class="detail-section__dot"></span>
+          Avis et notes
+        </h3>
         <app-review-form
           [existingReview]="editingReview"
           (submitted)="onReviewSubmitted($event)"
           (cancelEdit)="onCancelEdit()"
         />
-
         <app-review-list
           [reviews]="reviews"
           (edit)="onEditReview($event)"
           (delete)="onDeleteReview($event)"
         />
-
         @if (currentPage < totalPages) {
           <div style="text-align:center; padding:16px 0;">
             <button class="sn-btn ghost" (click)="loadMore()" [disabled]="loadingReviews">
@@ -183,30 +193,46 @@
             </button>
           </div>
         }
-      </div>
+      </section>
 
-      <app-comments-section
-        [comments]="faceSnap.comments"
-        [snapId]="faceSnap.id"
-        (commentAdded)="onCommentAdded($event)"
-      />
-    </div>
+      <!-- COMMENTS -->
+      <section class="detail-section">
+        <h3 class="detail-section__title">
+          <span class="detail-section__dot"></span>
+          Commentaires
+        </h3>
+        <app-comments-section
+          [comments]="faceSnap.comments"
+          [snapId]="faceSnap.id"
+          (commentAdded)="onCommentAdded($event)"
+        />
+      </section>
+    </main>
 
-    <div>
-      <div style="position:sticky; top:24px; display:flex; flex-direction:column; gap:12px;">
-        <button class="sn-btn block ghost" routerLink="/decouvertes">
-          ← {{ uiConstants.BACK }}
-        </button>
-        <button class="sn-btn block accent" (click)="onSnap()">
-          {{ snapButtonText }}
-        </button>
-        <div style="font-size:13px; color:var(--sn-muted); text-align:center; padding:8px 0;">
-          {{ faceSnap.snaps }} snaps · {{ faceSnap.likes }} ♥
-          @if (reviewSummary && reviewSummary.totalReviews > 0) {
-            <br />{{ reviewSummary.averageRating }}/5 ({{ reviewSummary.totalReviews }} avis)
-          }
+    <!-- SIDEBAR -->
+    <aside class="detail-side">
+      <div class="detail-side__sticky">
+        <div class="detail-card-stats">
+          <div class="detail-card-stats__row">
+            <div>
+              <div class="detail-card-stats__num">{{ faceSnap.snaps }}</div>
+              <div class="detail-card-stats__label">SNAPS</div>
+            </div>
+            <div>
+              <div class="detail-card-stats__num">{{ faceSnap.likes }}</div>
+              <div class="detail-card-stats__label">J'AIME</div>
+            </div>
+          </div>
+          <button class="detail-card-stats__btn" (click)="onSnap()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>
+            </svg>
+            Snaper cette ville
+          </button>
+          <button class="detail-card-stats__btn detail-card-stats__btn--outline">Partager</button>
         </div>
+        <a class="detail-back" routerLink="/decouvertes">← Retour aux découvertes</a>
       </div>
-    </div>
+    </aside>
   </div>
 }

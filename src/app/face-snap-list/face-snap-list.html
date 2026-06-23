@@ -1,14 +1,20 @@
-<div class="list-container">
+<div class="explore">
+  <header class="explore-header">
+    <div class="explore-eyebrow">Le Maroc, vu d'ici</div>
+    <h1 class="explore-title">Découvertes</h1>
+    <p class="explore-desc">Villes, cuisine et traditions à travers les yeux de ceux qui y vivent.</p>
+  </header>
+
   <!-- Tabs -->
-  <div class="sn-tabs" style="display:flex; gap:0; margin-bottom:20px;">
-    <button class="sn-tab" [class.active]="activeTab === 'villes'" (click)="activeTab = 'villes'">
+  <div class="explore-tabs">
+    <button class="explore-tab" [class.active]="activeTab === 'villes'" (click)="activeTab = 'villes'">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle; margin-right:6px;">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/>
         <polyline points="9 22 9 12 15 12 15 22"/>
       </svg>
       Villes
     </button>
-    <button class="sn-tab" [class.active]="activeTab === 'cuisine'" (click)="activeTab = 'cuisine'">
+    <button class="explore-tab" [class.active]="activeTab === 'cuisine'" (click)="activeTab = 'cuisine'">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle; margin-right:6px;">
         <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V6l-3-4H6Z"/>
         <path d="M3 6h18"/>
@@ -19,44 +25,35 @@
   </div>
 
   <!-- Search -->
-  <div class="sn-search">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+  <div class="explore-search">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
       <circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/>
     </svg>
     <input type="search" [placeholder]="ui.SEARCH_PLACEHOLDER" (input)="onSearchChange($any($event.target).value)">
   </div>
 
-  <!-- Filters bar -->
-  <div class="sn-filters">
-    <div class="sn-filters__pills">
-      <button class="sn-pill" [attr.aria-pressed]="activeTag === null" (click)="clearTag()">{{ ui.FILTER_ALL }}</button>
-      @for (tag of allTags; track tag) {
-        <button class="sn-pill" [attr.aria-pressed]="activeTag === tag" (click)="onTagClick(tag)">{{ tag }}</button>
-      }
-    </div>
-    <div style="display:flex; gap:8px; align-items:center;">
-      <select class="sn-pill" [value]="sortBy" (change)="onSortChange($any($event.target).value)" style="height:34px; cursor:pointer;">
-        <option value="popularity">{{ ui.SORT_POPULARITY }}</option>
-        <option value="date">{{ ui.SORT_DATE }}</option>
-        <option value="alpha">A–Z</option>
-      </select>
-      <button class="sn-btn sm ghost" (click)="toggleCreateForm()">
-        {{ showCreateForm ? ui.CANCEL_CREATE : '+' }}
-      </button>
-    </div>
+  <!-- Category pills row -->
+  <div class="explore-pills">
+    <button class="explore-pill" [class.active]="activeTag === null" (click)="clearTag()">{{ ui.FILTER_ALL }}</button>
+    @for (tag of allTags; track tag) {
+      <button class="explore-pill" [class.active]="activeTag === tag" (click)="onTagClick(tag)">{{ tag }}</button>
+    }
+    <select class="explore-pill explore-pill-sort" [value]="sortBy" (change)="onSortChange($any($event.target).value)">
+      <option value="popularity">{{ ui.SORT_POPULARITY }}</option>
+      <option value="date">{{ ui.SORT_DATE }}</option>
+      <option value="alpha">A–Z</option>
+    </select>
   </div>
 
-  <!-- Results count -->
-  <div style="font-size:13px; color:var(--sn-muted); margin-bottom:16px;">
-    {{ filteredSnaps().length }} @switch (activeTab) {
-      @case ('villes') { villes }
-      @case ('cuisine') { plats }
-    }
-  </div>
+  <!-- Counter -->
+  <div class="explore-count">{{ filteredSnaps().length }} @switch (activeTab) {
+    @case ('villes') { destinations }
+    @case ('cuisine') { plats }
+  }</div>
 
   <!-- Create form -->
   @if (showCreateForm) {
-    <div class="create-form">
+    <div class="explore-form">
       <h3 class="h3" style="margin-bottom:16px;">{{ ui.CREATE_NEW_SNAP }}</h3>
       <label class="sn-field">
         <span class="sn-label">{{ ui.TITLE_PLACEHOLDER }}</span>
@@ -77,8 +74,8 @@
     </div>
   }
 
-  <!-- Grid — toutes les villes affichées -->
-  <div class="sn-grid sn-stagger">
+  <!-- Grid -->
+  <div class="explore-grid">
     @for (faceSnap of filteredSnaps(); track faceSnap.id) {
       <app-face-snap
         [faceSnap]="faceSnap"
@@ -87,9 +84,7 @@
         (tagClicked)="onTagClick($event)"
       />
     } @empty {
-      <div style="grid-column:1/-1; text-align:center; padding:60px 0; color:var(--sn-muted);">
-        {{ ui.NO_RESULTS }}
-      </div>
+      <div class="explore-empty">{{ ui.NO_RESULTS }}</div>
     }
   </div>
 </div>

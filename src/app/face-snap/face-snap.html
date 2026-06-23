@@ -1,31 +1,63 @@
-<article class="sn-card sn-fade-in" (click)="onViewFaceSnap()" role="link" tabindex="0" (keydown.enter)="onViewFaceSnap()">
-  <div class="sn-card__media">
-    <img [src]="faceSnap.imageUrl" [alt]="faceSnap.title" loading="lazy" />
-    <button class="sn-heart" [class.is-liked]="isLiked" (click)="onLikeClick($event)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M12 21C12 21 3 15 3 9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-9 12-9 12Z" stroke-linejoin="round"/>
-      </svg>
-      <span>{{ faceSnap.likes }}</span>
-    </button>
+<article class="sn-card" (click)="onViewFaceSnap()" role="link" tabindex="0" (keydown.enter)="onViewFaceSnap()">
+  @if (faceSnap.imageUrl) {
+    <div class="sn-card__bg" [style.background-image]="'url(' + faceSnap.imageUrl + ')'"></div>
+  }
+  <div class="sn-card__overlay"></div>
+
+  @if (faceSnap.title === 'Marrakech') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">مراكش</span>
+  } @else if (faceSnap.title === 'Fès') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">فاس</span>
+  } @else if (faceSnap.title === 'Chefchaouen') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">شفشاون</span>
+  } @else if (faceSnap.title === 'Essaouira') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">الصويرة</span>
+  } @else if (faceSnap.title === 'Merzouga') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">مرزوكة</span>
+  } @else if (faceSnap.title === 'Aït-Benhaddou') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">آيت بن حدّو</span>
+  } @else if (faceSnap.title === 'Tanger') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">طنجة</span>
+  } @else if (faceSnap.title === 'Rabat') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">الرباط</span>
+  } @else if (faceSnap.title === 'Casablanca') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">الدار البيضاء</span>
+  } @else if (faceSnap.title === 'Ouarzazate') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">ورزازات</span>
+  } @else if (faceSnap.title === 'Oujda') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">وجدة</span>
+  } @else if (faceSnap.title === 'Agadir') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">أكادير</span>
+  } @else if (faceSnap.title === 'Tétouan') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">تطوان</span>
+  } @else if (faceSnap.title === 'Meknès') {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">مكناس</span>
+  }
+
+  <div class="sn-card__likes">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>
+    </svg>
+    {{ faceSnap.likes }}
   </div>
-  <div class="sn-card__body">
+
+  <div class="sn-card__footer">
+    <div class="sn-card__tags">
+      @for (tag of faceSnap.tags; track tag) {
+        <span class="sn-card__tag" (click)="onTagClick($event, tag)">{{ tag }}</span>
+      }
+    </div>
     <h3 class="sn-card__title">{{ faceSnap.title }}</h3>
-    @if (faceSnap.location) {
-      <div class="sn-card__location">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <div class="sn-card__meta">
+      @if (faceSnap.location) {
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7Z"/>
           <circle cx="12" cy="9" r="2.5"/>
         </svg>
         {{ faceSnap.location }}
-      </div>
-    }
-    <div class="sn-card__tags">
-      @for (tag of faceSnap.tags; track tag) {
-        <span class="sn-tag" [class]="'sn-tag ' + tag" (click)="onTagClick($event, tag)">{{ tag }}</span>
+        <span class="sn-card__dot">·</span>
       }
-    </div>
-    <div class="sn-card__footer">
-      <span>{{ faceSnap.snaps }} snaps</span>
+      {{ faceSnap.snaps }} snaps
     </div>
   </div>
 </article>

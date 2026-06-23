@@ -6,7 +6,6 @@ import { ReviewsService } from '../services/reviews.service';
 import { SnapType } from '../models/snap-type-type';
 import { FACE_SNAPS_UI, APP_ROUTES } from '../core/constants/face-snaps.constants';
 import { CommentsSectionComponent } from '../comments-section/comments-section';
-import { UnsplashSearchComponent } from '../unsplash-search/unsplash-search';
 import { RatingSummaryComponent } from '../reviews/rating-summary.component';
 import { ReviewListComponent } from '../reviews/review-list.component';
 import { ReviewFormComponent } from '../reviews/review-form.component';
@@ -28,7 +27,6 @@ import { DishService } from '../services/dish.service';
   imports: [
     RouterLink,
     CommentsSectionComponent,
-    UnsplashSearchComponent,
     RatingSummaryComponent,
     ReviewListComponent,
     ReviewFormComponent,

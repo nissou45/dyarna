@@ -10,9 +10,11 @@
 }
 
 .sn-logo {
-  display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:inherit; flex-shrink:0;
-  svg { color: var(--sn-accent); }
-  .name { font-family:v.$sn-serif; font-size:26px; letter-spacing:-0.02em; line-height:1; }
+  display:inline-flex; align-items:baseline; gap:10px; text-decoration:none; color:inherit; flex-shrink:0;
+  .name { font-family:v.$sn-serif; font-size:26px; letter-spacing:-0.02em; line-height:1; color:var(--sn-ink); }
+}
+.sn-logo-ar {
+  font-family:'Noto Nastaliq Urdu',serif; font-size:21px; line-height:1.6; color:var(--sn-accent);
 }
 
 .sn-nav__links {

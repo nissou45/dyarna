@@ -1,3 +1,308 @@
-:host {
+:host { display: block; }
+
+.detail-hero {
+  position: relative;
+  height: clamp(360px, 46vw, 520px);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.detail-hero__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20,16,12,.08) 28%, rgba(20,16,12,.36) 58%, rgba(20,16,12,.78));
+}
+
+.detail-hero__arabic {
+  position: absolute;
+  top: -10px;
+  right: 48px;
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: clamp(120px, 20vw, 230px);
+  color: rgba(255, 250, 240, 0.13);
+  line-height: 1.8;
+  pointer-events: none;
+}
+
+.detail-hero__bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.detail-hero__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px 44px;
+}
+
+.detail-hero__type {
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(253, 246, 234, 0.82);
+}
+
+.detail-hero__title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(56px, 9vw, 96px);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  margin: 10px 0 0;
+  color: #fdf6ea;
+}
+
+.detail-hero__loc {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  font-size: 14px;
+  color: rgba(253, 246, 234, 0.86);
+}
+
+// Two-column layout
+.detail-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+@media (min-width: 880px) {
+  .detail-body {
+    grid-template-columns: 1.5fr 1fr;
+    gap: 56px;
+  }
+}
+
+.detail-lede {
+  max-width: 600px;
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--sn-ink-2);
+}
+
+.detail-section {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--sn-line);
+}
+
+.detail-section__title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 30px;
+  line-height: 1;
+  margin: 0 0 20px;
+  color: var(--sn-ink);
+}
+
+.detail-section__dot {
+  width: 8px;
+  height: 8px;
+  background: var(--sn-accent);
+  transform: rotate(45deg);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+// 2-column grid for cards
+.detail-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  .detail-grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+// Horizontal card (cuisine, traditions)
+.detail-card {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  background: var(--sn-surface);
+  border: 1px solid var(--sn-line);
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.detail-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(28,26,23,.06);
+}
+
+.detail-card__img {
+  width: 78px;
+  height: 78px;
+  flex-shrink: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.detail-card__body {
+  padding-right: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.detail-card__body strong {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--sn-ink);
+}
+
+.detail-card__body span {
+  font-size: 12px;
+  color: var(--sn-muted);
+}
+
+// Cover card (à découvrir aussi)
+.detail-card--cover {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
   display: block;
 }
+
+.detail-card__cover {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.detail-card__cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20,16,12,0) 40%, rgba(20,16,12,.74));
+}
+
+.detail-card__label {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  z-index: 1;
+}
+
+.detail-card__label-name {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 24px;
+  line-height: 1;
+  color: #fdf6ea;
+}
+
+.detail-card__label-meta {
+  font-size: 12px;
+  color: rgba(253, 246, 234, 0.78);
+  margin-top: 4px;
+}
+
+// Sidebar
+.detail-side__sticky {
+  position: sticky;
+  top: 88px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.detail-card-stats {
+  background: var(--sn-surface);
+  border: 1px solid var(--sn-line);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 2px 6px rgba(28,26,23,.05), 0 16px 36px -18px rgba(28,26,23,.18);
+}
+
+.detail-card-stats__row {
+  display: flex;
+  gap: 28px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--sn-line);
+  margin-bottom: 18px;
+}
+
+.detail-card-stats__num {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 34px;
+  line-height: 1;
+  color: var(--sn-ink);
+}
+
+.detail-card-stats__label {
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--sn-muted);
+  margin-top: 5px;
+}
+
+.detail-card-stats__btn {
+  width: 100%;
+  height: 46px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--sn-accent);
+  color: #fff;
+  font: 600 14px/1 'Geist', system-ui, sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.detail-card-stats__btn:hover {
+  background: var(--sn-accent-ink);
+  transform: translateY(-1px);
+}
+
+.detail-card-stats__btn--outline {
+  margin-top: 10px;
+  background: transparent;
+  border: 1px solid var(--sn-line-2);
+  color: var(--sn-ink);
+  height: 44px;
+  font-weight: 500;
+}
+
+.detail-card-stats__btn--outline:hover {
+  background: var(--sn-surface);
+  transform: none;
+}
+
+.detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 6px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--sn-muted);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.detail-back:hover { color: var(--sn-accent); }

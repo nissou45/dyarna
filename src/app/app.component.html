@@ -1,13 +1,11 @@
 <nav class="sn-nav">
   <a class="sn-logo" routerLink="/">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1v-8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-    </svg>
     <span class="name">Dyarna</span>
+    <span dir="rtl" lang="ar" class="sn-logo-ar">ديارنا</span>
   </a>
   <div class="sn-nav__links">
-    <a routerLink="/carte" routerLinkActive="active">Carte</a>
     <a routerLink="/decouvertes" routerLinkActive="active">Découvertes</a>
+    <a routerLink="/carte" routerLinkActive="active">Carte</a>
     @if (auth.isLoggedIn()) {
       <a routerLink="/favoris" routerLinkActive="active">Favoris</a>
       <a routerLink="/profil" routerLinkActive="active">{{ auth.currentPseudo() }}</a>

@@ -1,3 +1,110 @@
-:host {
-  display: block;
+:host { display: block; }
+
+.sn-card {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(28,26,23,.06), 0 18px 38px -18px rgba(28,26,23,.28);
+  transition: transform 0.25s cubic-bezier(.2,.7,.3,1), box-shadow 0.25s;
+}
+
+.sn-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 6px rgba(28,26,23,.06), 0 24px 48px -16px rgba(28,26,23,.35);
+}
+
+.sn-card__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.sn-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20,16,12,0) 30%, rgba(20,16,12,.34) 58%, rgba(20,16,12,.84));
+}
+
+.sn-card__arabic {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: 32px;
+  color: rgba(255,250,240,.52);
+  line-height: 1.7;
+  pointer-events: none;
+}
+
+.sn-card__likes {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px 7px 11px;
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 999px;
+  color: #fdf6ea;
+  font: 500 12.5px/1 'Geist', system-ui, sans-serif;
+}
+
+.sn-card__footer {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.sn-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.sn-card__tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.16);
+  backdrop-filter: blur(6px);
+  color: #fdf6ea;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sn-card__tag:hover { background: rgba(255,255,255,.28); }
+
+.sn-card__title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: #fdf6ea;
+}
+
+.sn-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: rgba(253,246,234,.78);
+}
+
+.sn-card__dot {
+  opacity: 0.5;
 }

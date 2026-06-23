@@ -1,3 +1,48 @@
-:host {
-  display: block;
+:host { display: block; }
+
+.lp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 80px);
+  padding: 40px 24px;
+}
+
+.lp-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+  max-width: 480px;
+}
+
+.lp-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.lp-logo__lat {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(56px, 10vw, 80px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--sn-ink);
+}
+
+.lp-logo__ar {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: clamp(36px, 6vw, 52px);
+  line-height: 1.6;
+  color: var(--sn-accent);
+}
+
+.lp-desc {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--sn-ink-2);
+  max-width: 380px;
+  margin: 0;
 }
