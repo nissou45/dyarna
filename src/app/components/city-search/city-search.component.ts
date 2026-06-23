@@ -73,21 +73,21 @@ const CATEGORY_ICONS: Record<City['category'], string> = {
   `,
   styles: [`
     .cs { position: relative; width: 100%; max-width: 400px; z-index: 1000; }
-    .cs__input-wrap { display: flex; align-items: center; background: #fff; border: 1px solid #d4cbb8; border-radius: 10px; transition: border-color 0.15s; }
-    .cs__input-wrap--open { border-color: #c8613c; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
-    .cs__input { flex: 1; padding: 10px 14px; border: none; background: transparent; font-size: 14px; color: #3d352c; outline: none; font-family: inherit; }
-    .cs__input::placeholder { color: #b8a99a; }
-    .cs__clear { background: none; border: none; color: #b8a99a; cursor: pointer; font-size: 14px; padding: 0 12px; line-height: 1; }
-    .cs__clear:hover { color: #c8613c; }
-    .cs__list { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #c8613c; border-top: none; border-radius: 0 0 10px 10px; max-height: 320px; overflow-y: auto; margin: 0; padding: 0; list-style: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .cs__input-wrap { display: flex; align-items: center; background: var(--sn-white); border: 1px solid var(--sn-line-3); border-radius: 10px; transition: border-color 0.15s; }
+    .cs__input-wrap--open { border-color: var(--sn-accent); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+    .cs__input { flex: 1; padding: 10px 14px; border: none; background: transparent; font-size: 14px; color: var(--sn-ink-2); outline: none; font-family: inherit; }
+    .cs__input::placeholder { color: var(--sn-muted-2); }
+    .cs__clear { background: none; border: none; color: var(--sn-muted-2); cursor: pointer; font-size: 14px; padding: 0 12px; line-height: 1; }
+    .cs__clear:hover { color: var(--sn-accent); }
+    .cs__list { position: absolute; top: 100%; left: 0; right: 0; background: var(--sn-white); border: 1px solid var(--sn-accent); border-top: none; border-radius: 0 0 10px 10px; max-height: 320px; overflow-y: auto; margin: 0; padding: 0; list-style: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
     .cs__option { display: flex; align-items: center; gap: 10px; padding: 10px 14px; cursor: pointer; transition: background 0.1s; }
-    .cs__option--active { background: #fef9f0; }
-    .cs__option:hover { background: #fef9f0; }
+    .cs__option--active { background: var(--sn-surface-3); }
+    .cs__option:hover { background: var(--sn-surface-3); }
     .cs__option-icon { font-size: 18px; flex-shrink: 0; }
     .cs__option-body { display: flex; flex-direction: column; }
-    .cs__option-name { font-size: 14px; font-weight: 500; color: #3d352c; }
-    .cs__option-region { font-size: 11px; color: #8a7f6e; text-transform: uppercase; letter-spacing: 0.3px; }
-    .cs__empty { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #d4cbb8; border-top: none; border-radius: 0 0 10px 10px; padding: 14px; font-size: 13px; color: #8a7f6e; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .cs__option-name { font-size: 14px; font-weight: 500; color: var(--sn-ink-2); }
+    .cs__option-region { font-size: 11px; color: var(--sn-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+    .cs__empty { position: absolute; top: 100%; left: 0; right: 0; background: var(--sn-white); border: 1px solid var(--sn-line-3); border-top: none; border-radius: 0 0 10px 10px; padding: 14px; font-size: 13px; color: var(--sn-muted); text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
   `],
 })
 export class CitySearchComponent {

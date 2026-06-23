@@ -177,7 +177,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private buildPopupContent(city: City): string {
     const rating = this.ratingCache.get(city.id);
     const ratingHtml = rating && rating.totalReviews > 0
-      ? `<span style="font-size:12px; color:#8a7f6e;">★ ${rating.averageRating}/5 (${rating.totalReviews} avis)</span>`
+      ? `<span style="font-size:12px; color:var(--sn-muted);">★ ${rating.averageRating}/5 (${rating.totalReviews} avis)</span>`
       : '';
     const name = this.escapeHtml(city.name);
     const region = this.escapeHtml(city.region);

@@ -77,8 +77,8 @@ import { AuthService } from '../services/auth.service';
   `,
   styles: [`
     .photo-upload {
-      background: #fefcf8;
-      border: 1px solid #e4dbcc;
+      background: var(--sn-surface);
+      border: 1px solid var(--sn-line);
       border-radius: 10px;
       padding: 16px;
       margin-bottom: 16px;
@@ -86,18 +86,18 @@ import { AuthService } from '../services/auth.service';
     .photo-upload--disabled {
       opacity: 0.6;
       text-align: center;
-      color: #8a7f6e;
+      color: var(--sn-muted);
       font-size: 14px;
       padding: 24px;
     }
     .photo-upload__title {
       font-size: 15px;
       font-weight: 600;
-      color: #3d352c;
+      color: var(--sn-ink-2);
       margin: 0 0 12px;
     }
     .photo-upload__dropzone {
-      border: 2px dashed #d4cbb8;
+      border: 2px dashed var(--sn-line-3);
       border-radius: 8px;
       padding: 24px;
       text-align: center;
@@ -110,13 +110,13 @@ import { AuthService } from '../services/auth.service';
     }
     .photo-upload__dropzone:hover,
     .photo-upload__dropzone--active {
-      border-color: #c8613c;
-      background: #fef9f0;
+      border-color: var(--sn-accent);
+      background: var(--sn-surface-3);
     }
     .photo-upload__dropzone p {
       margin: 0;
       font-size: 13px;
-      color: #8a7f6e;
+      color: var(--sn-muted);
     }
     .photo-upload__preview {
       max-width: 100%;
@@ -126,12 +126,12 @@ import { AuthService } from '../services/auth.service';
     }
     .photo-upload__error {
       font-size: 13px;
-      color: #dc2626;
+      color: var(--sn-error-bright);
       margin: 8px 0 0;
     }
     .photo-upload__success {
       font-size: 13px;
-      color: #2d8a4e;
+      color: var(--sn-chart-success);
       margin: 8px 0 0;
     }
     .photo-upload__caption {
@@ -140,11 +140,11 @@ import { AuthService } from '../services/auth.service';
     .photo-upload__input {
       width: 100%;
       padding: 8px 12px;
-      border: 1px solid #d4cbb8;
+      border: 1px solid var(--sn-line-3);
       border-radius: 6px;
       font-size: 13px;
-      color: #3d352c;
-      background: #fff;
+      color: var(--sn-ink-2);
+      background: var(--sn-white);
       box-sizing: border-box;
     }
     .photo-upload__input:disabled {

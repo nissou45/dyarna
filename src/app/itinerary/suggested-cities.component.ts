@@ -27,7 +27,7 @@ import { CitySuggestion } from '../core/types';
     .suggested__title {
       font-size: 13px;
       font-weight: 600;
-      color: #3d352c;
+      color: var(--sn-ink-2);
       margin: 0 0 8px;
     }
     .suggested__list {
@@ -36,24 +36,24 @@ import { CitySuggestion } from '../core/types';
       flex-wrap: wrap;
     }
     .suggested__card {
-      background: #fefcf8;
-      border: 1px solid #e4dbcc;
+      background: var(--sn-surface);
+      border: 1px solid var(--sn-line);
       border-radius: 8px;
       padding: 10px 14px;
       cursor: pointer;
       transition: border-color 0.2s;
     }
     .suggested__card:hover {
-      border-color: #c8613c;
+      border-color: var(--sn-accent);
     }
     .suggested__card strong {
       display: block;
       font-size: 13px;
-      color: #3d352c;
+      color: var(--sn-ink-2);
     }
     .suggested__card span {
       font-size: 11px;
-      color: #8a7f6e;
+      color: var(--sn-muted);
     }
   `],
 })

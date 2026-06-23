@@ -101,10 +101,10 @@ import { CityCultureResponse } from '../core/types';
     .culture-block__title {
       font-size: 20px;
       font-weight: 600;
-      color: #3d352c;
+      color: var(--sn-ink-2);
       margin: 0 0 12px;
       padding-bottom: 8px;
-      border-bottom: 2px solid #e4dbcc;
+      border-bottom: 2px solid var(--sn-line);
     }
 
     /* Histoire */
@@ -112,14 +112,14 @@ import { CityCultureResponse } from '../core/types';
       font-family: Georgia, 'Times New Roman', serif;
       font-size: 16px;
       line-height: 1.8;
-      color: #3d352c;
+      color: var(--sn-ink-2);
     }
 
     /* Légende */
     .culture-legend {
-      background: #fef9f0;
-      border: 1px solid #e4dbcc;
-      border-left: 4px solid #c8613c;
+      background: var(--sn-surface-3);
+      border: 1px solid var(--sn-line);
+      border-left: 4px solid var(--sn-accent);
       border-radius: 10px;
       padding: 24px;
       margin-bottom: 28px;
@@ -131,7 +131,7 @@ import { CityCultureResponse } from '../core/types';
       font-size: 16px;
       font-style: italic;
       line-height: 1.7;
-      color: #5a4a3a;
+      color: var(--sn-ink-3);
     }
 
     .culture-legend__quote footer {
@@ -139,7 +139,7 @@ import { CityCultureResponse } from '../core/types';
       font-size: 13px;
       font-style: normal;
       font-weight: 600;
-      color: #c8613c;
+      color: var(--sn-accent);
     }
 
     /* Traditions */
@@ -150,8 +150,8 @@ import { CityCultureResponse } from '../core/types';
     }
 
     .culture-tradition-card {
-      background: #fefcf8;
-      border: 1px solid #e4dbcc;
+      background: var(--sn-surface);
+      border: 1px solid var(--sn-line);
       border-radius: 10px;
       padding: 16px;
       display: flex;
@@ -159,11 +159,11 @@ import { CityCultureResponse } from '../core/types';
       gap: 10px;
       font-size: 14px;
       line-height: 1.5;
-      color: #3d352c;
+      color: var(--sn-ink-2);
     }
 
     .culture-tradition-card__icon {
-      color: #c8613c;
+      color: var(--sn-accent);
       font-size: 16px;
       flex-shrink: 0;
       margin-top: 2px;
@@ -177,8 +177,8 @@ import { CityCultureResponse } from '../core/types';
     }
 
     .culture-cuisine__item {
-      background: #fefcf8;
-      border: 1px solid #e4dbcc;
+      background: var(--sn-surface);
+      border: 1px solid var(--sn-line);
       border-radius: 8px;
       padding: 12px 16px;
       cursor: pointer;
@@ -187,7 +187,7 @@ import { CityCultureResponse } from '../core/types';
     .culture-cuisine__name {
       font-weight: 600;
       font-size: 15px;
-      color: #3d352c;
+      color: var(--sn-ink-2);
       cursor: pointer;
     }
 
@@ -195,20 +195,20 @@ import { CityCultureResponse } from '../core/types';
       margin: 10px 0 4px;
       font-size: 14px;
       line-height: 1.6;
-      color: #5a4a3a;
+      color: var(--sn-ink-3);
     }
 
     /* Source */
     .culture-source {
       margin-top: 24px;
       padding-top: 16px;
-      border-top: 1px solid #e4dbcc;
+      border-top: 1px solid var(--sn-line);
       text-align: right;
     }
 
     .culture-source a {
       font-size: 12px;
-      color: #8a7f6e;
+      color: var(--sn-muted);
       text-decoration: none;
     }
 
@@ -222,7 +222,7 @@ import { CityCultureResponse } from '../core/types';
     }
 
     .skeleton-block {
-      background: linear-gradient(90deg, #f0ece4 25%, #e4dbcc 50%, #f0ece4 75%);
+      background: linear-gradient(90deg, var(--sn-surface-5) 25%, var(--sn-line) 50%, var(--sn-surface-5) 75%);
       background-size: 200% 100%;
       animation: shimmer 1.5s infinite;
     }
@@ -252,9 +252,9 @@ import { CityCultureResponse } from '../core/types';
     .culture-unavailable {
       padding: 32px;
       text-align: center;
-      color: #8a7f6e;
-      background: #fefcf8;
-      border: 1px dashed #e4dbcc;
+      color: var(--sn-muted);
+      background: var(--sn-surface);
+      border: 1px dashed var(--sn-line);
       border-radius: 10px;
       font-size: 14px;
     }

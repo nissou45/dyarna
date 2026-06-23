@@ -28,8 +28,8 @@ import { ItineraryComputed } from '../core/types';
       display: flex;
       gap: 16px;
       padding: 12px 16px;
-      background: #fefcf8;
-      border: 1px solid #e4dbcc;
+      background: var(--sn-surface);
+      border: 1px solid var(--sn-line);
       border-radius: 10px;
     }
     .it-summary__stat {
@@ -40,12 +40,12 @@ import { ItineraryComputed } from '../core/types';
       display: block;
       font-size: 20px;
       font-weight: 700;
-      color: #c8613c;
+      color: var(--sn-accent);
     }
     .it-summary__label {
       display: block;
       font-size: 10px;
-      color: #8a7f6e;
+      color: var(--sn-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }

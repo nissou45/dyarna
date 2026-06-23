@@ -38,8 +38,8 @@ import { CurrentWeather } from '../core/types';
       display: flex;
       align-items: center;
       gap: 12px;
-      background: #fefcf8;
-      border: 1px solid #e4dbcc;
+      background: var(--sn-surface);
+      border: 1px solid var(--sn-line);
       border-radius: 10px;
       padding: 12px 16px;
     }
@@ -49,7 +49,7 @@ import { CurrentWeather } from '../core/types';
     .weather-widget--empty {
       justify-content: center;
       padding: 20px;
-      color: #8a7f6e;
+      color: var(--sn-muted);
       font-size: 13px;
     }
     .weather-widget__icon {
@@ -66,22 +66,22 @@ import { CurrentWeather } from '../core/types';
     .weather-widget__temp {
       font-size: 22px;
       font-weight: 700;
-      color: #3d352c;
+      color: var(--sn-ink-2);
       line-height: 1;
     }
     .weather-widget__desc {
       font-size: 13px;
-      color: #5a4a3a;
+      color: var(--sn-ink-3);
     }
     .weather-widget__details {
       display: flex;
       gap: 12px;
       font-size: 11px;
-      color: #8a7f6e;
+      color: var(--sn-muted);
     }
     .weather-widget__stale {
       font-size: 10px;
-      color: #b8a99a;
+      color: var(--sn-muted-2);
       font-style: italic;
     }
   `],

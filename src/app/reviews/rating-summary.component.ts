@@ -46,11 +46,11 @@ import { StarRatingComponent } from './star-rating.component';
       font-size: 42px;
       font-weight: 600;
       line-height: 1;
-      color: #1e1b16;
+      color: var(--sn-ink);
     }
     .rating-summary__count {
       font-size: 12px;
-      color: #8a7f6e;
+      color: var(--sn-muted);
     }
     .rating-summary__bars {
       flex: 1;
@@ -67,19 +67,19 @@ import { StarRatingComponent } from './star-rating.component';
     .rating-summary__label {
       width: 12px;
       text-align: right;
-      color: #1e1b16;
+      color: var(--sn-ink);
       font-weight: 500;
     }
     .rating-summary__track {
       flex: 1;
       height: 8px;
-      background: #f0e8db;
+      background: var(--sn-surface-2);
       border-radius: 999px;
       overflow: hidden;
     }
     .rating-summary__fill {
       height: 100%;
-      background: #d4a03c;
+      background: var(--sn-gold);
       border-radius: 999px;
       transition: width .3s;
     }

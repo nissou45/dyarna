@@ -21,7 +21,7 @@ import { Review } from '../core/types';
             @if (auth.user()?._id === review.userId._id) {
               <div style="margin-left:auto; display:flex; gap:6px;">
                 <button class="sn-btn ghost sm" (click)="edit.emit(review)">Modifier</button>
-                <button class="sn-btn ghost sm" style="color:#dc2626;" (click)="delete.emit(review.cityId)">Supprimer</button>
+                <button class="sn-btn ghost sm" style="color:var(--sn-error-bright);" (click)="delete.emit(review.cityId)">Supprimer</button>
               </div>
             }
           </div>
@@ -43,8 +43,8 @@ import { Review } from '../core/types';
   styles: [`
     .reviews-list { display: flex; flex-direction: column; gap: 16px; }
     .review-item {
-      background: #fefcf8;
-      border: 1px solid #e4dbcc;
+      background: var(--sn-surface);
+      border: 1px solid var(--sn-line);
       border-radius: 10px;
       padding: 16px;
     }
@@ -58,8 +58,8 @@ import { Review } from '../core/types';
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: #c8613c;
-      color: #fefcf8;
+      background: var(--sn-accent);
+      color: var(--sn-surface);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -70,12 +70,12 @@ import { Review } from '../core/types';
     .review-item__comment {
       font-size: 14px;
       line-height: 1.6;
-      color: #3d352c;
+      color: var(--sn-ink-2);
       margin: 0 0 6px;
     }
     .review-item__date {
       font-size: 12px;
-      color: #8a7f6e;
+      color: var(--sn-muted);
     }
   `],
 })

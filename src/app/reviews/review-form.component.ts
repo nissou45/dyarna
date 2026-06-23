@@ -26,7 +26,7 @@ import { Review } from '../core/types';
             <label style="font-size:13px; font-weight:500; display:block; margin-bottom:4px; color:var(--sn-ink);">Note</label>
             <app-star-rating [(value)]="rating" />
             @if (ratingError) {
-              <span style="font-size:12px; color:#dc2626; margin-left:8px;">{{ ratingError }}</span>
+              <span style="font-size:12px; color:var(--sn-error-bright); margin-left:8px;">{{ ratingError }}</span>
             }
           </div>
           <label class="sn-field">
@@ -42,7 +42,7 @@ import { Review } from '../core/types';
             <span style="font-size:11px; color:var(--sn-muted);">{{ comment.length }}/1000</span>
           </label>
           @if (error) {
-            <div style="color:#dc2626; font-size:13px; margin-bottom:8px;">{{ error }}</div>
+            <div style="color:var(--sn-error-bright); font-size:13px; margin-bottom:8px;">{{ error }}</div>
           }
           <div style="display:flex; gap:8px; margin-top:8px;">
             <button class="sn-btn accent sm" type="submit" [disabled]="submitting">

@@ -148,19 +148,19 @@ const ALL_CITIES = CITIES.map((c) => ({ id: c.id, name: c.name }));
     .ib__title-input {
       width: 100%;
       padding: 10px 14px;
-      border: 1px solid #d4cbb8;
+      border: 1px solid var(--sn-line-3);
       border-radius: 8px;
       font-size: 16px;
       font-weight: 600;
-      color: #3d352c;
+      color: var(--sn-ink-2);
       box-sizing: border-box;
-      background: #fefcf8;
+      background: var(--sn-surface);
     }
     .ib__days { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
     .ib__day {
       display: flex;
-      background: #fefcf8;
-      border: 1px solid #e4dbcc;
+      background: var(--sn-surface);
+      border: 1px solid var(--sn-line);
       border-radius: 10px;
       overflow: hidden;
     }
@@ -173,9 +173,9 @@ const ALL_CITIES = CITIES.map((c) => ({ id: c.id, name: c.name }));
       align-items: center;
       justify-content: center;
       width: 32px;
-      background: #f5f1ea;
+      background: var(--sn-surface-4);
       cursor: grab;
-      color: #b8a99a;
+      color: var(--sn-muted-2);
       font-size: 14px;
       letter-spacing: -1px;
       user-select: none;
@@ -187,22 +187,22 @@ const ALL_CITIES = CITIES.map((c) => ({ id: c.id, name: c.name }));
       align-items: center;
       margin-bottom: 8px;
     }
-    .ib__day-num { font-weight: 600; font-size: 14px; color: #c8613c; }
+    .ib__day-num { font-weight: 600; font-size: 14px; color: var(--sn-accent); }
     .ib__day-remove {
       background: none;
       border: none;
-      color: #b8a99a;
+      color: var(--sn-muted-2);
       cursor: pointer;
       font-size: 14px;
     }
     .ib__day-select {
       width: 100%;
       padding: 8px;
-      border: 1px solid #d4cbb8;
+      border: 1px solid var(--sn-line-3);
       border-radius: 6px;
       font-size: 13px;
-      background: #fff;
-      color: #3d352c;
+      background: var(--sn-white);
+      color: var(--sn-ink-2);
       margin-bottom: 8px;
       box-sizing: border-box;
     }
@@ -214,7 +214,7 @@ const ALL_CITIES = CITIES.map((c) => ({ id: c.id, name: c.name }));
     }
     .ib__day-meta label {
       font-size: 12px;
-      color: #5a4a3a;
+      color: var(--sn-ink-3);
       display: flex;
       align-items: center;
       gap: 4px;
@@ -222,21 +222,21 @@ const ALL_CITIES = CITIES.map((c) => ({ id: c.id, name: c.name }));
     .ib__day-nights {
       width: 50px;
       padding: 4px 6px;
-      border: 1px solid #d4cbb8;
+      border: 1px solid var(--sn-line-3);
       border-radius: 4px;
       font-size: 13px;
     }
     .ib__day-notes {
       flex: 1;
       padding: 4px 8px;
-      border: 1px solid #d4cbb8;
+      border: 1px solid var(--sn-line-3);
       border-radius: 4px;
       font-size: 12px;
       min-width: 120px;
     }
     .ib__day-travel {
       font-size: 11px;
-      color: #8a7f6e;
+      color: var(--sn-muted);
       margin-top: 6px;
     }
     .ib__actions { text-align: center; margin: 8px 0 16px; }
@@ -249,8 +249,8 @@ const ALL_CITIES = CITIES.map((c) => ({ id: c.id, name: c.name }));
     .ib__share-link {
       margin-top: 12px;
       padding: 10px 12px;
-      background: #fef9f0;
-      border: 1px solid #e4dbcc;
+      background: var(--sn-surface-3);
+      border: 1px solid var(--sn-line);
       border-radius: 8px;
       display: flex;
       gap: 8px;
@@ -262,7 +262,7 @@ const ALL_CITIES = CITIES.map((c) => ({ id: c.id, name: c.name }));
       border: none;
       background: transparent;
       font-size: 12px;
-      color: #3d352c;
+      color: var(--sn-ink-2);
     }
     .sn-btn {
       display: inline-flex;
@@ -279,10 +279,10 @@ const ALL_CITIES = CITIES.map((c) => ({ id: c.id, name: c.name }));
     .sn-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .sn-btn.ghost {
       background: transparent;
-      color: #c8613c;
-      border: 1px solid #c8613c;
+      color: var(--sn-accent);
+      border: 1px solid var(--sn-accent);
     }
-    .sn-btn.accent { background: #c8613c; color: #fff; }
+    .sn-btn.accent { background: var(--sn-accent); color: var(--sn-white); }
   `],
 })
 export class ItineraryBuilderComponent implements OnInit {

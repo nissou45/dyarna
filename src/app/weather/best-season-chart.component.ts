@@ -4,10 +4,10 @@ import { MonthScore } from '../core/types';
 const MONTH_LABELS = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
 
 const LABEL_COLORS: Record<string, string> = {
-  ideal: '#2d8a4e',
-  good: '#7ab84b',
-  average: '#e8a838',
-  avoid: '#c8613c',
+  ideal: 'var(--sn-chart-success)',
+  good: 'var(--sn-chart-good)',
+  average: 'var(--sn-chart-warn)',
+  avoid: 'var(--sn-accent)',
 };
 
 const LABEL_TEXT: Record<string, string> = {
@@ -68,7 +68,7 @@ const LABEL_TEXT: Record<string, string> = {
     }
     .season-chart__label {
       font-size: 10px;
-      color: #8a7f6e;
+      color: var(--sn-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -78,7 +78,7 @@ const LABEL_TEXT: Record<string, string> = {
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      background: #f5f1ea;
+      background: var(--sn-surface-4);
       border-radius: 4px;
       overflow: hidden;
     }
@@ -98,10 +98,10 @@ const LABEL_TEXT: Record<string, string> = {
     }
     .season-chart__recommendation {
       font-size: 13px;
-      color: #3d352c;
+      color: var(--sn-ink-2);
       text-align: center;
       padding: 8px 0 0;
-      border-top: 1px solid #e4dbcc;
+      border-top: 1px solid var(--sn-line);
     }
   `],
 })

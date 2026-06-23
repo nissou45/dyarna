@@ -51,23 +51,23 @@ import { LeaderboardEntry, UserRank } from '../core/types';
   `,
   styles: [`
     .lb { max-width: 560px; margin: 24px auto; padding: 0 16px; }
-    .lb__title { font-size: 24px; color: #3d352c; margin: 0 0 16px; }
-    .lb__loading { color: #8a7f6e; text-align: center; margin-top: 32px; }
+    .lb__title { font-size: 24px; color: var(--sn-ink-2); margin: 0 0 16px; }
+    .lb__loading { color: var(--sn-muted); text-align: center; margin-top: 32px; }
     .lb__list { display: flex; flex-direction: column; gap: 6px; }
     .lb__entry, .lb__my-rank {
       display: flex; align-items: center; gap: 12px;
-      padding: 12px 14px; background: #fefcf8; border: 1px solid #e4dbcc; border-radius: 10px;
+      padding: 12px 14px; background: var(--sn-surface); border: 1px solid var(--sn-line); border-radius: 10px;
     }
-    .lb__entry--me { border-color: #c8613c; background: #fef9f0; }
-    .lb__rank { font-weight: 700; font-size: 14px; color: #c8613c; min-width: 32px; }
-    .lb__name { flex: 1; font-size: 14px; color: #3d352c; font-weight: 500; }
-    .lb__score { font-size: 14px; font-weight: 600; color: #3d352c; }
-    .lb__games, .lb__total { font-size: 12px; color: #8a7f6e; }
-    .lb__empty { text-align: center; color: #8a7f6e; margin-top: 32px; }
+    .lb__entry--me { border-color: var(--sn-accent); background: var(--sn-surface-3); }
+    .lb__rank { font-weight: 700; font-size: 14px; color: var(--sn-accent); min-width: 32px; }
+    .lb__name { flex: 1; font-size: 14px; color: var(--sn-ink-2); font-weight: 500; }
+    .lb__score { font-size: 14px; font-weight: 600; color: var(--sn-ink-2); }
+    .lb__games, .lb__total { font-size: 12px; color: var(--sn-muted); }
+    .lb__empty { text-align: center; color: var(--sn-muted); margin-top: 32px; }
     .lb__my-rank { margin-top: 8px; }
     .lb__actions { text-align: center; margin-top: 20px; }
     .sn-btn { display: inline-flex; align-items: center; justify-content: center; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; text-decoration: none; }
-    .sn-btn.accent { background: #c8613c; color: #fff; }
+    .sn-btn.accent { background: var(--sn-accent); color: var(--sn-white); }
   `],
 })
 export class LeaderboardComponent implements OnInit {

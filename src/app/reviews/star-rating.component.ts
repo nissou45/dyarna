@@ -29,9 +29,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
     .star { background: none; border: none; cursor: pointer; padding: 0; line-height: 0; }
     .star:disabled { cursor: default; }
     .star svg { transition: fill .15s, stroke .15s; }
-    .star.filled svg { fill: #d4a03c; stroke: #d4a03c; }
-    .star:not(.filled) svg { fill: none; stroke: #cec0ab; }
-    .star:hover:not(:disabled) svg { stroke: #d4a03c; }
+    .star.filled svg { fill: var(--sn-gold); stroke: var(--sn-gold); }
+    .star:not(.filled) svg { fill: none; stroke: var(--sn-line-2); }
+    .star:hover:not(:disabled) svg { stroke: var(--sn-gold); }
   `],
 })
 export class StarRatingComponent {

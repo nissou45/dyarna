@@ -59,7 +59,7 @@ import { GalleryPhoto } from '../core/types';
       right: 0;
       padding: 6px 10px;
       background: linear-gradient(transparent, rgba(0,0,0,0.5));
-      color: #fff;
+      color: var(--sn-white);
       font-size: 12px;
       display: flex;
       justify-content: space-between;
@@ -76,7 +76,7 @@ import { GalleryPhoto } from '../core/types';
     .photo-grid__empty {
       padding: 32px;
       text-align: center;
-      color: #8a7f6e;
+      color: var(--sn-muted);
       font-size: 14px;
     }
   `],

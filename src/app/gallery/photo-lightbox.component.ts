@@ -65,7 +65,7 @@ import { AuthService } from '../services/auth.service';
       right: 0;
       background: none;
       border: none;
-      color: #fff;
+      color: var(--sn-white);
       font-size: 24px;
       cursor: pointer;
       opacity: 0.7;
@@ -85,7 +85,7 @@ import { AuthService } from '../services/auth.service';
       display: flex;
       justify-content: space-between;
       align-items: center;
-      color: #fff;
+      color: var(--sn-white);
       padding: 8px 0;
     }
     .lightbox__meta {
@@ -108,7 +108,7 @@ import { AuthService } from '../services/auth.service';
     .lightbox__btn {
       background: rgba(255,255,255,0.15);
       border: 1px solid rgba(255,255,255,0.3);
-      color: #fff;
+      color: var(--sn-white);
       padding: 6px 14px;
       border-radius: 20px;
       font-size: 13px;
@@ -118,11 +118,11 @@ import { AuthService } from '../services/auth.service';
     .lightbox__btn:hover { background: rgba(255,255,255,0.25); }
     .lightbox__btn.liked {
       background: rgba(200, 97, 60, 0.4);
-      border-color: #c8613c;
+      border-color: var(--sn-accent);
     }
     .lightbox__btn--danger {
       border-color: rgba(220, 38, 38, 0.5);
-      color: #fca5a5;
+      color: var(--sn-error-light);
     }
   `],
 })

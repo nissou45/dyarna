@@ -16,7 +16,7 @@ import { APP_ROUTES } from '../core/constants/face-snaps.constants';
       </p>
 
       @if (error) {
-        <div style="background:rgba(220,38,38,.08); color:#dc2626; padding:12px 16px; border-radius:var(--sn-r); font-size:14px; margin-bottom:16px;">
+        <div style="background:rgba(220,38,38,.08); color:var(--sn-error-bright); padding:12px 16px; border-radius:var(--sn-r); font-size:14px; margin-bottom:16px;">
           {{ error }}
         </div>
       }

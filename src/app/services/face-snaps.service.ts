@@ -5,16 +5,16 @@ import { WikipediaService } from './wikipedia.service';
 
 // ── Palette de couleurs pour les placeholders ──
 const PALETTE = [
-  { bg: '#c8613c', fg: '#fefcf8' },  // Terracotta
-  { bg: '#d4a03c', fg: '#fefcf8' },  // Or
-  { bg: '#236b8c', fg: '#fefcf8' },  // Zellige bleu
-  { bg: '#4a7c59', fg: '#fefcf8' },  // Vert
-  { bg: '#8a5a4a', fg: '#fefcf8' },  // Brun
-  { bg: '#6a4a7a', fg: '#fefcf8' },  // Violet
-  { bg: '#c85a3c', fg: '#fefcf8' },  // Rouge
-  { bg: '#3a6a5a', fg: '#fefcf8' },  // Vert foncé
-  { bg: '#7a6a3a', fg: '#fefcf8' },  // Olive
-  { bg: '#4a5a7a', fg: '#fefcf8' },  // Bleu nuit
+  { bg: 'var(--sn-accent)', fg: 'var(--sn-surface)' },  // Terracotta
+  { bg: 'var(--sn-gold)', fg: 'var(--sn-surface)' },  // Or
+  { bg: 'var(--sn-blue)', fg: 'var(--sn-surface)' },  // Zellige bleu
+  { bg: 'var(--sn-success)', fg: 'var(--sn-surface)' },  // Vert
+  { bg: '#8a5a4a', fg: 'var(--sn-surface)' },  // Brun
+  { bg: '#6a4a7a', fg: 'var(--sn-surface)' },  // Violet
+  { bg: '#c85a3c', fg: 'var(--sn-surface)' },  // Rouge
+  { bg: '#3a6a5a', fg: 'var(--sn-surface)' },  // Vert foncé
+  { bg: '#7a6a3a', fg: 'var(--sn-surface)' },  // Olive
+  { bg: '#4a5a7a', fg: 'var(--sn-surface)' },  // Bleu nuit
 ];
 
 function placeholderUrl(title: string, index: number): string {

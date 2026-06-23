@@ -60,31 +60,31 @@ import { ItinerarySummaryComponent } from './itinerary-summary.component';
   `,
   styles: [`
     .ip { max-width: 640px; margin: 32px auto; padding: 0 16px; }
-    .ip__title { font-size: 24px; color: #3d352c; margin: 0 0 4px; }
-    .ip__subtitle { color: #8a7f6e; font-size: 14px; margin: 0 0 20px; }
+    .ip__title { font-size: 24px; color: var(--sn-ink-2); margin: 0 0 4px; }
+    .ip__subtitle { color: var(--sn-muted); font-size: 14px; margin: 0 0 20px; }
     .ip__days { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
     .ip__day {
-      background: #fefcf8;
-      border: 1px solid #e4dbcc;
+      background: var(--sn-surface);
+      border: 1px solid var(--sn-line);
       border-radius: 10px;
       padding: 12px 16px;
     }
-    .ip__day-num { font-weight: 600; font-size: 13px; color: #c8613c; }
+    .ip__day-num { font-weight: 600; font-size: 13px; color: var(--sn-accent); }
     .ip__day-body { margin: 4px 0 0; }
-    .ip__day-body strong { font-size: 16px; color: #3d352c; text-transform: capitalize; }
-    .ip__day-notes { font-size: 13px; color: #5a4a3a; margin: 4px 0 0; }
-    .ip__day-nights { font-size: 12px; color: #8a7f6e; }
-    .ip__day-travel { font-size: 11px; color: #8a7f6e; margin-top: 6px; }
+    .ip__day-body strong { font-size: 16px; color: var(--sn-ink-2); text-transform: capitalize; }
+    .ip__day-notes { font-size: 13px; color: var(--sn-ink-3); margin: 4px 0 0; }
+    .ip__day-nights { font-size: 12px; color: var(--sn-muted); }
+    .ip__day-travel { font-size: 11px; color: var(--sn-muted); margin-top: 6px; }
     .ip__meta {
       display: flex;
       gap: 16px;
       margin-top: 20px;
       font-size: 13px;
-      color: #5a4a3a;
+      color: var(--sn-ink-3);
     }
-    .ip-error { text-align: center; margin-top: 48px; color: #8a7f6e; }
-    .ip-loading { text-align: center; margin-top: 48px; color: #8a7f6e; }
-    .ip-error a { color: #c8613c; text-decoration: underline; cursor: pointer; }
+    .ip-error { text-align: center; margin-top: 48px; color: var(--sn-muted); }
+    .ip-loading { text-align: center; margin-top: 48px; color: var(--sn-muted); }
+    .ip-error a { color: var(--sn-accent); text-decoration: underline; cursor: pointer; }
   `],
 })
 export class ItineraryPublicComponent implements OnInit {
