@@ -65,6 +65,7 @@ const photoSchema = new Schema<IPhoto>(
 
 photoSchema.index({ cityId: 1, status: 1, createdAt: -1 });
 photoSchema.index({ userId: 1, status: 1 });
+photoSchema.index({ status: 1, createdAt: -1 });
 
 export interface IPhotoLike extends Document {
   userId: mongoose.Types.ObjectId;

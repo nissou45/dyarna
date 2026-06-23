@@ -3,8 +3,30 @@ import { CityCulture } from '../../culture/culture.model';
 import { Photo } from '../../gallery/photo.model';
 import { getAllCityIds, getCityById, CITIES } from '../../../data/cities';
 import type { City } from '../../../data/cities';
+import { logger } from '../../../utils/logger';
 
+const photoCache = new Map<string, { data: Record<string, string>; expiry: number }>();
+const PHOTO_CACHE_TTL = 5 * 60 * 1000;
 
+async function getApprovedPhotos(): Promise<Record<string, string>> {
+  const cached = photoCache.get('approved');
+  if (cached && Date.now() < cached.expiry) {
+    logger.debug('Using cached approved photos');
+    return cached.data;
+  }
+  logger.info('Fetching approved photos from database');
+  const approvedPhotos = await Photo.find({ status: 'approved' })
+    .sort({ createdAt: -1 })
+    .lean();
+  const photoMap: Record<string, string> = {};
+  for (const p of approvedPhotos) {
+    if (!photoMap[p.cityId]) {
+      photoMap[p.cityId] = p.thumbnailUrl || p.url;
+    }
+  }
+  photoCache.set('approved', { data: photoMap, expiry: Date.now() + PHOTO_CACHE_TTL });
+  return photoMap;
+}
 
 function shuffleArray<T>(arr: T[]): T[] {
   const result = [...arr];
@@ -151,16 +173,7 @@ export async function generateQuestionSet(count: number): Promise<{
   const allCityIds = getAllCityIds();
   const shuffledCities = shuffleArray(allCityIds);
 
-  const approvedPhotos = await Photo.find({ status: 'approved' })
-    .sort({ createdAt: -1 })
-    .lean();
-
-  const photoMap: Record<string, string> = {};
-  for (const p of approvedPhotos) {
-    if (!photoMap[p.cityId]) {
-      photoMap[p.cityId] = p.thumbnailUrl || p.url;
-    }
-  }
+  const photoMap = await getApprovedPhotos();
 
   const cultures = await CityCulture.find({}).lean();
   const cultureMap: Record<string, {

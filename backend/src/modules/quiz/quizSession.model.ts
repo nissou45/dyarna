@@ -88,6 +88,7 @@ const quizSessionSchema = new Schema<IQuizSession>(
 
 quizSessionSchema.index({ userId: 1, status: 1 });
 quizSessionSchema.index({ guestId: 1, status: 1 });
+quizSessionSchema.index({ completedAt: 1 }, { expireAfterSeconds: 86400, partialFilterExpression: { status: 'completed' } });
 
 export const QuizSession = mongoose.model<IQuizSession>(
   'QuizSession',

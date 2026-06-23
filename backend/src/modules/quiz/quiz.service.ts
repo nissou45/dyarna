@@ -5,6 +5,7 @@ import { generateQuestionSet } from './utils/questionGenerator';
 import { calculateScore } from './utils/scoring';
 import { AppError } from '../../utils/AppError';
 import { getCityById } from '../culture/cities.data';
+import { User } from '../user/user.model';
 
 const RATE_LIMIT_MS = 10_000;
 
@@ -292,7 +293,7 @@ export class QuizService {
     userId: string,
     sessionScore: number,
   ): Promise<void> {
-    const user = await mongoose.model('User').findById(userId).lean();
+    const user = await User.findById(userId).lean();
     if (!user) return;
 
     const displayName = (user as any).displayName || 'Anonyme';
