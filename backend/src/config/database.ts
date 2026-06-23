@@ -1,16 +1,17 @@
 import mongoose from 'mongoose';
 import { env } from './env';
+import { logger } from '../utils/logger';
 
 export async function connectDatabase(): Promise<void> {
   try {
     await mongoose.connect(env.MONGODB_URI);
-    console.log('Connected to MongoDB');
+    logger.info('Connected to MongoDB');
   } catch (error) {
-    console.error('MongoDB connection error:', error);
+    logger.error(error, 'MongoDB connection error');
     process.exit(1);
   }
 
   mongoose.connection.on('error', (err) => {
-    console.error('MongoDB runtime error:', err);
+    logger.error(err, 'MongoDB runtime error');
   });
 }

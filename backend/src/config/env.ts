@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
@@ -20,9 +21,9 @@ const envSchema = z.object({
 function loadEnv() {
   const result = envSchema.safeParse(process.env);
   if (!result.success) {
-    console.error('Environment variable validation failed:');
+    logger.error('Environment variable validation failed:');
     for (const issue of result.error.issues) {
-      console.error(`  - ${issue.path.join('.')}: ${issue.message}`);
+      logger.error(`  - ${issue.path.join('.')}: ${issue.message}`);
     }
     process.exit(1);
   }

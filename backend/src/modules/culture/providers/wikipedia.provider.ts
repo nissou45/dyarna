@@ -1,3 +1,5 @@
+import { logger } from '../../../utils/logger';
+
 export interface RawWikiContent {
   title: string;
   extract: string;
@@ -30,7 +32,7 @@ export async function fetchCitySummary(cityName: string): Promise<RawWikiContent
       if (response.status === 404) return null;
 
       if (!response.ok) {
-        console.warn(`[WikipediaProvider] HTTP ${response.status} for "${cityName}" (attempt ${attempt + 1})`);
+        logger.warn(`[WikipediaProvider] HTTP ${response.status} for "${cityName}" (attempt ${attempt + 1})`);
         if (attempt === 0) continue;
         return null;
       }
@@ -38,7 +40,7 @@ export async function fetchCitySummary(cityName: string): Promise<RawWikiContent
       const data = await response.json() as { type?: string; title?: string; extract?: string; content_urls?: { desktop?: { page?: string } } };
 
       if (data.type === 'disambiguation') {
-        console.warn(`[WikipediaProvider] Disambiguation page for "${cityName}"`);
+        logger.warn(`[WikipediaProvider] Disambiguation page for "${cityName}"`);
         return null;
       }
 
@@ -49,7 +51,7 @@ export async function fetchCitySummary(cityName: string): Promise<RawWikiContent
       };
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      console.warn(`[WikipediaProvider] Error fetching "${cityName}" (attempt ${attempt + 1}): ${message}`);
+      logger.warn(`[WikipediaProvider] Error fetching "${cityName}" (attempt ${attempt + 1}): ${message}`);
       if (attempt === 0) continue;
       return null;
     }

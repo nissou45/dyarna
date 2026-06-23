@@ -1,17 +1,18 @@
 import app from './app';
 import { env } from './config/env';
 import { connectDatabase } from './config/database';
+import { logger } from './utils/logger';
 
 async function start() {
   await connectDatabase();
 
   app.listen(env.PORT, () => {
-    console.log(`Dyarna API running on http://localhost:${env.PORT}`);
-    console.log(`Environment: ${env.NODE_ENV}`);
+    logger.info(`Dyarna API running on http://localhost:${env.PORT}`);
+    logger.info(`Environment: ${env.NODE_ENV}`);
   });
 }
 
 start().catch((err) => {
-  console.error('Failed to start server:', err);
+  logger.error('Failed to start server:', err);
   process.exit(1);
 });

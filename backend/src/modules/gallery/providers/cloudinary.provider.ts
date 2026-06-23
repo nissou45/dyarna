@@ -1,4 +1,5 @@
 import { v2 as cloudinary, UploadApiOptions, UploadApiResponse } from 'cloudinary';
+import { logger } from '../../../utils/logger';
 
 export interface CloudinaryResult {
   publicId: string;
@@ -64,6 +65,6 @@ export async function deleteImage(publicId: string): Promise<void> {
     await cloudinary.uploader.destroy(publicId);
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
-    console.warn(`[Cloudinary] Delete failed for "${publicId}": ${message}`);
+    logger.warn(`[Cloudinary] Delete failed for "${publicId}": ${message}`);
   }
 }

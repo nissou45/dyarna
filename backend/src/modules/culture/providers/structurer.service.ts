@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { RawWikiContent } from './wikipedia.provider';
+import { logger } from '../../../utils/logger';
 
 const HISTORY_KEYWORDS = ['histoire', 'fonder', 'création', 'origine', 'fondation', 'siècle', 'époque'];
 const TRADITIONS_KEYWORDS = ['tradition', 'festival', 'célébration', 'fête', 'artisanat', 'moussem', 'rituel'];
@@ -120,14 +121,14 @@ ${raw.extract.slice(0, 4000)}`;
     });
 
     if (!response.ok) {
-      console.warn(`[Structurer] Claude API error: ${response.status} ${await response.text()}`);
+      logger.warn(`[Structurer] Claude API error: ${response.status} ${await response.text()}`);
       return null;
     }
 
     const data = await response.json() as { content?: { text?: string }[] };
     const content = data.content?.[0]?.text;
     if (!content) {
-      console.warn('[Structurer] Empty Claude response');
+      logger.warn('[Structurer] Empty Claude response');
       return null;
     }
 
@@ -143,7 +144,7 @@ ${raw.extract.slice(0, 4000)}`;
     };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
-    console.warn(`[Structurer] Claude structuring failed: ${message}`);
+    logger.warn(`[Structurer] Claude structuring failed: ${message}`);
     return null;
   }
 }
@@ -160,7 +161,7 @@ export async function structureContent(raw: RawWikiContent): Promise<{
     if (claudeResult) {
       return { content: claudeResult, usedClaude: true };
     }
-    console.warn('[Structurer] Claude failed, falling back to heuristic result');
+    logger.warn('[Structurer] Claude failed, falling back to heuristic result');
   }
 
   return { content: heuristic, usedClaude: false };
