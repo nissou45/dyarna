@@ -1,5 +1,9 @@
 import bcrypt from 'bcrypt';
-import { User } from '../user/user.model';
+import { User, IUser } from '../user/user.model';
+
+interface UserDocument extends IUser {
+  toSafeJSON(): Omit<IUser, 'passwordHash' | 'refreshTokenHash'>;
+}
 import { RegisterDto, LoginDto } from './auth.dto';
 import { AppError } from '../../utils/AppError';
 import {
@@ -28,8 +32,8 @@ export class AuthService {
     const tokens = this.generateTokens(user._id.toString(), user.role);
     await this.storeRefreshToken(user._id.toString(), tokens.refreshToken);
 
-    return {
-      user: user.toSafeJSON(),
+      return {
+        user: user.toSafeJSON(),
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
     };
@@ -37,14 +41,14 @@ export class AuthService {
 
   async login(dto: LoginDto) {
     return new Promise<{
-      user: any;
+      user: Omit<IUser, 'passwordHash' | 'refreshTokenHash'>;
       accessToken: string;
       refreshToken: string;
     }>((resolve, reject) => {
       passport.authenticate(
         'local',
         { session: false },
-        async (err: Error | null, user: any, info: { message: string }) => {
+        async (err: Error | null, user: UserDocument | false, info: { message: string }) => {
           if (err) return reject(err);
           if (!user) {
             return reject(new AppError('Email ou mot de passe incorrect.', 401));

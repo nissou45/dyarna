@@ -7,7 +7,7 @@ export class StorageService {
   private readonly LIKED_SNAPS_KEY = 'dyarna_liked_snaps';
 
   getLikedSnapIds(): string[] {
-    return (this.getObject(this.LIKED_SNAPS_KEY) as string[]) ?? [];
+    return this.getObject<string[]>(this.LIKED_SNAPS_KEY) ?? [];
   }
 
   toggleLikeSnap(snapId: string): boolean {
@@ -27,12 +27,12 @@ export class StorageService {
     return this.getLikedSnapIds().includes(snapId);
   }
 
-  saveObject(key: string, value: any): void {
+  saveObject<T>(key: string, value: T): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
 
-  getObject(key: string): any {
+  getObject<T>(key: string): T | null {
     const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : null;
+    return item ? JSON.parse(item) as T : null;
   }
 }

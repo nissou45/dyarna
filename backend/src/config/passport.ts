@@ -6,6 +6,7 @@ import { User, IUser } from '../modules/user/user.model';
 import { env } from './env';
 
 passport.serializeUser((user: any, done) => {
+  // Express.User n'a pas `_id`, `any` est le workaround standard
   done(null, user._id);
 });
 
