@@ -73,12 +73,12 @@
     font-family: 'Instrument Serif', Georgia, serif;
     font-size: 16px;
     margin: 0 0 2px;
-    color: #1e1b16;
+    color: var(--sn-ink, #1e1b16);
   }
 
   &__region {
     font-size: 11px;
-    color: #8a7f6e;
+    color: var(--sn-muted, #8a7f6e);
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -86,7 +86,7 @@
   &__desc {
     font-size: 13px;
     line-height: 1.5;
-    color: #3d352c;
+    color: var(--sn-soft-ink, #3d352c);
     margin: 8px 0;
   }
 
@@ -96,15 +96,15 @@
     font-size: 13px;
     font-weight: 500;
     font-family: inherit;
-    color: #fefcf8;
-    background: #c8613c;
+    color: var(--sn-bg, #fefcf8);
+    background: var(--sn-accent, #c8613c);
     border: none;
     border-radius: 6px;
     cursor: pointer;
     transition: background 0.15s;
 
     &:hover {
-      background: #b04d2a;
+      background: var(--sn-accent-hover, #b04d2a);
     }
   }
 }

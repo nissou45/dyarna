@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ItineraryResponse, CitySuggestion } from '../core/types';
+import { ItineraryResponse, CitySuggestion, Itinerary } from '../core/types';
 
 @Injectable({ providedIn: 'root' })
 export class ItineraryService {
@@ -16,7 +16,7 @@ export class ItineraryService {
   }
 
   getMyItineraries() {
-    return this.http.get<{ itineraries: import('../core/types').Itinerary[] }>(`${this.BASE}/mine`);
+    return this.http.get<{ itineraries: Itinerary[] }>(`${this.BASE}/mine`);
   }
 
   update(id: string, data: { title?: string; days?: { cityId: string; nightsCount: number; notes?: string }[] }) {

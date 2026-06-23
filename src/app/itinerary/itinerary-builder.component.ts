@@ -417,7 +417,19 @@ export class ItineraryBuilderComponent implements OnInit {
 
   copyLink(): void {
     const link = this.shareLink();
-    if (link) navigator.clipboard.writeText(link);
+    if (!link) return;
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(link);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = link;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
   }
 
   exportPdf(): void {
