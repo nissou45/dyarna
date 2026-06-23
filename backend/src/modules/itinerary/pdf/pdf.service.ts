@@ -2,8 +2,28 @@ import puppeteer from 'puppeteer';
 import { PdfData, renderPdfHtml } from './itinerary-pdf.template';
 
 const PDF_CACHE_TTL_MS = 5 * 60 * 1000;
+const PDF_CACHE_MAX = 50;
 
-const pdfCache = new Map<string, { buffer: Buffer; updatedAt: string }>();
+interface CacheEntry {
+  buffer: Buffer;
+  updatedAt: string;
+  cachedAt: number;
+}
+
+const pdfCache = new Map<string, CacheEntry>();
+
+function evictIfNeeded(): void {
+  if (pdfCache.size < PDF_CACHE_MAX) return;
+  let oldestKey: string | null = null;
+  let oldestTime = Infinity;
+  for (const [key, entry] of pdfCache) {
+    if (entry.cachedAt < oldestTime) {
+      oldestTime = entry.cachedAt;
+      oldestKey = key;
+    }
+  }
+  if (oldestKey) pdfCache.delete(oldestKey);
+}
 
 export async function generatePdf(data: PdfData, cacheKey: string): Promise<Buffer> {
   const cached = pdfCache.get(cacheKey);
@@ -33,7 +53,8 @@ export async function generatePdf(data: PdfData, cacheKey: string): Promise<Buff
     });
 
     const buffer = Buffer.from(pdfBytes);
-    pdfCache.set(cacheKey, { buffer, updatedAt: data.generatedAt });
+    evictIfNeeded();
+    pdfCache.set(cacheKey, { buffer, updatedAt: data.generatedAt, cachedAt: Date.now() });
 
     return buffer;
   } finally {

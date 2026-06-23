@@ -3,6 +3,7 @@ import { fetchCurrentWeather } from './providers/openweather.provider';
 import { getClimateData, MonthlyClimate } from './data/climate-reference';
 import { CITIES } from '../../data/cities';
 import { AppError } from '../../utils/AppError';
+import { logger } from '../../utils/logger';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
 
@@ -107,7 +108,7 @@ export class WeatherService {
       return { current: raw, stale: false };
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      console.warn(`[WeatherService] OpenWeather fetch failed for "${cityId}": ${message}`);
+      logger.warn({ cityId, error: message }, 'OpenWeather fetch failed');
       if (cached) return { current: cached.current, stale: true };
       throw new AppError('Service météo temporairement indisponible.', 503);
     }

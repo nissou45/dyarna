@@ -44,6 +44,19 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   readonly regions = [...new Set(CITIES.map(c => c.region))].sort();
   readonly categories: City['category'][] = ['imperiale', 'cotiere', 'montagne', 'desert', 'moderne'];
 
+  private readonly CATEGORY_LABELS: Record<City['category'], string> = {
+    imperiale: 'Ville impériale',
+    cotiere: 'Ville côtière',
+    montagne: 'Montagne',
+    desert: 'Désert',
+    moderne: 'Moderne',
+  };
+
+  readonly categoryOptions = this.categories.map(c => ({
+    value: c,
+    label: this.CATEGORY_LABELS[c],
+  }));
+
   selectedRegion = '';
   selectedCategory = '';
 
@@ -53,16 +66,22 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private clickHandler: ((e: Event) => void) | null = null;
   private ratingCache = new Map<string, ReviewSummary>();
 
-  private readonly CATEGORY_LABELS: Record<City['category'], string> = {
-    imperiale: 'Ville impériale',
-    cotiere: 'Ville côtière',
-    montagne: 'Montagne',
-    desert: 'Désert',
-    moderne: 'Moderne',
-  };
+  private escapeHtml(str: string): string {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
 
-  categoryLabel(cat: City['category']): string {
-    return this.CATEGORY_LABELS[cat];
+  onRegionChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    this.selectedRegion = value;
+    this.onFilterChange();
+  }
+
+  onCategoryChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    this.selectedCategory = value;
+    this.onFilterChange();
   }
 
   ngAfterViewInit(): void {
@@ -159,15 +178,19 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     const ratingHtml = rating && rating.totalReviews > 0
       ? `<span style="font-size:12px; color:#8a7f6e;">★ ${rating.averageRating}/5 (${rating.totalReviews} avis)</span>`
       : '';
+    const name = this.escapeHtml(city.name);
+    const region = this.escapeHtml(city.region);
+    const desc = this.escapeHtml(city.shortDescription);
+    const label = this.CATEGORY_LABELS[city.category];
 
     return `
       <div class="map-popup">
-        <img src="${city.thumbnailUrl}" alt="${city.name}" class="map-popup__img" loading="lazy" />
+        <img src="${city.thumbnailUrl}" alt="${name}" class="map-popup__img" loading="lazy" />
         <div class="map-popup__body">
-          <h3 class="map-popup__title">${city.name}</h3>
-          <span class="map-popup__region">${city.region} · ${this.CATEGORY_LABELS[city.category]}</span>
+          <h3 class="map-popup__title">${name}</h3>
+          <span class="map-popup__region">${region} · ${label}</span>
           ${ratingHtml}
-          <p class="map-popup__desc">${city.shortDescription}</p>
+          <p class="map-popup__desc">${desc}</p>
           <button class="map-popup__btn" data-city-id="${city.id}">
             Voir la fiche complète
           </button>

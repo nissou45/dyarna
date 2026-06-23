@@ -14,7 +14,7 @@
           id="region-select"
           class="sn-pill"
           [value]="selectedRegion"
-          (change)="selectedRegion = $any($event.target).value; onFilterChange()"
+          (change)="onRegionChange($event)"
         >
           <option value="">Toutes les régions</option>
           @for (r of regions; track r) {
@@ -29,11 +29,11 @@
           id="category-select"
           class="sn-pill"
           [value]="selectedCategory"
-          (change)="selectedCategory = $any($event.target).value; onFilterChange()"
+          (change)="onCategoryChange($event)"
         >
           <option value="">Toutes les catégories</option>
-          @for (c of categories; track c) {
-            <option [value]="c">{{ categoryLabel(c) }}</option>
+          @for (opt of categoryOptions; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
           }
         </select>
       </div>
