@@ -24,7 +24,7 @@ export interface FillReport {
 
 async function fillOneCity(city: City): Promise<CityContentResult> {
   // Fetch sequentially to be polite to APIs
-  const summary = await fetchWikiSummary(city.name);
+  const summary = await fetchWikiSummary({ name: city.name, id: city.id, region: city.region, category: city.category });
   await new Promise((r) => setTimeout(r, 500));
   const image = await fetchCommonsImage(city.name, city.lat, city.lng);
 
