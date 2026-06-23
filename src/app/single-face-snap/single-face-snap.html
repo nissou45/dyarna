@@ -1,4 +1,11 @@
-<div>
+@if (isDish && dish) {
+  <div class="dish-wrapper">
+    <app-dish-detail [dish]="dish" />
+    <div class="dish-back">
+      <button class="sn-btn ghost" routerLink="/decouvertes">← {{ uiConstants.BACK }}</button>
+    </div>
+  </div>
+} @else {
   <div class="sn-detail__hero" [style.background-image]="'url(' + faceSnap.imageUrl + ')'"></div>
 
   <div class="sn-detail__layout">
@@ -202,4 +209,4 @@
       </div>
     </div>
   </div>
-</div>
+}

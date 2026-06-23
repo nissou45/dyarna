@@ -19,6 +19,8 @@ import { PhotoLightboxComponent } from '../gallery/photo-lightbox.component';
 import { WeatherService } from '../services/weather.service';
 import { GalleryService } from '../services/gallery.service';
 import { Review, ReviewSummary, FullWeatherInfo, GalleryPhoto } from '../core/types';
+import { DishDetailComponent } from '../components/dish-detail/dish-detail.component';
+import { DishService } from '../services/dish.service';
 
 @Component({
   selector: 'app-single-face-snap',
@@ -36,6 +38,7 @@ import { Review, ReviewSummary, FullWeatherInfo, GalleryPhoto } from '../core/ty
     PhotoUploadFormComponent,
     PhotoGridComponent,
     PhotoLightboxComponent,
+    DishDetailComponent,
   ],
   templateUrl: './single-face-snap.html',
   styleUrl: './single-face-snap.scss',
@@ -46,6 +49,7 @@ export class SingleFaceSnapComponent implements OnInit {
   private weatherService = inject(WeatherService);
   private galleryService = inject(GalleryService);
   private route = inject(ActivatedRoute);
+  private dishService = inject(DishService);
 
   faceSnap!: FaceSnap;
   relatedCuisine: FaceSnap[] = [];
@@ -55,6 +59,9 @@ export class SingleFaceSnapComponent implements OnInit {
   userHasSnapped!: boolean;
   readonly uiConstants = FACE_SNAPS_UI;
   readonly routes = APP_ROUTES;
+
+  isDish = false;
+  dish = this.dishService.getByTitle('');
 
   reviews: Review[] = [];
   reviewSummary: ReviewSummary | null = null;
@@ -93,6 +100,13 @@ export class SingleFaceSnapComponent implements OnInit {
   private getFaceSnap() {
     const faceSnapId = this.cityId;
     this.faceSnap = this.faceSnapsService.getFaceSnapById(faceSnapId);
+
+    // Detect if this is a dish
+    this.isDish = this.faceSnap.tags.includes('cuisine');
+    if (this.isDish) {
+      this.dish = this.dishService.getByTitle(this.faceSnap.title);
+    }
+
     const related = this.faceSnapsService.getRelatedSnaps(faceSnapId);
     this.relatedCuisine = related.cuisine;
     this.relatedTraditions = related.traditions;

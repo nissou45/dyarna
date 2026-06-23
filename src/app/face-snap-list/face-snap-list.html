@@ -1,4 +1,23 @@
 <div class="list-container">
+  <!-- Tabs -->
+  <div class="sn-tabs" style="display:flex; gap:0; margin-bottom:20px;">
+    <button class="sn-tab" [class.active]="activeTab === 'villes'" (click)="activeTab = 'villes'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle; margin-right:6px;">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      Villes
+    </button>
+    <button class="sn-tab" [class.active]="activeTab === 'cuisine'" (click)="activeTab = 'cuisine'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle; margin-right:6px;">
+        <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V6l-3-4H6Z"/>
+        <path d="M3 6h18"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      Cuisine
+    </button>
+  </div>
+
   <!-- Search -->
   <div class="sn-search">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -29,7 +48,10 @@
 
   <!-- Results count -->
   <div style="font-size:13px; color:var(--sn-muted); margin-bottom:16px;">
-    {{ filteredSnaps().length }} découvertes
+    {{ filteredSnaps().length }} @switch (activeTab) {
+      @case ('villes') { villes }
+      @case ('cuisine') { plats }
+    }
   </div>
 
   <!-- Create form -->

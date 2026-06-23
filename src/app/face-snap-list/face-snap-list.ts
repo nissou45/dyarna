@@ -29,6 +29,7 @@ export class FaceSnapListComponent {
   searchQuery = '';
   activeTag: string | null = null;
   sortBy: 'date' | 'popularity' | 'alpha' = 'popularity';
+  activeTab: 'villes' | 'cuisine' = 'villes';
 
   showCreateForm = false;
   newSnap = {
@@ -48,6 +49,13 @@ export class FaceSnapListComponent {
   /** Snaps filtrés + triés — TOUS affichés (pas de pagination) */
   filteredSnaps = computed(() => {
     let snaps = this.faceSnaps();
+
+    // Filtre par onglet
+    if (this.activeTab === 'cuisine') {
+      snaps = snaps.filter(s => s.tags.includes('cuisine'));
+    } else {
+      snaps = snaps.filter(s => s.tags.includes('ville'));
+    }
 
     // Filtre recherche
     if (this.searchQuery) {
