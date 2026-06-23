@@ -134,7 +134,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   private setupPopupHandler(): void {
-    const container = this.map!.getContainer();
+    if (!this.map) return;
+    const container = this.map.getContainer();
     this.clickHandler = (e: Event) => {
       const target = e.target as HTMLElement;
       const btn = target.closest('.map-popup__btn') as HTMLElement | null;
@@ -180,12 +181,12 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       : '';
     const name = this.escapeHtml(city.name);
     const region = this.escapeHtml(city.region);
-    const desc = this.escapeHtml(city.shortDescription);
+    const desc = this.escapeHtml(city.shortDescription ?? '');
     const label = this.CATEGORY_LABELS[city.category];
 
     return `
       <div class="map-popup">
-        <img src="${city.thumbnailUrl}" alt="${name}" class="map-popup__img" loading="lazy" />
+        <img src="${city.thumbnailUrl ?? ''}" alt="${name}" class="map-popup__img" loading="lazy" />
         <div class="map-popup__body">
           <h3 class="map-popup__title">${name}</h3>
           <span class="map-popup__region">${region} · ${label}</span>
@@ -209,15 +210,17 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   onSearchSelected(city: City): void {
+    if (!this.map) return;
+
     this.removeSearchMarker();
 
     const marker = L.marker([city.lat, city.lng], { icon: SEARCH_ICON });
     marker.bindPopup(this.buildPopupContent(city));
-    marker.addTo(this.map!);
+    marker.addTo(this.map);
     marker.openPopup();
     this.searchMarker = marker;
 
-    this.map!.flyTo([city.lat, city.lng], 11, { duration: 1 });
+    this.map.flyTo([city.lat, city.lng], 11, { duration: 1 });
   }
 
   private removeSearchMarker(): void {

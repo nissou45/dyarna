@@ -23,14 +23,14 @@ import { CITIES } from '../data/cities';
         @for (city of favoriteCities(); track city.id) {
           <a class="sn-card sn-fade-in" style="cursor:pointer; text-decoration:none; color:inherit;" [routerLink]="['/decouvertes', city.id]">
             <div class="sn-card__media">
-              <img [src]="city.thumbnailUrl" [alt]="city.name" loading="lazy" />
+              <img [src]="city.thumbnailUrl ?? ''" [alt]="city.name" loading="lazy" />
             </div>
             <div class="sn-card__body">
               <h3 class="sn-card__title">{{ city.name }}</h3>
               @if (city.region) {
                 <div class="sn-card__location">{{ city.region }}</div>
               }
-              <p style="font-size:13px; color:var(--sn-muted); margin-top:8px;">{{ city.shortDescription }}</p>
+              <p style="font-size:13px; color:var(--sn-muted); margin-top:8px;">{{ city.shortDescription ?? '' }}</p>
             </div>
           </a>
         }

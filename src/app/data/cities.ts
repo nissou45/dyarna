@@ -6,8 +6,8 @@ export interface City {
   lat: number;
   lng: number;
   featured: boolean;
-  shortDescription: string;
-  thumbnailUrl: string;
+  shortDescription?: string;
+  thumbnailUrl?: string;
 }
 
 export const CITIES: City[] = [
@@ -19,8 +19,6 @@ export const CITIES: City[] = [
     lat: 31.6295,
     lng: -7.9811,
     featured: true,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'fes',
@@ -30,8 +28,6 @@ export const CITIES: City[] = [
     lat: 34.0331,
     lng: -5.0003,
     featured: true,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'rabat',
@@ -41,8 +37,6 @@ export const CITIES: City[] = [
     lat: 34.0209,
     lng: -6.8417,
     featured: true,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'casablanca',
@@ -52,8 +46,6 @@ export const CITIES: City[] = [
     lat: 33.5731,
     lng: -7.5898,
     featured: true,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'tanger',
@@ -63,8 +55,6 @@ export const CITIES: City[] = [
     lat: 35.7595,
     lng: -5.834,
     featured: true,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'meknes',
@@ -74,8 +64,6 @@ export const CITIES: City[] = [
     lat: 33.8935,
     lng: -5.5547,
     featured: true,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'essaouira',
@@ -85,8 +73,6 @@ export const CITIES: City[] = [
     lat: 31.5085,
     lng: -9.7595,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'agadir',
@@ -96,8 +82,6 @@ export const CITIES: City[] = [
     lat: 30.4278,
     lng: -9.5981,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'el-jadida',
@@ -107,8 +91,6 @@ export const CITIES: City[] = [
     lat: 33.2316,
     lng: -8.5007,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'asilah',
@@ -118,8 +100,6 @@ export const CITIES: City[] = [
     lat: 35.465,
     lng: -6.0339,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'al-hoceima',
@@ -129,8 +109,6 @@ export const CITIES: City[] = [
     lat: 35.2517,
     lng: -3.9372,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'mehdiya',
@@ -140,8 +118,6 @@ export const CITIES: City[] = [
     lat: 34.2587,
     lng: -6.6661,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'safi',
@@ -151,8 +127,6 @@ export const CITIES: City[] = [
     lat: 32.2994,
     lng: -9.2372,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'nador',
@@ -162,8 +136,6 @@ export const CITIES: City[] = [
     lat: 35.1681,
     lng: -2.9287,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'cap-de-leau',
@@ -173,8 +145,6 @@ export const CITIES: City[] = [
     lat: 35.1167,
     lng: -2.2167,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'saidia',
@@ -184,8 +154,6 @@ export const CITIES: City[] = [
     lat: 35.0894,
     lng: -2.2406,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'martil',
@@ -195,8 +163,6 @@ export const CITIES: City[] = [
     lat: 35.6181,
     lng: -5.2767,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'azemmour',
@@ -206,8 +172,6 @@ export const CITIES: City[] = [
     lat: 33.2872,
     lng: -8.3414,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'taghazout',
@@ -217,8 +181,6 @@ export const CITIES: City[] = [
     lat: 30.5444,
     lng: -9.7106,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'aourir',
@@ -228,8 +190,6 @@ export const CITIES: City[] = [
     lat: 30.4928,
     lng: -9.6536,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'mirleft',
@@ -239,8 +199,6 @@ export const CITIES: City[] = [
     lat: 29.5872,
     lng: -10.0419,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'sidi-ifni',
@@ -250,8 +208,6 @@ export const CITIES: City[] = [
     lat: 29.3789,
     lng: -10.1714,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'legzira',
@@ -261,8 +217,6 @@ export const CITIES: City[] = [
     lat: 29.3392,
     lng: -10.1064,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'imessouane',
@@ -272,8 +226,6 @@ export const CITIES: City[] = [
     lat: 30.85,
     lng: -9.8167,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'tafedna',
@@ -283,8 +235,6 @@ export const CITIES: City[] = [
     lat: 31.2167,
     lng: -9.5833,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'sidi-kaouki',
@@ -294,8 +244,6 @@ export const CITIES: City[] = [
     lat: 31.3667,
     lng: -9.8333,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'dakhla',
@@ -305,8 +253,6 @@ export const CITIES: City[] = [
     lat: 23.6848,
     lng: -15.958,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'laayoune',
@@ -316,8 +262,6 @@ export const CITIES: City[] = [
     lat: 27.1418,
     lng: -13.1873,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'tan-tan',
@@ -327,8 +271,6 @@ export const CITIES: City[] = [
     lat: 28.4378,
     lng: -11.1031,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'chefchaouen',
@@ -338,8 +280,6 @@ export const CITIES: City[] = [
     lat: 35.1714,
     lng: -5.2697,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'ifrane',
@@ -349,8 +289,6 @@ export const CITIES: City[] = [
     lat: 33.5228,
     lng: -5.1106,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'imlil',
@@ -360,8 +298,6 @@ export const CITIES: City[] = [
     lat: 31.1389,
     lng: -7.9217,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'oukaimeden',
@@ -371,8 +307,6 @@ export const CITIES: City[] = [
     lat: 31.205,
     lng: -7.8639,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'azrou',
@@ -382,8 +316,6 @@ export const CITIES: City[] = [
     lat: 33.4347,
     lng: -5.2253,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'midelt',
@@ -393,8 +325,6 @@ export const CITIES: City[] = [
     lat: 32.6852,
     lng: -4.7368,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'tafraoute',
@@ -404,8 +334,6 @@ export const CITIES: City[] = [
     lat: 29.7256,
     lng: -8.975,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'ait-bouguemez',
@@ -415,8 +343,6 @@ export const CITIES: City[] = [
     lat: 31.6167,
     lng: -6.3333,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'akchour',
@@ -426,8 +352,6 @@ export const CITIES: City[] = [
     lat: 35.2333,
     lng: -5.15,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'setti-fatma',
@@ -437,8 +361,6 @@ export const CITIES: City[] = [
     lat: 31.2333,
     lng: -7.6667,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'moulay-idriss',
@@ -448,8 +370,6 @@ export const CITIES: City[] = [
     lat: 34.0556,
     lng: -5.5167,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'ouirgane',
@@ -459,8 +379,6 @@ export const CITIES: City[] = [
     lat: 31.0667,
     lng: -8.15,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'amizmiz',
@@ -470,8 +388,6 @@ export const CITIES: City[] = [
     lat: 31.2167,
     lng: -8.2333,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'khenifra',
@@ -481,8 +397,6 @@ export const CITIES: City[] = [
     lat: 32.9394,
     lng: -5.6694,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'imouzzer-kandar',
@@ -492,8 +406,6 @@ export const CITIES: City[] = [
     lat: 33.7333,
     lng: -5.0,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'beni-mellal',
@@ -503,8 +415,6 @@ export const CITIES: City[] = [
     lat: 32.3373,
     lng: -6.3498,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'azilal',
@@ -514,8 +424,6 @@ export const CITIES: City[] = [
     lat: 31.9622,
     lng: -6.5703,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'taliouine',
@@ -525,8 +433,6 @@ export const CITIES: City[] = [
     lat: 30.5333,
     lng: -7.9167,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'tinghir',
@@ -536,8 +442,6 @@ export const CITIES: City[] = [
     lat: 31.5147,
     lng: -5.5328,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'ouarzazate',
@@ -547,8 +451,6 @@ export const CITIES: City[] = [
     lat: 30.9335,
     lng: -6.8956,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'merzouga',
@@ -558,8 +460,6 @@ export const CITIES: City[] = [
     lat: 31.0801,
     lng: -4.0133,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'zagora',
@@ -569,8 +469,6 @@ export const CITIES: City[] = [
     lat: 30.3315,
     lng: -5.8378,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'ait-benhaddou',
@@ -580,8 +478,6 @@ export const CITIES: City[] = [
     lat: 31.0472,
     lng: -7.1311,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'errachidia',
@@ -591,8 +487,6 @@ export const CITIES: City[] = [
     lat: 31.9314,
     lng: -4.4244,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'rissani',
@@ -602,8 +496,6 @@ export const CITIES: City[] = [
     lat: 31.2833,
     lng: -4.2667,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'tamegroute',
@@ -613,8 +505,6 @@ export const CITIES: City[] = [
     lat: 30.2667,
     lng: -5.6667,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'figuig',
@@ -624,8 +514,6 @@ export const CITIES: City[] = [
     lat: 32.1131,
     lng: -1.2289,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'tata',
@@ -635,8 +523,6 @@ export const CITIES: City[] = [
     lat: 29.75,
     lng: -7.9833,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'amtoudi',
@@ -646,8 +532,6 @@ export const CITIES: City[] = [
     lat: 29.4333,
     lng: -9.0667,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'alnif',
@@ -657,8 +541,6 @@ export const CITIES: City[] = [
     lat: 31.1167,
     lng: -5.1667,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'tinejdad',
@@ -668,8 +550,6 @@ export const CITIES: City[] = [
     lat: 31.5167,
     lng: -4.5333,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'boumalne-dades',
@@ -679,8 +559,6 @@ export const CITIES: City[] = [
     lat: 31.3667,
     lng: -5.9833,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'tazzarine',
@@ -690,8 +568,6 @@ export const CITIES: City[] = [
     lat: 30.8333,
     lng: -5.5833,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'guelmim',
@@ -701,8 +577,6 @@ export const CITIES: City[] = [
     lat: 28.987,
     lng: -10.0574,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'icht',
@@ -712,8 +586,6 @@ export const CITIES: City[] = [
     lat: 29.0833,
     lng: -8.9333,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'sale',
@@ -723,8 +595,6 @@ export const CITIES: City[] = [
     lat: 34.0531,
     lng: -6.7985,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'kenitra',
@@ -734,8 +604,6 @@ export const CITIES: City[] = [
     lat: 34.261,
     lng: -6.5802,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'mohammedia',
@@ -745,8 +613,6 @@ export const CITIES: City[] = [
     lat: 33.6861,
     lng: -7.3828,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'settat',
@@ -756,8 +622,6 @@ export const CITIES: City[] = [
     lat: 33.001,
     lng: -7.6166,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'oujda',
@@ -767,8 +631,6 @@ export const CITIES: City[] = [
     lat: 34.6814,
     lng: -1.9086,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'tetouan',
@@ -778,8 +640,6 @@ export const CITIES: City[] = [
     lat: 35.5785,
     lng: -5.3684,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'khouribga',
@@ -789,8 +649,6 @@ export const CITIES: City[] = [
     lat: 32.8811,
     lng: -6.9063,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'berrechid',
@@ -800,8 +658,6 @@ export const CITIES: City[] = [
     lat: 33.2651,
     lng: -7.5828,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'taza',
@@ -811,8 +667,6 @@ export const CITIES: City[] = [
     lat: 34.2133,
     lng: -4.0103,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'larache',
@@ -822,8 +676,6 @@ export const CITIES: City[] = [
     lat: 35.1933,
     lng: -6.1561,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'khemisset',
@@ -833,8 +685,6 @@ export const CITIES: City[] = [
     lat: 33.8244,
     lng: -6.0661,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'fkih-ben-salah',
@@ -844,8 +694,6 @@ export const CITIES: City[] = [
     lat: 32.5028,
     lng: -6.6889,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'guercif',
@@ -855,8 +703,6 @@ export const CITIES: City[] = [
     lat: 34.2261,
     lng: -3.3531,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'sefrou',
@@ -866,8 +712,6 @@ export const CITIES: City[] = [
     lat: 33.8333,
     lng: -4.8333,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'berkane',
@@ -877,8 +721,6 @@ export const CITIES: City[] = [
     lat: 34.9214,
     lng: -2.3197,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'taourirt',
@@ -888,8 +730,6 @@ export const CITIES: City[] = [
     lat: 34.4078,
     lng: -2.8917,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'ksar-el-kebir',
@@ -899,8 +739,6 @@ export const CITIES: City[] = [
     lat: 35.0019,
     lng: -5.9028,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'ouazzane',
@@ -910,8 +748,6 @@ export const CITIES: City[] = [
     lat: 34.7986,
     lng: -5.5847,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'moulay-bouzerktoune',
@@ -921,8 +757,6 @@ export const CITIES: City[] = [
     lat: 31.45,
     lng: -9.7833,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'ouirgane-vallee',
@@ -932,8 +766,6 @@ export const CITIES: City[] = [
     lat: 31.3333,
     lng: -7.6667,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'demnate',
@@ -943,8 +775,6 @@ export const CITIES: City[] = [
     lat: 31.7333,
     lng: -7.0167,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'skoura',
@@ -954,8 +784,6 @@ export const CITIES: City[] = [
     lat: 31.0667,
     lng: -6.5667,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'tighmert',
@@ -965,8 +793,6 @@ export const CITIES: City[] = [
     lat: 28.8833,
     lng: -10.1167,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'imintanoute',
@@ -976,8 +802,6 @@ export const CITIES: City[] = [
     lat: 31.1833,
     lng: -8.8167,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'talioune-kasbah',
@@ -987,8 +811,6 @@ export const CITIES: City[] = [
     lat: 30.3333,
     lng: -8.65,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'akhfennir',
@@ -998,8 +820,6 @@ export const CITIES: City[] = [
     lat: 28.1667,
     lng: -11.3,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'boulemane',
@@ -1009,8 +829,6 @@ export const CITIES: City[] = [
     lat: 33.3667,
     lng: -4.7333,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'missour',
@@ -1020,8 +838,6 @@ export const CITIES: City[] = [
     lat: 32.9333,
     lng: -3.9833,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'tinmel',
@@ -1031,8 +847,6 @@ export const CITIES: City[] = [
     lat: 31.0833,
     lng: -7.8,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
   {
     id: 'amizour',
@@ -1042,7 +856,5 @@ export const CITIES: City[] = [
     lat: 35.1167,
     lng: -4.5333,
     featured: false,
-    shortDescription: '',
-    thumbnailUrl: '',
   },
 ];

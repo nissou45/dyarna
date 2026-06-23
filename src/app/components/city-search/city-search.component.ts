@@ -2,8 +2,8 @@ import { Component, output, signal, HostListener, inject, DestroyRef, ChangeDete
 import { FormsModule } from '@angular/forms';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { City, CITIES } from '../../data/cities';
-import { searchCities } from '../../services/city-search.service';
+import { City } from '../../data/cities';
+import { CitySearchService } from '../../services/city-search.service';
 
 const CATEGORY_ICONS: Record<City['category'], string> = {
   imperiale: '🏛️',
@@ -92,6 +92,7 @@ const CATEGORY_ICONS: Record<City['category'], string> = {
 })
 export class CitySearchComponent {
   private readonly destroyRef = inject(DestroyRef);
+  private readonly citySearchService = inject(CitySearchService);
   private readonly input$ = new Subject<string>();
 
   readonly citySelected = output<City>();
@@ -115,7 +116,7 @@ export class CitySearchComponent {
           this.suggestions.set([]);
           this.open.set(false);
         } else {
-          const results = searchCities(q, CITIES);
+          const results = this.citySearchService.search(q);
           this.suggestions.set(results);
           this.open.set(true);
           this.activeIndex.set(-1);

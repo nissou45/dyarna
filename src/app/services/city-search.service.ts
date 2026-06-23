@@ -1,4 +1,5 @@
-import { City } from '../data/cities';
+import { Injectable } from '@angular/core';
+import { City, CITIES } from '../data/cities';
 
 function normalize(s: string): string {
   return s
@@ -7,21 +8,24 @@ function normalize(s: string): string {
     .toLowerCase();
 }
 
-export function searchCities(query: string, allCities: City[]): City[] {
-  const q = normalize(query).trim();
-  if (q.length < 2) return [];
+@Injectable({ providedIn: 'root' })
+export class CitySearchService {
+  search(query: string): City[] {
+    const q = normalize(query).trim();
+    if (q.length < 2) return [];
 
-  const startMatches: City[] = [];
-  const anywhereMatches: City[] = [];
+    const startMatches: City[] = [];
+    const anywhereMatches: City[] = [];
 
-  for (const city of allCities) {
-    const name = normalize(city.name);
-    if (name.startsWith(q)) {
-      startMatches.push(city);
-    } else if (name.includes(q)) {
-      anywhereMatches.push(city);
+    for (const city of CITIES) {
+      const name = normalize(city.name);
+      if (name.startsWith(q)) {
+        startMatches.push(city);
+      } else if (name.includes(q)) {
+        anywhereMatches.push(city);
+      }
     }
-  }
 
-  return [...startMatches, ...anywhereMatches].slice(0, 8);
+    return [...startMatches, ...anywhereMatches].slice(0, 8);
+  }
 }
