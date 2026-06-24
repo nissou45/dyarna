@@ -4,34 +4,8 @@
   }
   <div class="sn-card__overlay"></div>
 
-  @if (faceSnap.title === 'Marrakech') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">مراكش</span>
-  } @else if (faceSnap.title === 'Fès') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">فاس</span>
-  } @else if (faceSnap.title === 'Chefchaouen') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">شفشاون</span>
-  } @else if (faceSnap.title === 'Essaouira') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">الصويرة</span>
-  } @else if (faceSnap.title === 'Merzouga') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">مرزوكة</span>
-  } @else if (faceSnap.title === 'Aït-Benhaddou') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">آيت بن حدّو</span>
-  } @else if (faceSnap.title === 'Tanger') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">طنجة</span>
-  } @else if (faceSnap.title === 'Rabat') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">الرباط</span>
-  } @else if (faceSnap.title === 'Casablanca') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">الدار البيضاء</span>
-  } @else if (faceSnap.title === 'Ouarzazate') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">ورزازات</span>
-  } @else if (faceSnap.title === 'Oujda') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">وجدة</span>
-  } @else if (faceSnap.title === 'Agadir') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">أكادير</span>
-  } @else if (faceSnap.title === 'Tétouan') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">تطوان</span>
-  } @else if (faceSnap.title === 'Meknès') {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">مكناس</span>
+  @if (arabicName) {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">{{ arabicName }}</span>
   }
 
   <div class="sn-card__likes">

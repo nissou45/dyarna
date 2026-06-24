@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { FaceSnap } from '../models/snap.model';
 import { Router } from '@angular/router';
-import { FACE_SNAPS_UI, APP_ROUTES } from '../core/constants/face-snaps.constants';
+import { FACE_SNAPS_UI, APP_ROUTES, ARABIC_CITY_NAMES } from '@core';
 
 @Component({
   selector: 'app-face-snap',
@@ -17,6 +17,10 @@ export class FaceSnapComponent {
   @Output() tagClicked = new EventEmitter<string>();
   readonly uiConstants = FACE_SNAPS_UI;
   private router = inject(Router);
+
+  get arabicName(): string | null {
+    return ARABIC_CITY_NAMES[this.faceSnap.title] ?? null;
+  }
 
   onViewFaceSnap(): void {
     this.router.navigateByUrl(`${APP_ROUTES.FACE_SNAPS}/${this.faceSnap.id}`);
