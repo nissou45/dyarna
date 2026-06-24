@@ -306,3 +306,33 @@
 }
 
 .detail-back:hover { color: var(--sn-accent); }
+
+.cuisine-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.cuisine-tab {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--sn-line);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--sn-ink-2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.cuisine-tab:hover {
+  border-color: var(--sn-accent);
+  color: var(--sn-accent);
+}
+
+.cuisine-tab.active {
+  background: var(--sn-accent);
+  border-color: var(--sn-accent);
+  color: #fff;
+}

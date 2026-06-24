@@ -1,10 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FaceSnap, Comment } from '../models/snap.model';
 import { FaceSnapsService } from '../services/face-snaps.service';
 import { ReviewsService } from '../services/reviews.service';
 import { SnapType } from '../models/snap-type-type';
-import { FACE_SNAPS_UI, APP_ROUTES } from '../core/constants/face-snaps.constants';
+import { FACE_SNAPS_UI, APP_ROUTES, ARABIC_CITY_NAMES } from '@core';
 import { CommentsSectionComponent } from '../comments-section/comments-section';
 import { RatingSummaryComponent } from '../reviews/rating-summary.component';
 import { ReviewListComponent } from '../reviews/review-list.component';
@@ -41,7 +42,8 @@ import { DishService } from '../services/dish.service';
   templateUrl: './single-face-snap.html',
   styleUrl: './single-face-snap.scss',
 })
-export class SingleFaceSnapComponent implements OnInit {
+export class SingleFaceSnapComponent implements OnInit, OnDestroy {
+  private routeSub!: Subscription;
   private faceSnapsService = inject(FaceSnapsService);
   private reviewsService = inject(ReviewsService);
   private weatherService = inject(WeatherService);
@@ -58,8 +60,17 @@ export class SingleFaceSnapComponent implements OnInit {
   readonly uiConstants = FACE_SNAPS_UI;
   readonly routes = APP_ROUTES;
 
+  get arabicName(): string | null {
+    return this.faceSnap ? (ARABIC_CITY_NAMES[this.faceSnap.title] ?? null) : null;
+  }
+
   isDish = false;
   dish = this.dishService.getByTitle('');
+  activeCuisineIndex = 0;
+
+  getDishByTitle(title: string) {
+    return this.dishService.getByTitle(title);
+  }
 
   reviews: Review[] = [];
   reviewSummary: ReviewSummary | null = null;
@@ -77,17 +88,43 @@ export class SingleFaceSnapComponent implements OnInit {
   photoLikes: Record<string, boolean> = {};
   currentUserId = '';
 
+  private _cityId = '';
+
   get cityId(): string {
-    return this.route.snapshot.params['id'];
+    return this._cityId;
   }
 
   ngOnInit(): void {
-    this.prepareInterface();
-    this.getFaceSnap();
-    this.loadReviewSummary();
-    this.loadReviews();
-    this.loadWeather();
-    this.loadGallery();
+    this.routeSub = this.route.paramMap.subscribe(params => {
+      this._cityId = params.get('id') ?? '';
+      this.resetState();
+      this.prepareInterface();
+      this.getFaceSnap();
+      this.loadReviewSummary();
+      this.loadReviews();
+      this.loadWeather();
+      this.loadGallery();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.routeSub?.unsubscribe();
+  }
+
+  private resetState(): void {
+    this.reviews = [];
+    this.reviewSummary = null;
+    this.currentPage = 1;
+    this.totalPages = 1;
+    this.editingReview = null;
+    this.weatherInfo = null;
+    this.galleryPhotos = [];
+    this.galleryPage = 1;
+    this.galleryTotalPages = 1;
+    this.selectedPhoto = null;
+    this.activeCuisineIndex = 0;
+    this.isDish = false;
+    this.dish = undefined;
   }
 
   private prepareInterface() {
@@ -109,6 +146,7 @@ export class SingleFaceSnapComponent implements OnInit {
     this.relatedCuisine = related.cuisine;
     this.relatedTraditions = related.traditions;
     this.relatedActivities = related.activities;
+    this.activeCuisineIndex = 0;
   }
 
   onSnap() {
@@ -116,6 +154,14 @@ export class SingleFaceSnapComponent implements OnInit {
     this.faceSnapsService.snapFaceSnapById(this.faceSnap.id, snapType);
     this.userHasSnapped = !this.userHasSnapped;
     this.snapButtonText = this.userHasSnapped ? this.uiConstants.UNSNAP : this.uiConstants.SNAP;
+  }
+
+  onShare(): void {
+    if (navigator.share) {
+      navigator.share({ title: this.faceSnap.title, url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+    }
   }
 
   onPhotoSelected(url: string): void {

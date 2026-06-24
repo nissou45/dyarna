@@ -7,7 +7,9 @@
   <!-- HERO full-width -->
   <section class="detail-hero" [style.background-image]="'url(' + faceSnap.imageUrl + ')'">
     <div class="detail-hero__shade"></div>
-    <span dir="rtl" lang="ar" class="detail-hero__arabic">مراكش</span>
+    @if (arabicName) {
+      <span dir="rtl" lang="ar" class="detail-hero__arabic">{{ arabicName }}</span>
+    }
     <div class="detail-hero__bottom">
       <div class="detail-hero__inner">
         <div class="detail-hero__type">
@@ -86,17 +88,35 @@
             <span class="detail-section__dot"></span>
             Gastronomie
           </h3>
-          <div class="detail-grid-2">
-            @for (item of relatedCuisine; track item.id) {
-              <a class="detail-card" [routerLink]="'/' + routes.FACE_SNAPS + '/' + item.id">
-                <div class="detail-card__img" [style.background-image]="'url(' + item.imageUrl + ')'"></div>
+
+          <!-- Onglets des plats -->
+          <div class="cuisine-tabs">
+            @for (item of relatedCuisine; track item.id; let i = $index) {
+              <button
+                class="cuisine-tab"
+                [class.active]="activeCuisineIndex === i"
+                (click)="activeCuisineIndex = i"
+              >{{ item.title }}</button>
+            }
+          </div>
+
+          <!-- Carte du plat actif -->
+          @let activeSnap = relatedCuisine[activeCuisineIndex];
+          @if (activeSnap) {
+            @let activeDish = getDishByTitle(activeSnap.title);
+            @if (activeDish) {
+              <app-dish-detail [dish]="activeDish" />
+            } @else {
+              <!-- Plat sans recette détaillée : afficher la carte simple -->
+              <a class="detail-card" [routerLink]="'/' + routes.FACE_SNAPS + '/' + activeSnap.id">
+                <div class="detail-card__img" [style.background-image]="'url(' + activeSnap.imageUrl + ')'"></div>
                 <div class="detail-card__body">
-                  <strong>{{ item.title }}</strong>
-                  <span>{{ item.snaps }} snaps</span>
+                  <strong>{{ activeSnap.title }}</strong>
+                  <span>{{ activeSnap.description }}</span>
                 </div>
               </a>
             }
-          </div>
+          }
         </section>
       }
 
@@ -229,7 +249,7 @@
             </svg>
             Snaper cette ville
           </button>
-          <button class="detail-card-stats__btn detail-card-stats__btn--outline">Partager</button>
+          <button class="detail-card-stats__btn detail-card-stats__btn--outline" (click)="onShare()">Partager</button>
         </div>
         <a class="detail-back" routerLink="/decouvertes">← Retour aux découvertes</a>
       </div>
