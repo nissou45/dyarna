@@ -1,4 +1,4 @@
-import { Component, computed, inject, Signal } from '@angular/core';
+import { Component, computed, inject, signal, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FaceSnap } from '../models/snap.model';
 import { FaceSnapComponent } from '../face-snap/face-snap';
@@ -26,10 +26,10 @@ export class FaceSnapListComponent {
 
   faceSnaps: Signal<FaceSnap[]> = this.faceSnapsService.getFaceSnaps();
 
-  searchQuery = '';
-  activeTag: string | null = null;
-  sortBy: 'date' | 'popularity' | 'alpha' = 'popularity';
-  activeTab: 'villes' | 'cuisine' = 'villes';
+  searchQuery = signal('');
+  activeTag = signal<string | null>(null);
+  sortBy = signal<'date' | 'popularity' | 'alpha'>('popularity');
+  activeTab = signal<'villes' | 'cuisine'>('villes');
 
   showCreateForm = false;
   newSnap = {
@@ -49,17 +49,19 @@ export class FaceSnapListComponent {
   /** Snaps filtrés + triés — TOUS affichés (pas de pagination) */
   filteredSnaps = computed(() => {
     let snaps = this.faceSnaps();
+    const tab = this.activeTab();
+    const query = this.searchQuery();
+    const tag = this.activeTag();
+    const sort = this.sortBy();
 
-    // Filtre par onglet
-    if (this.activeTab === 'cuisine') {
+    if (tab === 'cuisine') {
       snaps = snaps.filter(s => s.tags.includes('cuisine'));
     } else {
       snaps = snaps.filter(s => s.tags.includes('ville'));
     }
 
-    // Filtre recherche
-    if (this.searchQuery) {
-      const q = this.searchQuery.toLowerCase();
+    if (query) {
+      const q = query.toLowerCase();
       snaps = snaps.filter(
         s =>
           s.title.toLowerCase().includes(q) ||
@@ -68,15 +70,13 @@ export class FaceSnapListComponent {
       );
     }
 
-    // Filtre par tag
-    if (this.activeTag) {
-      snaps = snaps.filter(s => s.tags.includes(this.activeTag!));
+    if (tag) {
+      snaps = snaps.filter(s => s.tags.includes(tag));
     }
 
-    // Tri
-    if (this.sortBy === 'date') {
+    if (sort === 'date') {
       snaps = [...snaps].sort((a, b) => b.createAt.getTime() - a.createAt.getTime());
-    } else if (this.sortBy === 'alpha') {
+    } else if (sort === 'alpha') {
       snaps = [...snaps].sort((a, b) => a.title.localeCompare(b.title));
     } else {
       snaps = [...snaps].sort((a, b) => b.likes - a.likes);
@@ -86,15 +86,15 @@ export class FaceSnapListComponent {
   });
 
   onSearchChange(query: string): void {
-    this.searchQuery = query;
+    this.searchQuery.set(query);
   }
 
   onTagClick(tag: string): void {
-    this.activeTag = this.activeTag === tag ? null : tag;
+    this.activeTag.set(this.activeTag() === tag ? null : tag);
   }
 
   clearTag(): void {
-    this.activeTag = null;
+    this.activeTag.set(null);
   }
 
   onLikeClick(snapId: string): void {
@@ -107,7 +107,7 @@ export class FaceSnapListComponent {
   }
 
   onSortChange(value: string): void {
-    this.sortBy = value as 'date' | 'popularity' | 'alpha';
+    this.sortBy.set(value as 'date' | 'popularity' | 'alpha');
   }
 
   toggleCreateForm(): void {
