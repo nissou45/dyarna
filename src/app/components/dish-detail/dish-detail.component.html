@@ -1,0 +1,96 @@
+@if (dish) {
+  <!-- Hero -->
+  @if (dish.imageUrl) {
+    <section class="dd-hero" [style.background-image]="'url(' + dish.imageUrl + ')'">
+      <div class="dd-hero__shade"></div>
+      <div class="dd-hero__bottom">
+        <div class="dd-hero__inner">
+          <h1 class="dd-hero__title">{{ dish.name }}</h1>
+          @if (dish.region) {
+            <div class="dd-hero__loc">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7Z"/>
+                <circle cx="12" cy="9" r="2.5"/>
+              </svg>
+              {{ dish.region }}
+            </div>
+          }
+          <div class="dd-hero__type">
+            @for (tag of dish.tags; track tag) {
+              <span>{{ tag }}</span>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+  }
+
+  <div class="dd-body">
+    <main class="dd-main">
+      <p class="dd-lede">{{ dish.description }}</p>
+
+      <section class="dd-section">
+        <h2 class="dd-section__title">
+          <span class="dd-section__dot"></span>
+          Recette
+        </h2>
+        <p class="dd-servings">Pour {{ dish.baseServings }} personnes</p>
+
+        <h3 class="dd-subtitle">Ingrédients</h3>
+        <div class="dd-ingredients">
+          @for (ing of dish.ingredients; track ing.id) {
+            <div class="dd-ingredient">
+              <span class="dd-ingredient__amt">{{ formatAmount(ing) }}</span>
+              <span class="dd-ingredient__name">{{ ing.name }}</span>
+            </div>
+          }
+        </div>
+
+        <h3 class="dd-subtitle">Préparation</h3>
+        <div class="dd-steps">
+          @for (step of dish.steps; track step.id; let i = $index) {
+            <div class="dd-step">
+              <div class="dd-step__num">{{ i + 1 }}</div>
+              <div class="dd-step__content">
+                <h4 class="dd-step__title">{{ step.title }}</h4>
+                <p class="dd-step__text">{{ step.content }}</p>
+                @if (step.timerSeconds) {
+                  <div class="dd-step__timer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    {{ formatTimer(step.timerSeconds) }}
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        @if (dish.notes) {
+          <div class="dd-notes">
+            <h3 class="dd-subtitle">Notes & astuces</h3>
+            <p>{{ dish.notes }}</p>
+          </div>
+        }
+      </section>
+
+      @if (dish.relatedCityNames.length > 0) {
+        <section class="dd-section">
+          <h2 class="dd-section__title">
+            <span class="dd-section__dot"></span>
+            Emblématique de
+          </h2>
+          <p class="dd-related-text">
+            @for (cityName of dish.relatedCityNames; track cityName; let last = $last) {
+              <a [routerLink]="'/decouvertes/' + getCityId(cityName)" class="dd-city-link">
+                {{ cityName }}
+              </a>@if (!last) {, }
+            }
+          </p>
+        </section>
+      }
+    </main>
+  </div>
+}

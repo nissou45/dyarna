@@ -1,0 +1,226 @@
+:host { display: block; }
+
+// ── Hero ──────────────────────────────────────────────────────────────────────
+.dd-hero {
+  position: relative;
+  height: clamp(300px, 40vw, 440px);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.dd-hero__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 16, 12, .08) 28%,
+    rgba(20, 16, 12, .36) 58%,
+    rgba(20, 16, 12, .78)
+  );
+}
+
+.dd-hero__bottom { position: absolute; left: 0; right: 0; bottom: 0; }
+
+.dd-hero__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px 44px;
+}
+
+.dd-hero__title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(48px, 8vw, 80px);
+  line-height: .96;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #fdf6ea;
+}
+
+.dd-hero__loc {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: rgba(253, 246, 234, .86);
+}
+
+.dd-hero__type {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+
+  span {
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .16);
+    backdrop-filter: blur(6px);
+    color: #fdf6ea;
+  }
+}
+
+// ── Body ──────────────────────────────────────────────────────────────────────
+.dd-body {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+.dd-lede {
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--sn-ink-2);
+  margin: 0;
+}
+
+// ── Sections ──────────────────────────────────────────────────────────────────
+.dd-section {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--sn-line);
+}
+
+.dd-section__title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 30px;
+  line-height: 1;
+  margin: 0 0 6px;
+  color: var(--sn-ink);
+}
+
+.dd-section__dot {
+  width: 8px;
+  height: 8px;
+  background: var(--sn-accent);
+  transform: rotate(45deg);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.dd-servings {
+  font-size: 14px;
+  color: var(--sn-muted);
+  margin: 8px 0 24px;
+}
+
+.dd-subtitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 14px;
+  color: var(--sn-ink);
+}
+
+// ── Ingrédients ───────────────────────────────────────────────────────────────
+.dd-ingredients {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 16px;
+  margin-bottom: 28px;
+}
+
+.dd-ingredient {
+  display: flex;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 14px;
+  color: var(--sn-ink-2);
+  border-bottom: 1px solid var(--sn-line);
+}
+
+.dd-ingredient__amt {
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--sn-accent);
+  min-width: 55px;
+}
+
+.dd-ingredient__name { flex: 1; }
+
+// ── Étapes ────────────────────────────────────────────────────────────────────
+.dd-steps { margin-bottom: 28px; }
+
+.dd-step {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--sn-line);
+
+  &:last-child { border: none; }
+}
+
+.dd-step__num {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  background: var(--sn-accent);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.dd-step__content { flex: 1; }
+
+.dd-step__title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: var(--sn-ink);
+}
+
+.dd-step__text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--sn-ink-2);
+  margin: 0;
+}
+
+.dd-step__timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--sn-accent);
+  background: color-mix(in srgb, var(--sn-accent) 10%, transparent);
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+// ── Notes ─────────────────────────────────────────────────────────────────────
+.dd-notes {
+  background: var(--sn-surface);
+  border: 1px solid var(--sn-line);
+  border-radius: 10px;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--sn-ink-2);
+  margin-bottom: 24px;
+
+  p { margin: 0; }
+}
+
+// ── Villes liées ──────────────────────────────────────────────────────────────
+.dd-related-text {
+  font-size: 15px;
+  color: var(--sn-ink-2);
+}
+
+.dd-city-link {
+  color: var(--sn-accent);
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover { text-decoration: underline; }
+}
