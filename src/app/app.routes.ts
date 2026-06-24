@@ -1,74 +1,62 @@
 import { Routes } from '@angular/router';
-import { FaceSnapListComponent } from './face-snap-list/face-snap-list';
-import { LandingPage } from './landing-page/landing-page';
-import { SingleFaceSnapComponent } from './single-face-snap/single-face-snap';
-import { ProfileComponent } from './profile/profile';
-import { LoginComponent } from './login/login';
-import { RegisterComponent } from './register/register';
-import { MapComponent } from './map/map.component';
-import { FavoritesComponent } from './favorites/favorites.component';
-import { ItineraryBuilderComponent } from './itinerary/itinerary-builder.component';
-import { ItineraryPublicComponent } from './itinerary/itinerary-public.component';
-import { QuizGameComponent } from './quiz/quiz-game.component';
-import { LeaderboardComponent } from './quiz/leaderboard.component';
 import { authGuard } from './guards/auth.guard';
 import { APP_ROUTES } from './core/constants/face-snaps.constants';
 
 export const routes: Routes = [
   {
-    path: `${APP_ROUTES.FACE_SNAPS}/:id`,
-    component: SingleFaceSnapComponent,
+    path: APP_ROUTES.LANDING,
+    loadComponent: () => import('./landing-page/landing-page').then(m => m.LandingPage),
   },
   {
     path: APP_ROUTES.FACE_SNAPS,
-    component: FaceSnapListComponent,
+    loadComponent: () => import('./face-snap-list/face-snap-list').then(m => m.FaceSnapListComponent),
   },
   {
-    path: APP_ROUTES.PROFILE,
-    component: ProfileComponent,
-    canActivate: [authGuard],
+    path: `${APP_ROUTES.FACE_SNAPS}/:id`,
+    loadComponent: () => import('./single-face-snap/single-face-snap').then(m => m.SingleFaceSnapComponent),
   },
   {
     path: APP_ROUTES.LOGIN,
-    component: LoginComponent,
+    loadComponent: () => import('./login/login').then(m => m.LoginComponent),
   },
   {
     path: APP_ROUTES.REGISTER,
-    component: RegisterComponent,
+    loadComponent: () => import('./register/register').then(m => m.RegisterComponent),
   },
   {
-    path: APP_ROUTES.LANDING,
-    component: LandingPage,
+    path: APP_ROUTES.PROFILE,
+    loadComponent: () => import('./profile/profile').then(m => m.ProfileComponent),
+    canActivate: [authGuard],
   },
   {
     path: APP_ROUTES.MAP,
-    component: MapComponent,
+    loadComponent: () => import('./map/map.component').then(m => m.MapComponent),
   },
   {
     path: APP_ROUTES.FAVORITES,
-    component: FavoritesComponent,
+    loadComponent: () => import('./favorites/favorites.component').then(m => m.FavoritesComponent),
     canActivate: [authGuard],
   },
   {
     path: `${APP_ROUTES.ITINERARIES}/partage/:token`,
-    component: ItineraryPublicComponent,
+    loadComponent: () => import('./itinerary/itinerary-public.component').then(m => m.ItineraryPublicComponent),
   },
   {
     path: `${APP_ROUTES.ITINERARIES}/nouveau`,
-    component: ItineraryBuilderComponent,
+    loadComponent: () => import('./itinerary/itinerary-builder.component').then(m => m.ItineraryBuilderComponent),
     canActivate: [authGuard],
   },
   {
     path: `${APP_ROUTES.ITINERARIES}/:id`,
-    component: ItineraryBuilderComponent,
+    loadComponent: () => import('./itinerary/itinerary-builder.component').then(m => m.ItineraryBuilderComponent),
     canActivate: [authGuard],
   },
   {
     path: 'quiz',
-    component: QuizGameComponent,
+    loadComponent: () => import('./quiz/quiz-game.component').then(m => m.QuizGameComponent),
   },
   {
     path: 'classement',
-    component: LeaderboardComponent,
+    loadComponent: () => import('./quiz/leaderboard.component').then(m => m.LeaderboardComponent),
   },
 ];
