@@ -8,6 +8,7 @@ import { ItinerarySummaryComponent } from './itinerary-summary.component';
 import { SuggestedCitiesComponent } from './suggested-cities.component';
 import { CITIES } from '../data/cities';
 import { ItineraryComputed, ItineraryDay, CitySuggestion, ItinerarySegment } from '../core/types';
+import { ToastService } from '../services/toast.service';
 
 function toRad(deg: number): number {
   return (deg * Math.PI) / 180;
@@ -50,246 +51,15 @@ const ALL_CITIES = CITIES.map((c) => ({ id: c.id, name: c.name }));
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule, DragDropModule, ItinerarySummaryComponent, SuggestedCitiesComponent],
-  template: `
-    <div class="ib">
-      <div class="ib__header">
-        <input
-          [(ngModel)]="title"
-          placeholder="Titre du voyage (ex: Tour du Maroc - 10 jours)"
-          class="ib__title-input"
-          maxlength="120"
-        />
-      </div>
-
-      <app-itinerary-summary [computed]="computed()" />
-
-      <div class="ib__days" cdkDropList (cdkDropListDropped)="onDrop($event)">
-        @for (day of days(); track day.cityId; let i = $index) {
-          <div class="ib__day" cdkDrag>
-            <div class="ib__day-drag" cdkDragHandle>::</div>
-            <div class="ib__day-body">
-              <div class="ib__day-header">
-                <span class="ib__day-num">Jour {{ i + 1 }}</span>
-                <button class="ib__day-remove" (click)="removeDay(i)">✕</button>
-              </div>
-
-              <select [(ngModel)]="day.cityId" (ngModelChange)="onDaysChanged()" class="ib__day-select">
-                <option value="">Choisir une ville</option>
-                @for (c of availableCities(i); track c.id) {
-                  <option [value]="c.id">{{ c.name }}</option>
-                }
-              </select>
-
-              <div class="ib__day-meta">
-                <label>
-                  Nuits :
-                  <input
-                    type="number"
-                    [(ngModel)]="day.nightsCount"
-                    min="1"
-                    max="14"
-                    class="ib__day-nights"
-                    (ngModelChange)="onDaysChanged()"
-                  />
-                </label>
-                <input
-                  [(ngModel)]="day.notes"
-                  placeholder="Notes (optionnel)"
-                  class="ib__day-notes"
-                  maxlength="500"
-                />
-              </div>
-
-              @if (i > 0) {
-                @let seg = computed().segments[i - 1];
-                <div class="ib__day-travel">
-                  ← {{ seg.distanceKm }} km ({{ seg.travelTime.hours }}h{{ seg.travelTime.minutes }})
-                </div>
-              }
-            </div>
-          </div>
-        }
-      </div>
-
-      <div class="ib__actions">
-        <button class="sn-btn ghost" (click)="addDay()">+ Ajouter une étape</button>
-      </div>
-
-      <app-suggested-cities
-        [suggestions]="suggestions()"
-        (add)="addSuggested($event)"
-      />
-
-      <div class="ib__footer">
-        <button class="sn-btn accent" (click)="save()" [disabled]="!isValid() || saving()">
-          @if (saving()) { Sauvegarde… }
-          @else { @if (editingId()) { Mettre à jour } @else { Créer l'itinéraire } }
-        </button>
-        <button class="sn-btn ghost" (click)="share()" [disabled]="!editingId()">
-          Partager
-        </button>
-        <button class="sn-btn ghost" (click)="exportPdf()" [disabled]="!editingId() || exportingPdf()">
-          @if (exportingPdf()) { Génération PDF… }
-          @else { Exporter PDF }
-        </button>
-      </div>
-
-      @if (shareLink()) {
-        <div class="ib__share-link">
-          Lien public : <input [value]="shareLink()" readonly (click)="$event.target.select()" />
-          <button class="sn-btn ghost" (click)="copyLink()">Copier</button>
-        </div>
-      }
-    </div>
-  `,
-  styles: [`
-    .ib { max-width: 640px; margin: 0 auto; }
-    .ib__header { margin-bottom: 16px; }
-    .ib__title-input {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid var(--sn-line-3);
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--sn-ink-2);
-      box-sizing: border-box;
-      background: var(--sn-surface);
-    }
-    .ib__days { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
-    .ib__day {
-      display: flex;
-      background: var(--sn-surface);
-      border: 1px solid var(--sn-line);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .ib__day.cdk-drag-preview {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .ib__day.cdk-drag-placeholder { opacity: 0.3; }
-    .ib__day-drag {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      background: var(--sn-surface-4);
-      cursor: grab;
-      color: var(--sn-muted-2);
-      font-size: 14px;
-      letter-spacing: -1px;
-      user-select: none;
-    }
-    .ib__day-body { flex: 1; padding: 12px; }
-    .ib__day-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    .ib__day-num { font-weight: 600; font-size: 14px; color: var(--sn-accent); }
-    .ib__day-remove {
-      background: none;
-      border: none;
-      color: var(--sn-muted-2);
-      cursor: pointer;
-      font-size: 14px;
-    }
-    .ib__day-select {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid var(--sn-line-3);
-      border-radius: 6px;
-      font-size: 13px;
-      background: var(--sn-white);
-      color: var(--sn-ink-2);
-      margin-bottom: 8px;
-      box-sizing: border-box;
-    }
-    .ib__day-meta {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .ib__day-meta label {
-      font-size: 12px;
-      color: var(--sn-ink-3);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .ib__day-nights {
-      width: 50px;
-      padding: 4px 6px;
-      border: 1px solid var(--sn-line-3);
-      border-radius: 4px;
-      font-size: 13px;
-    }
-    .ib__day-notes {
-      flex: 1;
-      padding: 4px 8px;
-      border: 1px solid var(--sn-line-3);
-      border-radius: 4px;
-      font-size: 12px;
-      min-width: 120px;
-    }
-    .ib__day-travel {
-      font-size: 11px;
-      color: var(--sn-muted);
-      margin-top: 6px;
-    }
-    .ib__actions { text-align: center; margin: 8px 0 16px; }
-    .ib__footer {
-      display: flex;
-      gap: 8px;
-      margin-top: 16px;
-      flex-wrap: wrap;
-    }
-    .ib__share-link {
-      margin-top: 12px;
-      padding: 10px 12px;
-      background: var(--sn-surface-3);
-      border: 1px solid var(--sn-line);
-      border-radius: 8px;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      font-size: 12px;
-    }
-    .ib__share-link input {
-      flex: 1;
-      border: none;
-      background: transparent;
-      font-size: 12px;
-      color: var(--sn-ink-2);
-    }
-    .sn-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-    .sn-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .sn-btn.ghost {
-      background: transparent;
-      color: var(--sn-accent);
-      border: 1px solid var(--sn-accent);
-    }
-    .sn-btn.accent { background: var(--sn-accent); color: var(--sn-white); }
-  `],
+  templateUrl: './itinerary-builder.component.html',
+  styleUrl: './itinerary-builder.component.scss',
 })
 export class ItineraryBuilderComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly itineraryService = inject(ItineraryService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
 
   protected readonly editingId = signal<string | null>(null);
   protected readonly days = signal<ItineraryDay[]>([{ dayNumber: 1, cityId: '', nightsCount: 2 }]);
@@ -411,7 +181,7 @@ export class ItineraryBuilderComponent implements OnInit {
         const origin = window.location.origin;
         this.shareLink.set(`${origin}/itineraires/partage/${res.shareToken}`);
       },
-      error: () => {},
+      error: () => this.toastService.error('Impossible de générer le lien de partage.'),
     });
   }
 
@@ -458,7 +228,7 @@ export class ItineraryBuilderComponent implements OnInit {
       takeUntilDestroyed(this.destroyRef),
     ).subscribe({
       next: (res) => this.suggestions.set(res.suggestions),
-      error: () => {},
+      error: () => {},  // silencieux : suggestions optionnelles
     });
   }
 }

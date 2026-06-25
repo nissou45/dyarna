@@ -1,0 +1,124 @@
+@if (error()) {
+  <div class="qg-error">
+    <p>{{ error() }}</p>
+    <button class="sn-btn ghost" (click)="startGame()">Réessayer</button>
+    <a routerLink="/" class="sn-btn ghost">Accueil</a>
+  </div>
+} @else if (!sessionId()) {
+  <div class="qg-start">
+    <h2 class="qg-start__title">Devine la ville !</h2>
+    <p class="qg-start__desc">
+      Un indice s'affiche (photo, fait culturel ou climatique).
+      Trouve la ville du Maroc parmi 4 propositions.
+    </p>
+    @if (!auth.user()) {
+      <p class="qg-start__guest">
+        Tu peux jouer sans compte. Connecte-toi après la partie pour apparaître au classement.
+      </p>
+    }
+    <button class="sn-btn accent" (click)="startGame()">
+      @if (loading()) { Chargement… }
+      @else { Commencer le quiz }
+    </button>
+  </div>
+} @else if (result(); as r) {
+  <div class="qr">
+    <h2 class="qr__title">Quiz terminé !</h2>
+
+    <div class="qr__score-circle">
+      <span class="qr__score-value">{{ r.score }}</span>
+      <span class="qr__score-label">points</span>
+    </div>
+
+    <div class="qr__stats">
+      <div class="qr__stat">
+        <span class="qr__stat-value">{{ r.correctAnswers }}/{{ r.totalQuestions }}</span>
+        <span class="qr__stat-label">bonnes réponses</span>
+      </div>
+      <div class="qr__stat">
+        <span class="qr__stat-value">{{ r.averageTimeMs > 0 ? (r.averageTimeMs / 1000).toFixed(1) + 's' : '-' }}</span>
+        <span class="qr__stat-label">temps moyen</span>
+      </div>
+    </div>
+
+    @if (r.isNewBestScore) {
+      <p class="qr__best">🏆 Nouveau record personnel !</p>
+    }
+
+    @if (!auth.user()) {
+      <div class="qr__guest-cta">
+        <p>Connecte-toi pour sauvegarder ton score et apparaître au classement.</p>
+        <a routerLink="/connexion" class="sn-btn accent">Se connecter</a>
+      </div>
+    }
+
+    <div class="qr__actions">
+      <button class="sn-btn accent" (click)="reset()">Rejouer</button>
+      <a routerLink="/classement" class="sn-btn ghost">Voir le classement</a>
+    </div>
+  </div>
+} @else {
+  <div class="qg">
+    <div class="qg__header">
+      <div class="qg__progress">
+        Question {{ (currentQuestion()?.questionIndex ?? 0) + 1 }} / {{ currentQuestion()?.totalQuestions ?? 10 }}
+      </div>
+      <div class="qg__score">{{ currentQuestion()?.score ?? 0 }} pts</div>
+    </div>
+
+    <div class="qg__progress-bar">
+      <div
+        class="qg__progress-fill"
+        [style.width.%]="(((currentQuestion()?.questionIndex ?? 0)) / (currentQuestion()?.totalQuestions ?? 10)) * 100"
+      ></div>
+    </div>
+
+    @if (currentQuestion(); as q) {
+      <div class="qg__clue">
+        @if (q.type === 'photo') {
+          <img [src]="q.clue" alt="Photo de la ville" class="qg__photo" />
+        } @else if (q.type === 'culture_fact') {
+          <div class="qg__fact">
+            <span class="qg__fact-icon">📜</span>
+            <p>{{ q.clue }}</p>
+          </div>
+        } @else {
+          <div class="qg__fact">
+            <span class="qg__fact-icon">🌤️</span>
+            <p>{{ q.clue }}</p>
+          </div>
+        }
+      </div>
+
+      <div class="qg__choices">
+        @for (choice of q.choices; track choice.id) {
+          <button
+            class="qg__choice"
+            [class.qg__choice--correct]="answered() && choice.id === lastAnswer()?.correctCityId"
+            [class.qg__choice--wrong]="answered() && choice.id === selectedChoice() && !lastAnswer()?.isCorrect"
+            [disabled]="answered()"
+            (click)="answer(choice.id)"
+          >
+            {{ choice.name }}
+          </button>
+        }
+      </div>
+
+      @if (lastAnswer(); as ans) {
+        <div class="qg__feedback" [class.qg__feedback--correct]="ans.isCorrect" [class.qg__feedback--wrong]="!ans.isCorrect">
+          @if (ans.isCorrect) {
+            ✓ Bonne réponse ! {{ ans.pointsGained > 10 ? '(+' + ans.pointsGained + ' pts, rapidité bonus !)' : '(+' + ans.pointsGained + ' pts)' }}
+          } @else {
+            ✗ Raté ! C'était <strong>{{ ans.correctCityName }}</strong>
+          }
+
+          @if (!ans.isLastQuestion) {
+            <button class="sn-btn ghost" (click)="nextQuestion()">Question suivante →</button>
+          } @else {
+            <button class="sn-btn accent" (click)="showResults()">Voir les résultats</button>
+          }
+        </div>
+      }
+    }
+  </div>
+}

@@ -1,0 +1,90 @@
+<div class="ib">
+  <div class="ib__header">
+    <input
+      [(ngModel)]="title"
+      placeholder="Titre du voyage (ex: Tour du Maroc - 10 jours)"
+      class="ib__title-input"
+      maxlength="120"
+    />
+  </div>
+
+  <app-itinerary-summary [computed]="computed()" />
+
+  <div class="ib__days" cdkDropList (cdkDropListDropped)="onDrop($event)">
+    @for (day of days(); track day.cityId; let i = $index) {
+      <div class="ib__day" cdkDrag>
+        <div class="ib__day-drag" cdkDragHandle>::</div>
+        <div class="ib__day-body">
+          <div class="ib__day-header">
+            <span class="ib__day-num">Jour {{ i + 1 }}</span>
+            <button class="ib__day-remove" (click)="removeDay(i)">✕</button>
+          </div>
+
+          <select [(ngModel)]="day.cityId" (ngModelChange)="onDaysChanged()" class="ib__day-select">
+            <option value="">Choisir une ville</option>
+            @for (c of availableCities(i); track c.id) {
+              <option [value]="c.id">{{ c.name }}</option>
+            }
+          </select>
+
+          <div class="ib__day-meta">
+            <label>
+              Nuits :
+              <input
+                type="number"
+                [(ngModel)]="day.nightsCount"
+                min="1"
+                max="14"
+                class="ib__day-nights"
+                (ngModelChange)="onDaysChanged()"
+              />
+            </label>
+            <input
+              [(ngModel)]="day.notes"
+              placeholder="Notes (optionnel)"
+              class="ib__day-notes"
+              maxlength="500"
+            />
+          </div>
+
+          @if (i > 0) {
+            @let seg = computed().segments[i - 1];
+            <div class="ib__day-travel">
+              ← {{ seg.distanceKm }} km ({{ seg.travelTime.hours }}h{{ seg.travelTime.minutes }})
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="ib__actions">
+    <button class="sn-btn ghost" (click)="addDay()">+ Ajouter une étape</button>
+  </div>
+
+  <app-suggested-cities
+    [suggestions]="suggestions()"
+    (add)="addSuggested($event)"
+  />
+
+  <div class="ib__footer">
+    <button class="sn-btn accent" (click)="save()" [disabled]="!isValid() || saving()">
+      @if (saving()) { Sauvegarde… }
+      @else { @if (editingId()) { Mettre à jour } @else { Créer l'itinéraire } }
+    </button>
+    <button class="sn-btn ghost" (click)="share()" [disabled]="!editingId()">
+      Partager
+    </button>
+    <button class="sn-btn ghost" (click)="exportPdf()" [disabled]="!editingId() || exportingPdf()">
+      @if (exportingPdf()) { Génération PDF… }
+      @else { Exporter PDF }
+    </button>
+  </div>
+
+  @if (shareLink()) {
+    <div class="ib__share-link">
+      Lien public : <input [value]="shareLink()" readonly (click)="$event.target.select()" />
+      <button class="sn-btn ghost" (click)="copyLink()">Copier</button>
+    </div>
+  }
+</div>

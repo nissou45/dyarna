@@ -1,0 +1,65 @@
+@if (auth.user()) {
+  <div class="photo-upload">
+    <h4 class="photo-upload__title">Ajouter une photo</h4>
+
+    <div
+      class="photo-upload__dropzone"
+      [class.photo-upload__dropzone--active]="dragging()"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave()"
+      (drop)="onDrop($event)"
+    >
+      @if (previewUrl()) {
+        <img [src]="previewUrl()" alt="Aperçu" class="photo-upload__preview" />
+      } @else {
+        <p>Glissez-déposez une photo ici ou cliquez pour choisir</p>
+      }
+      <input
+        #fileInput
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        (change)="onFileSelected($event)"
+        hidden
+      />
+      <button type="button" class="sn-btn ghost" (click)="fileInput.click()" [disabled]="uploading()">
+        Choisir un fichier
+      </button>
+    </div>
+
+    @if (error()) {
+      <p class="photo-upload__error">{{ error() }}</p>
+    }
+
+    @if (file()) {
+      <div class="photo-upload__caption">
+        <input
+          [(ngModel)]="caption"
+          placeholder="Ajouter une légende (optionnelle, 200 car. max)"
+          maxlength="200"
+          class="photo-upload__input"
+          [disabled]="uploading()"
+        />
+      </div>
+
+      <button class="sn-btn block accent" (click)="submit()" [disabled]="uploading()">
+        @if (uploading()) {
+          @if (progress() > 0) {
+            Upload… {{ progress() }}%
+          } @else {
+            Upload en cours…
+          }
+        } @else {
+          Publier la photo
+        }
+      </button>
+    }
+
+    @if (success()) {
+      <p class="photo-upload__success">Photo envoyée ! En attente de modération.</p>
+    }
+  </div>
+} @else {
+  <div class="photo-upload photo-upload--disabled">
+    <p>Connectez-vous pour ajouter vos photos.</p>
+  </div>
+}

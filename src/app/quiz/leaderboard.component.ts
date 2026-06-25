@@ -95,7 +95,7 @@ export class LeaderboardComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef),
       ).subscribe({
         next: (res) => this.userRank.set(res),
-        error: () => {},
+        error: () => {},  // silencieux : classement optionnel
       });
     }
   }

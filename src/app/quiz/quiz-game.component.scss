@@ -1,0 +1,165 @@
+:host { display: block; }
+
+.qg,
+.qg-start { max-width: 560px; margin: 24px auto; padding: 0 16px; }
+
+.qg-start {
+  text-align: center;
+  padding-top: 48px;
+
+  &__title { font-size: 28px; color: var(--sn-ink-2); margin: 0 0 8px; }
+  &__desc { color: var(--sn-ink-3); font-size: 15px; line-height: 1.5; margin: 0 0 16px; }
+  &__guest { font-size: 13px; color: var(--sn-muted); margin: 0 0 20px; }
+}
+
+.qg-error {
+  text-align: center;
+  margin-top: 48px;
+  color: var(--sn-muted);
+
+  p { margin: 0 0 16px; }
+}
+
+.qg__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.qg__progress { font-size: 14px; font-weight: 600; color: var(--sn-accent); }
+.qg__score { font-size: 14px; color: var(--sn-ink-3); }
+
+.qg__progress-bar {
+  height: 4px;
+  background: var(--sn-line);
+  border-radius: 2px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.qg__progress-fill {
+  height: 100%;
+  background: var(--sn-accent);
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+.qg__clue { margin-bottom: 20px; }
+
+.qg__photo {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.qg__fact {
+  background: var(--sn-surface);
+  border: 1px solid var(--sn-line);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+
+  &-icon { font-size: 32px; display: block; margin-bottom: 8px; }
+  p { font-size: 16px; line-height: 1.5; color: var(--sn-ink-2); margin: 0; }
+}
+
+.qg__choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.qg__choice {
+  padding: 14px;
+  border: 2px solid var(--sn-line);
+  border-radius: 10px;
+  background: var(--sn-surface);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--sn-ink-2);
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) { border-color: var(--sn-accent); }
+  &--correct { border-color: var(--sn-success-bright); background: var(--sn-success-bg); }
+  &--wrong { border-color: var(--sn-error-bright); background: var(--sn-error-bg); }
+  &:disabled { cursor: default; opacity: 0.8; }
+}
+
+.qg__feedback {
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  &--correct { background: var(--sn-success-bg); border: 1px solid var(--sn-success-bright); color: var(--sn-success-ink); }
+  &--wrong { background: var(--sn-error-bg); border: 1px solid var(--sn-error-bright); color: var(--sn-error-ink); }
+}
+
+// ── Résultats ─────────────────────────────────────────────────────────────────
+.qr {
+  text-align: center;
+  padding-top: 32px;
+
+  &__title { font-size: 24px; color: var(--sn-ink-2); margin: 0 0 20px; }
+
+  &__score-circle {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: var(--sn-surface);
+    border: 3px solid var(--sn-accent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+  }
+
+  &__score-value { font-size: 36px; font-weight: 700; color: var(--sn-accent); line-height: 1; }
+  &__score-label { font-size: 12px; color: var(--sn-muted); }
+
+  &__stats { display: flex; gap: 24px; justify-content: center; margin-bottom: 16px; }
+  &__stat { text-align: center; }
+  &__stat-value { display: block; font-size: 20px; font-weight: 600; color: var(--sn-ink-2); }
+  &__stat-label { font-size: 12px; color: var(--sn-muted); }
+
+  &__best { font-size: 15px; color: var(--sn-accent); margin: 0 0 16px; }
+
+  &__guest-cta {
+    background: var(--sn-surface-3);
+    border: 1px solid var(--sn-line);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 20px;
+
+    p { margin: 0 0 12px; font-size: 14px; color: var(--sn-ink-3); }
+  }
+
+  &__actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+}
+
+// Surcharge locale des boutons
+.sn-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  text-decoration: none;
+
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+  &.ghost { background: transparent; color: var(--sn-accent); border: 1px solid var(--sn-accent); }
+  &.accent { background: var(--sn-accent); color: var(--sn-white); }
+}

@@ -1,0 +1,78 @@
+<section class="culture-section">
+  @switch (state()) {
+    @case ('loading') {
+      <div class="culture-skeleton">
+        <div class="skeleton-block w-full h-32 rounded-lg mb-6"></div>
+        <div class="skeleton-block w-three-quarters h-6 rounded mb-4"></div>
+        <div class="skeleton-block w-full h-4 rounded mb-2"></div>
+        <div class="skeleton-block w-full h-4 rounded mb-2"></div>
+        <div class="skeleton-block w-two-thirds h-4 rounded mb-8"></div>
+        <div class="flex gap-4">
+          <div class="skeleton-block flex-1 h-20 rounded-lg"></div>
+          <div class="skeleton-block flex-1 h-20 rounded-lg"></div>
+          <div class="skeleton-block flex-1 h-20 rounded-lg"></div>
+        </div>
+      </div>
+    }
+    @case ('unavailable') {
+      <div class="culture-unavailable">
+        <p>Contenu culturel en cours de préparation pour cette ville.</p>
+      </div>
+    }
+    @case ('ready') {
+      @if (data(); as d) {
+        @if (d.history) {
+          <div class="culture-block culture-history">
+            <h2 class="culture-block__title">Histoire</h2>
+            <div class="culture-history__text">{{ d.history }}</div>
+          </div>
+        }
+
+        @if (d.legend) {
+          <div class="culture-block culture-legend">
+            <blockquote class="culture-legend__quote">
+              <p>{{ d.legend.content }}</p>
+              <footer>{{ d.legend.title }}</footer>
+            </blockquote>
+          </div>
+        }
+
+        @if (d.traditions && d.traditions.length > 0) {
+          <div class="culture-block">
+            <h2 class="culture-block__title">Traditions</h2>
+            <div class="culture-traditions">
+              @for (tradition of d.traditions; track tradition) {
+                <div class="culture-tradition-card">
+                  <div class="culture-tradition-card__icon">✦</div>
+                  <span>{{ tradition }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        @if (d.cuisine && d.cuisine.length > 0) {
+          <div class="culture-block">
+            <h2 class="culture-block__title">Gastronomie</h2>
+            <div class="culture-cuisine">
+              @for (item of d.cuisine; track item.name) {
+                <details class="culture-cuisine__item">
+                  <summary class="culture-cuisine__name">{{ item.name }}</summary>
+                  <p class="culture-cuisine__desc">{{ item.description }}</p>
+                </details>
+              }
+            </div>
+          </div>
+        }
+
+        @if (d.sourceUrl) {
+          <div class="culture-source">
+            <a [href]="d.sourceUrl" target="_blank" rel="noopener noreferrer">
+              Source : Wikipedia
+            </a>
+          </div>
+        }
+      }
+    }
+  }
+</section>

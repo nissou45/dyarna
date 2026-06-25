@@ -1,0 +1,170 @@
+:host { display: block; }
+
+.culture-section { margin-top: 32px; }
+
+// ── Blocs génériques ──────────────────────────────────────────────────────────
+.culture-block { margin-bottom: 28px; }
+
+.culture-block__title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--sn-ink-2);
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--sn-line);
+}
+
+// ── Histoire ──────────────────────────────────────────────────────────────────
+.culture-history__text {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--sn-ink-2);
+}
+
+// ── Légende ───────────────────────────────────────────────────────────────────
+.culture-legend {
+  background: var(--sn-surface-3);
+  border: 1px solid var(--sn-line);
+  border-left: 4px solid var(--sn-accent);
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 28px;
+}
+
+.culture-legend__quote {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--sn-ink-3);
+
+  footer {
+    margin-top: 12px;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 600;
+    color: var(--sn-accent);
+  }
+}
+
+// ── Traditions ────────────────────────────────────────────────────────────────
+.culture-traditions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.culture-tradition-card {
+  background: var(--sn-surface);
+  border: 1px solid var(--sn-line);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--sn-ink-2);
+
+  &__icon {
+    color: var(--sn-accent);
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+}
+
+// ── Cuisine ───────────────────────────────────────────────────────────────────
+.culture-cuisine {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__item {
+    background: var(--sn-surface);
+    border: 1px solid var(--sn-line);
+    border-radius: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+  }
+
+  &__name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--sn-ink-2);
+    cursor: pointer;
+  }
+
+  &__desc {
+    margin: 10px 0 4px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--sn-ink-3);
+  }
+}
+
+// ── Source ────────────────────────────────────────────────────────────────────
+.culture-source {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--sn-line);
+  text-align: right;
+
+  a {
+    font-size: 12px;
+    color: var(--sn-muted);
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+  }
+}
+
+// ── Unavailable ───────────────────────────────────────────────────────────────
+.culture-unavailable {
+  padding: 32px;
+  text-align: center;
+  color: var(--sn-muted);
+  background: var(--sn-surface);
+  border: 1px dashed var(--sn-line);
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+// ── Skeleton shimmer ──────────────────────────────────────────────────────────
+.culture-skeleton { padding: 16px 0; }
+
+.skeleton-block {
+  background: linear-gradient(
+    90deg,
+    var(--sn-surface-5) 25%,
+    var(--sn-line) 50%,
+    var(--sn-surface-5) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// Helpers skeleton (utilitaires locaux)
+.w-full          { width: 100%; }
+.w-three-quarters{ width: 75%; }
+.w-two-thirds    { width: 66.67%; }
+.h-32 { height: 128px; }
+.h-20 { height: 80px; }
+.h-6  { height: 24px; }
+.h-4  { height: 16px; }
+.rounded    { border-radius: 6px; }
+.rounded-lg { border-radius: 10px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-4 { margin-bottom: 16px; }
+.mb-6 { margin-bottom: 24px; }
+.mb-8 { margin-bottom: 32px; }
+.flex  { display: flex; }
+.gap-4 { gap: 16px; }
+.flex-1{ flex: 1; }

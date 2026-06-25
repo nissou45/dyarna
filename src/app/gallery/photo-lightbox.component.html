@@ -1,0 +1,32 @@
+@if (photo) {
+  <div class="lightbox" (click)="close.emit()">
+    <div class="lightbox__content" (click)="$event.stopPropagation()">
+      <button class="lightbox__close" (click)="close.emit()">✕</button>
+
+      <img [src]="photo.url" [alt]="photo.caption || 'Photo'" class="lightbox__img" />
+
+      <div class="lightbox__info">
+        <div class="lightbox__meta">
+          <span class="lightbox__author">{{ photo.userId.displayName }}</span>
+          @if (photo.caption) {
+            <p class="lightbox__caption">{{ photo.caption }}</p>
+          }
+        </div>
+
+        <div class="lightbox__actions">
+          @if (isLiked()) {
+            <button class="lightbox__btn liked" (click)="unlike()">♥ {{ likesCount }}</button>
+          } @else {
+            <button class="lightbox__btn" (click)="like()">♡ {{ likesCount }}</button>
+          }
+
+          @if (canDelete()) {
+            <button class="lightbox__btn lightbox__btn--danger" (click)="deletePhoto()">
+              Supprimer
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}
