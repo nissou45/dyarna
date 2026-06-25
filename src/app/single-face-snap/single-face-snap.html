@@ -7,8 +7,8 @@
   <!-- HERO full-width -->
   <section class="detail-hero" [style.background-image]="'url(' + faceSnap.imageUrl + ')'">
     <div class="detail-hero__shade"></div>
-    @if (arabicName) {
-      <span dir="rtl" lang="ar" class="detail-hero__arabic">{{ arabicName }}</span>
+    @if (_arabicName) {
+      <span dir="rtl" lang="ar" class="detail-hero__arabic">{{ _arabicName }}</span>
     }
     <div class="detail-hero__bottom">
       <div class="detail-hero__inner">

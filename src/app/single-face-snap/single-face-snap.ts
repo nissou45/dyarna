@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, DestroyRef } from '@angular/core';
+import { Component, OnInit, inject, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FaceSnap, Comment } from '../models/snap.model';
@@ -26,6 +26,7 @@ import { DishService } from '../services/dish.service';
 @Component({
   selector: 'app-single-face-snap',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
     CommentsSectionComponent,
@@ -62,9 +63,7 @@ export class SingleFaceSnapComponent implements OnInit {
   readonly uiConstants = FACE_SNAPS_UI;
   readonly routes      = APP_ROUTES;
 
-  get arabicName(): string | null {
-    return this.faceSnap ? (ARABIC_CITY_NAMES[this.faceSnap.title] ?? null) : null;
-  }
+  _arabicName: string | null = null;
 
   isDish = false;
   dish: ReturnType<DishService['getByTitle']> = undefined;
@@ -131,6 +130,7 @@ export class SingleFaceSnapComponent implements OnInit {
 
   private getFaceSnap(): void {
     this.faceSnap  = this.faceSnapsService.getFaceSnapById(this.cityId);
+    this._arabicName = ARABIC_CITY_NAMES[this.faceSnap.title] ?? null;
     this.isDish    = this.faceSnap.tags.includes('cuisine');
     if (this.isDish) {
       this.dish = this.dishService.getByTitle(this.faceSnap.title);

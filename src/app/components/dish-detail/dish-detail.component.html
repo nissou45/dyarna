@@ -1,5 +1,6 @@
 @let d = dish();
-@if (d) {
+@let view = vm();
+@if (d && view) {
   <!-- Hero -->
   @if (d.imageUrl) {
     <section class="dd-hero" [style.background-image]="'url(' + d.imageUrl + ')'">
@@ -39,9 +40,9 @@
 
         <h3 class="dd-subtitle">Ingrédients</h3>
         <div class="dd-ingredients">
-          @for (ing of d.ingredients; track ing.id) {
+          @for (ing of view.ingredients; track ing.id) {
             <div class="dd-ingredient">
-              <span class="dd-ingredient__amt">{{ formatAmount(ing) }}</span>
+              <span class="dd-ingredient__amt">{{ ing.displayAmount }}</span>
               <span class="dd-ingredient__name">{{ ing.name }}</span>
             </div>
           }
@@ -49,19 +50,19 @@
 
         <h3 class="dd-subtitle">Préparation</h3>
         <div class="dd-steps">
-          @for (step of d.steps; track step.id; let i = $index) {
+          @for (step of view.steps; track step.id; let i = $index) {
             <div class="dd-step">
               <div class="dd-step__num">{{ i + 1 }}</div>
               <div class="dd-step__content">
                 <h4 class="dd-step__title">{{ step.title }}</h4>
                 <p class="dd-step__text">{{ step.content }}</p>
-                @if (step.timerSeconds) {
+                @if (step.displayTimer) {
                   <div class="dd-step__timer">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <circle cx="12" cy="12" r="10"/>
                       <polyline points="12 6 12 12 16 14"/>
                     </svg>
-                    {{ formatTimer(step.timerSeconds) }}
+                    {{ step.displayTimer }}
                   </div>
                 }
               </div>
@@ -77,16 +78,16 @@
         }
       </section>
 
-      @if (d.relatedCityNames.length > 0) {
+      @if (view.cityLinks.length > 0) {
         <section class="dd-section">
           <h2 class="dd-section__title">
             <span class="dd-section__dot"></span>
             Emblématique de
           </h2>
           <p class="dd-related-text">
-            @for (cityName of d.relatedCityNames; track cityName; let last = $last) {
-              <a [routerLink]="'/decouvertes/' + getCityId(cityName)" class="dd-city-link">
-                {{ cityName }}
+            @for (link of view.cityLinks; track link.name; let last = $last) {
+              <a [routerLink]="'/decouvertes/' + link.id" class="dd-city-link">
+                {{ link.name }}
               </a>@if (!last) {, }
             }
           </p>
