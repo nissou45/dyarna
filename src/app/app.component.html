@@ -23,3 +23,12 @@
     <a href="#">Contact</a>
   </div>
 </footer>
+
+<!-- Toasts globaux -->
+<div class="toast-container">
+  @for (t of toast.toasts(); track trackToast($index, t)) {
+    <div class="toast toast--{{ t.type }}" (click)="toast.dismiss(t.id)">
+      {{ t.message }}
+    </div>
+  }
+</div>

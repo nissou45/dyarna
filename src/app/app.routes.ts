@@ -59,4 +59,5 @@ export const routes: Routes = [
     path: 'classement',
     loadComponent: () => import('./quiz/leaderboard.component').then(m => m.LeaderboardComponent),
   },
+  { path: '**', redirectTo: '' },
 ];

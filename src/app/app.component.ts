@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { ToastService, Toast } from './services/toast.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,10 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
   readonly auth = inject(AuthService);
+  readonly toast = inject(ToastService);
   private router = inject(Router);
+
+  trackToast(_: number, t: Toast) { return t.id; }
 
   logout(event: Event): void {
     event.preventDefault();
