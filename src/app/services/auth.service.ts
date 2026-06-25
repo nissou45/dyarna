@@ -73,7 +73,7 @@ export class AuthService {
   logout(): void {
     if (this.accessToken) {
       this.http.post(`${this.API}/logout`, {}, { withCredentials: true }).subscribe({
-        error: () => {},
+        error: () => {},  // silencieux : logout local déjà effectué
       });
     }
     this.accessToken = null;

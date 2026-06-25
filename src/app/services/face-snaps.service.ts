@@ -1,528 +1,94 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { FaceSnap, Comment } from '../models/snap.model';
 import { SnapType } from '../models/snap-type-type';
-import { WikipediaService } from './wikipedia.service';
-
-// ── 25+ entrées marocaines ──
-const INITIAL_FACE_SNAPS: FaceSnap[] = [
-  // ── VILLES IMPÉRIALES ──
-  new FaceSnap(
-    'Marrakech',
-    'La Ville Rouge, joyau du sud marocain. Sa médina classée à l\'UNESCO, la place Jemaa el-Fnaa qui s\'anime à la nuit tombée, ses palais cachés et ses jardins secrets. Entre traditions et modernité, Marrakech est le cœur battant du Maroc touristique.',
-    'https://upload.wikimedia.org/wikipedia/commons/e/e8/Koutoubia_minaret_in_Marrakech%2C_Morocco.jpg',
-    new Date('2024-01-15'), 2450, 'marrakech',
-  ),
-  new FaceSnap(
-    'Fès',
-    'La capitale spirituelle du Maroc. Fès abrite la plus vieille université du monde (Al Quaraouiyine) et sa médina, la plus grande zone piétonne au monde. Perdez-vous dans les 9000 ruelles de Fès el-Bali, entre tanneries millénaires, souks et mosquées.',
-    'https://upload.wikimedia.org/wikipedia/commons/e/ef/Fes_medina_walls_DSCF3737.jpg',
-    new Date('2024-02-20'), 1890, 'fes',
-  ),
-  new FaceSnap(
-    'Meknès',
-    'La ville aux 40 portes, surnommée le Versailles marocain. Fondée par Moulay Ismail, elle impressionne par ses remparts monumentaux, sa porte Bab Mansour et ses greniers royaux. Une ville impériale souvent méconnue mais fascinante.',
-    'https://upload.wikimedia.org/wikipedia/commons/0/06/Meknes-medina-aerial-view.jpg',
-    new Date('2024-03-10'), 890, 'meknes',
-  ),
-  new FaceSnap(
-    'Rabat',
-    'La capitale moderne du Royaume. Rabat allie patrimoine historique (Tour Hassan, nécropole du Chellah) et vie moderne animée. Ses quartiers branchés de l\'Agdal et ses plages de l\'océan Atlantique en font une ville où il fait bon vivre.',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Morocco_-_Rabat_%2831387775324%29.jpg/960px-Morocco_-_Rabat_%2831387775324%29.jpg',
-    new Date('2024-04-05'), 1200, 'rabat',
-  ),
-
-  // ── VILLES CÔTIÈRES ──
-  new FaceSnap(
-    'Essaouira',
-    'L\'ancienne Mogador, cité des vents. Ses remparts portugais, sa médina bleue et blanche, son port de pêche animé et ses plages de surf en font la station balnéaire préférée des artistes et des amateurs de kitesurf.',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Morocco_-_Essaouira_Part_2_%2831679848385%29.jpg/960px-Morocco_-_Essaouira_Part_2_%2831679848385%29.jpg',
-    new Date('2024-05-12'), 1560, 'essaouira',
-  ),
-  new FaceSnap(
-    'Tanger',
-    'La porte de l\'Afrique, où la Méditerranée rencontre l\'Atlantique. Tanger a inspiré des artistes du monde entier : Delacroix, Matisse, les Beatniks. Sa médina perchée, ses cafés aux terrasses légendaires et son coucher de soleil sur le détroit.',
-    'https://upload.wikimedia.org/wikipedia/commons/1/1f/Cap_Spartel_%2C_Tangier_Morocco.jpg',
-    new Date('2024-06-18'), 1780, 'tanger',
-  ),
-  new FaceSnap(
-    'Agadir',
-    'La station balnéaire par excellence. Détruite par le séisme de 1960, Agadir renaît de ses cendres avec une magnifique baie en arc de cercle, des plages de sable fin et une promenade animée. Point de départ idéal pour explorer le sud marocain.',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/South_view_sea_side_from_Kasbah_of_Agadir_Oufella.jpg/960px-South_view_sea_side_from_Kasbah_of_Agadir_Oufella.jpg',
-    new Date('2024-07-22'), 1340, 'agadir',
-  ),
-  new FaceSnap(
-    'Al Hoceïma',
-    'La perle de la Méditerranée. Ses plages de sable blanc nichées entre falaises rouges, ses criques aux eaux cristallines et son parc national d\'Al Hoceïma en font un paradis pour les amoureux de nature et de plongée.',
-    'https://upload.wikimedia.org/wikipedia/commons/c/c6/Al_Hoceima_Quemado.jpg',
-    new Date('2024-08-14'), 670, 'al-hoceima',
-  ),
-
-  // ── VILLES DU NORD ──
-  new FaceSnap(
-    'Chefchaouen',
-    'La perle bleue du Rif. Chefchaouen est célèbre pour sa médina peinte en bleu, ses ruelles pittoresques et son atmosphère paisible. Nichée dans les montagnes du Rif, c\'est l\'un des endroits les plus photogéniques du Maroc.',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Chefchaouen_%2852189357475%29.jpg/960px-Chefchaouen_%2852189357475%29.jpg',
-    new Date('2024-09-01'), 2340, 'chefchaouen',
-  ),
-  new FaceSnap(
-    'Tétouan',
-    'La colombe blanche. Sa médina blanche immaculée classée à l\'UNESCO, ses influences andalouses, son artisanat raffiné. Tétouan est un musée à ciel ouvert de l\'architecture hispano-mauresque.',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/View_of_Moulay_el_Mehdi_-_panoramio.jpg/960px-View_of_Moulay_el_Mehdi_-_panoramio.jpg',
-    new Date('2024-09-15'), 780, 'tetouan',
-  ),
-  new FaceSnap(
-    'Oujda',
-    'La porte de l\'orient. Ville à la frontière algérienne, Oujda est un carrefour culturel unique. Sa médina animée, son université et sa proximité avec les plages de Saïdia en font une étape authentique.',
-    'https://upload.wikimedia.org/wikipedia/commons/b/b1/Oujda_city.jpg',
-    new Date('2024-10-01'), 560, 'oujda',
-  ),
-
-  // ── VILLES DU SUD ──
-  new FaceSnap(
-    'Ouarzazate',
-    'La porte du désert. Ouarzazate est la capitale du cinéma marocain (Atlantis Studios). Ses kasbahs millénaires, dont la célèbre Kasbah Aït Ben Haddou classée à l\'UNESCO, ont servi de décor à Gladiator, Game of Thrones et Lawrence d\'Arabie.',
-    'https://upload.wikimedia.org/wikipedia/commons/0/0f/Kasbah_Taourirt_in_Ouarzazate_2011.jpg',
-    new Date('2024-10-20'), 1120, 'ouarzazate',
-  ),
-  new FaceSnap(
-    'Zagora',
-    'La porte du grand sud. Au bout de la route, le désert du Sahara commence ici. Le célèbre panneau "Tombouctou 52 jours" marque le départ des caravanes. Ses couchers de soleil sur les dunes de Tinfou sont inoubliables.',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Extreme_Environments_-_Desert_and_dunes_outside_Zagora%2C_Morocco_%2833563949946%29.jpg/960px-Extreme_Environments_-_Desert_and_dunes_outside_Zagora%2C_Morocco_%2833563949946%29.jpg',
-    new Date('2024-11-05'), 450, 'zagora',
-  ),
-  new FaceSnap(
-    'Merzouga',
-    'Les portes du Sahara. Merzouga est le point de départ pour explorer les majestueuses dunes de l\'Erg Chebbi. À dos de dromadaire ou en 4x4, vivez l\'expérience unique du désert marocain, ses nuits étoilées et ses levers de soleil féériques.',
-    'https://upload.wikimedia.org/wikipedia/commons/f/fd/Desert_Merzouga_Morocco_groupe_kamels.jpg',
-    new Date('2024-11-20'), 1890, 'merzouga',
-  ),
-
-  // ── CUISINE MAROCAINE ──
-  new FaceSnap(
-    'Tajine Marrakchi',
-    'Le plat emblématique du Maroc. Poulet au citron confit et olives vertes, tajine d\'agneau aux pruneaux et amandes, tajine de kefta aux œufs… Chaque région a sa recette. Cuit lentement dans un plat en terre cuite, il révèle des saveurs uniques.',
-    'https://upload.wikimedia.org/wikipedia/commons/6/6c/Moroccan_Tajin.jpg',
-    new Date('2024-01-10'), 3200, 'tajine-marrakchi',
-  ),
-  new FaceSnap(
-    'Couscous',
-    'Le plat du vendredi, héritage berbère millénaire. Semoule fine cuite à la vapeur, accompagnée de légumes de saison, de viande (agneau, poulet) et de pois chiches. Le couscous royal, avec ses merguez et son poulet, est un festin à lui seul.',
-    'https://upload.wikimedia.org/wikipedia/commons/f/f1/Couscous_in_Morocco.jpg',
-    new Date('2024-02-15'), 2800, 'couscous',
-  ),
-  new FaceSnap(
-    'Pastilla',
-    'L\'art culinaire marocain dans toute sa splendeur. Tourte feuilletée sucrée-salée à base de pigeon (ou poulet), amandes grillées, cannelle et sucre glace. La pastilla aux fruits de mer est une variante tout aussi délicieuse des villes côtières.',
-    'https://upload.wikimedia.org/wikipedia/commons/3/3a/Pastilla_marocaine_recouverte_de_sucre_glace.jpg',
-    new Date('2024-03-20'), 2100, 'pastilla',
-  ),
-  new FaceSnap(
-    'Harira',
-    'La soupe traditionnelle du ramadan. Tomates, lentilles, pois chiches, viande d\'agneau, coriandre et épices. Servie avec des dattes et du chebakia (pâtisserie au miel), c\'est le repas de rupture du jeûne par excellence.',
-    'https://upload.wikimedia.org/wikipedia/commons/6/67/Harira_fyldig_marrokansk_suppe.jpg',
-    new Date('2024-04-25'), 1450, 'harira',
-  ),
-  new FaceSnap(
-    'Thé à la menthe',
-    'Bien plus qu\'une boisson, un rituel d\'hospitalité. Thé vert Gunpowder, menthe fraîche et sucre, versé de haut pour créer une mousse légère. On dit qu\'au Maroc, le premier verre est doux comme la vie, le deuxième fort comme l\'amour, le troisième amer comme la mort.',
-    'https://upload.wikimedia.org/wikipedia/commons/3/38/Mint_tea%2C_Marrakesh.jpg',
-    new Date('2024-01-05'), 4500, 'the-a-la-menthe',
-  ),
-
-  // ── NOUVEAUX PLATS ──
-  new FaceSnap(
-    'Rfissa',
-    'Le plat de fête par excellence, servi pour célébrer les naissances et les grandes occasions. Poulet mijoté au ras el hanout posé sur un lit de msemen émiettés et de lentilles parfumées au fenugrec. Un plat généreux à la saveur incomparable.',
-    'https://upload.wikimedia.org/wikipedia/commons/5/5f/Rfissa_marocaine.jpg',
-    new Date('2024-03-01'), 1100, 'rfissa',
-  ),
-  new FaceSnap(
-    'Méchoui',
-    'L\'agneau rôti à la broche, symbole de l\'hospitalité berbère. Entier ou en épaule, enduit de beurre aux épices, cuit 4 à 5 heures sur braise. La chair se détache à la main, croustillante dehors et fondante dedans. Incontournable à l\'Aïd el-Kébir.',
-    'https://upload.wikimedia.org/wikipedia/commons/9/96/Mechoui.jpg',
-    new Date('2024-04-01'), 1800, 'mechoui',
-  ),
-  new FaceSnap(
-    'Sardines grillées d\'Essaouira',
-    'Pêchées le matin, grillées au charbon de bois le midi sur le port. Marinées au chermoula (coriandre, cumin, paprika, ail, citron), elles grillent sur braise et se mangent avec du pain marocain chaud. Simple, populaire, inoubliable.',
-    'https://upload.wikimedia.org/wikipedia/commons/b/b1/Sardines_-_%E9%B0%AF%28%E3%81%95%E3%82%93%E3%81%BE%29.jpg',
-    new Date('2024-05-01'), 950, 'sardines-essaouira',
-  ),
-  new FaceSnap(
-    'Amlou',
-    'Le trésor gourmand du Souss. Cette pâte à tartiner berbère, préparée à base d\'amandes torréfiées, d\'huile d\'argan et de miel, est le petit-déjeuner royal d\'Agadir. L\'argan lui donne un goût légèrement fumé et noisette totalement unique au monde.',
-    'https://upload.wikimedia.org/wikipedia/commons/c/c3/ArganAmlou_Oil_Mill.jpg',
-    new Date('2024-06-01'), 720, 'amlou',
-  ),
-  new FaceSnap(
-    'Briouates',
-    'Les feuilletés marocains par excellence. Petits triangles de feuilles de brick croustillantes farcis de kefta épicée, dorés à l\'huile d\'olive. La version sucrée au miel est la plus festive, servie lors des mariages et grandes fêtes.',
-    'https://upload.wikimedia.org/wikipedia/commons/7/72/Moroccan_food-02.jpg',
-    new Date('2024-07-01'), 1350, 'briouates',
-  ),
-
-  // ── TRADITIONS ──
-  new FaceSnap(
-    'Moussem de Tan-Tan',
-    'Le plus grand rassemblement nomade du Maroc. Chaque année, plus de 30 tribus du Sahara se réunissent pour célébrer leur culture : courses de dromadaires, musiques gnaoua, contes et artisanat. Classé patrimoine immatériel de l\'UNESCO.',
-    'https://upload.wikimedia.org/wikipedia/commons/7/7d/Moroccan_Tbourida_or_Fantasia_in_the_Tan_Tan_Moussem.jpg',
-    new Date('2024-06-15'), 890, 'moussem-tan-tan',
-  ),
-  new FaceSnap(
-    'Hammam Marocain',
-    'Un rituel de purification ancestral. Le hammam, c\'est l\'art de prendre soin de son corps : vapeur chaude, gommage au savon noir et à l\'huile d\'argan, massage. Un moment de détente et de convivialité qui rythme la vie des Marocains.',
-    'https://upload.wikimedia.org/wikipedia/commons/7/76/Hammam_moulay_idris_DSCF5488_crop.jpg',
-    new Date('2024-07-30'), 2340, 'hammam-marocain',
-  ),
-  new FaceSnap(
-    'Artisanat du Zellige',
-    'L\'art de la mosaïque marocaine. Les maâlems (maîtres artisans) découpent à la main des carreaux de terre cuite émaillée pour créer des motifs géométriques complexes. Une tradition vieille de 10 siècles qui orne les plus beaux palais et mosquées.',
-    'https://upload.wikimedia.org/wikipedia/commons/3/3e/Moroccan_Zellij_fountain%2C_Meknes.jpg',
-    new Date('2024-08-20'), 1670, 'artisanat-zellige',
-  ),
-  new FaceSnap(
-    'Fantasia',
-    'La charge des cavaliers berbères. Lors des fêtes traditionnelles (moussems), des cavaliers en tenue blanche chargent au galop en tirant au mousquet simultanément. Un spectacle impressionnant qui perpétue l\'art équestre ancestral du Maroc.',
-    'https://upload.wikimedia.org/wikipedia/commons/f/fb/20170415_173734_Fantasia_Morocco.jpg',
-    new Date('2024-09-10'), 780, 'fantasia',
-  ),
-];
-
-const PHOTOS_CACHE_KEY = 'dyarna_photos_cache';
-const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 1 semaine
-
-interface PhotoCache {
-  timestamp: number;
-  urls: Record<string, string>;
-}
+import {
+  INITIAL_FACE_SNAPS,
+  SNAP_LOCATIONS,
+  SNAP_CATEGORIES,
+  SNAP_RELATED,
+  VILLE_TAGS,
+} from '../data/face-snaps.data';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FaceSnapsService {
   private faceSnaps = signal<FaceSnap[]>(INITIAL_FACE_SNAPS);
-  private wiki = inject(WikipediaService);
-  private photosLoaded = false;
-
-  private readonly LOCATIONS: Record<string, string> = {
-    'Marrakech': 'Marrakech-Safi',
-    'Fès': 'Fès-Meknès',
-    'Meknès': 'Fès-Meknès',
-    'Rabat': 'Rabat-Salé-Kénitra',
-    'Essaouira': 'Marrakech-Safi',
-    'Tanger': 'Tanger-Tétouan-Al Hoceïma',
-    'Agadir': 'Souss-Massa',
-    'Al Hoceïma': 'Tanger-Tétouan-Al Hoceïma',
-    'Chefchaouen': 'Tanger-Tétouan-Al Hoceïma',
-    'Tétouan': 'Tanger-Tétouan-Al Hoceïma',
-    'Oujda': 'Oriental',
-    'Ouarzazate': 'Drâa-Tafilalet',
-    'Zagora': 'Drâa-Tafilalet',
-    'Merzouga': 'Drâa-Tafilalet',
-  };
-
-  private readonly CATEGORIES: Record<string, string[]> = {
-    villes: ['Marrakech', 'Fès', 'Meknès', 'Rabat', 'Essaouira', 'Tanger', 'Agadir', 'Al Hoceïma', 'Chefchaouen', 'Tétouan', 'Oujda', 'Ouarzazate', 'Zagora', 'Merzouga'],
-    cuisine: ['Tajine Marrakchi', 'Couscous', 'Pastilla', 'Harira', 'Thé à la menthe', 'Rfissa', 'Méchoui', 'Sardines grillées d\'Essaouira', 'Amlou', 'Briouates'],
-    traditions: ['Moussem de Tan-Tan', 'Hammam Marocain', 'Artisanat du Zellige', 'Fantasia'],
-  };
-
-  /** Mapping titre de l'entrée → titre de la page Wikipedia (anglaise) */
-  readonly wikiPages: Record<string, string> = {
-    'Marrakech': 'Marrakech',
-    'Fès': 'Fès',
-    'Meknès': 'Meknès',
-    'Rabat': 'Rabat',
-    'Essaouira': 'Essaouira',
-    'Tanger': 'Tanger',
-    'Agadir': 'Agadir',
-    'Al Hoceïma': 'Al Hoceima',
-    'Chefchaouen': 'Chefchaouen',
-    'Tétouan': 'Tétouan',
-    'Oujda': 'Oujda',
-    'Ouarzazate': 'Ouarzazate',
-    'Zagora': 'Zagora, Morocco',
-    'Merzouga': 'Merzouga',
-    'Tajine Marrakchi': 'Tajine',
-    'Couscous': 'Couscous',
-    'Pastilla': 'Pastilla',
-    'Harira': 'Harira',
-    'Thé à la menthe': 'Maghrebi mint tea',
-    'Rfissa': 'Rfissa',
-    'Méchoui': 'Mechoui',
-    'Sardines grillées d\'Essaouira': 'Sardine',
-    'Amlou': 'Amlou',
-    'Briouates': 'Briouat',
-    'Moussem de Tan-Tan': 'Moussem of Tan-Tan',
-    'Hammam Marocain': 'Hammam',
-    'Artisanat du Zellige': 'Zellige',
-    'Fantasia': 'Fantasia (performance)',
-  };
-
-  /** Relations entre contenus : chaque ville renvoie aux plats, traditions et lieux associés */
-  readonly RELATED: Record<string, { cuisine: string[]; traditions: string[]; activities: string[] }> = {
-    Marrakech: {
-      cuisine: ['Tajine Marrakchi', 'Méchoui', 'Pastilla', 'Thé à la menthe', 'Briouates'],
-      traditions: ['Hammam Marocain', 'Artisanat du Zellige', 'Fantasia'],
-      activities: ['Merzouga', 'Ouarzazate'],
-    },
-    Fès: {
-      cuisine: ['Pastilla', 'Briouates', 'Rfissa', 'Harira', 'Couscous'],
-      traditions: ['Artisanat du Zellige', 'Hammam Marocain'],
-      activities: ['Meknès', 'Merzouga'],
-    },
-    Meknès: {
-      cuisine: ['Couscous', 'Rfissa', 'Briouates', 'Harira'],
-      traditions: ['Fantasia', 'Artisanat du Zellige'],
-      activities: ['Fès', 'Merzouga'],
-    },
-    Rabat: {
-      cuisine: ['Rfissa', 'Pastilla', 'Harira', 'Thé à la menthe'],
-      traditions: ['Artisanat du Zellige'],
-      activities: ['Tanger', 'Essaouira'],
-    },
-    Essaouira: {
-      cuisine: ['Sardines grillées d\'Essaouira', 'Tajine Marrakchi', 'Pastilla', 'Harira'],
-      traditions: ['Hammam Marocain', 'Artisanat du Zellige'],
-      activities: ['Marrakech', 'Agadir'],
-    },
-    Tanger: {
-      cuisine: ['Briouates', 'Sardines grillées d\'Essaouira', 'Thé à la menthe', 'Pastilla'],
-      traditions: ['Hammam Marocain'],
-      activities: ['Chefchaouen', 'Tétouan'],
-    },
-    Agadir: {
-      cuisine: ['Amlou', 'Sardines grillées d\'Essaouira', 'Tajine Marrakchi', 'Couscous'],
-      traditions: ['Hammam Marocain'],
-      activities: ['Essaouira', 'Merzouga'],
-    },
-    'Al Hoceïma': {
-      cuisine: ['Sardines grillées d\'Essaouira', 'Pastilla', 'Harira'],
-      traditions: ['Fantasia'],
-      activities: ['Chefchaouen', 'Tétouan'],
-    },
-    Chefchaouen: {
-      cuisine: ['Couscous', 'Thé à la menthe', 'Harira', 'Briouates'],
-      traditions: ['Artisanat du Zellige', 'Hammam Marocain'],
-      activities: ['Tanger', 'Tétouan'],
-    },
-    Tétouan: {
-      cuisine: ['Pastilla', 'Briouates', 'Sardines grillées d\'Essaouira', 'Couscous'],
-      traditions: ['Artisanat du Zellige', 'Fantasia'],
-      activities: ['Chefchaouen', 'Tanger'],
-    },
-    Oujda: {
-      cuisine: ['Couscous', 'Rfissa', 'Harira'],
-      traditions: ['Fantasia', 'Moussem de Tan-Tan'],
-      activities: ['Merzouga'],
-    },
-    Ouarzazate: {
-      cuisine: ['Méchoui', 'Tajine Marrakchi', 'Thé à la menthe'],
-      traditions: ['Fantasia', 'Moussem de Tan-Tan'],
-      activities: ['Merzouga', 'Zagora'],
-    },
-    Zagora: {
-      cuisine: ['Méchoui', 'Tajine Marrakchi', 'Thé à la menthe'],
-      traditions: ['Moussem de Tan-Tan', 'Fantasia'],
-      activities: ['Merzouga', 'Ouarzazate'],
-    },
-    Merzouga: {
-      cuisine: ['Méchoui', 'Tajine Marrakchi', 'Thé à la menthe', 'Couscous'],
-      traditions: ['Moussem de Tan-Tan', 'Fantasia'],
-      activities: ['Zagora', 'Ouarzazate'],
-    },
-  };
 
   constructor() {
     this.faceSnaps.update(snaps => {
       snaps.forEach(snap => {
-        const location = this.LOCATIONS[snap.title];
+        const location = SNAP_LOCATIONS[snap.title];
         if (location) snap.setLocation(location);
 
-        if (this.CATEGORIES['villes'].includes(snap.title)) {
-          snap.tags = ['ville', ...this.getVilleTags(snap.title)];
-        } else if (this.CATEGORIES['cuisine'].includes(snap.title)) {
+        if (SNAP_CATEGORIES['villes'].includes(snap.title)) {
+          snap.tags = ['ville', ...(VILLE_TAGS[snap.title] ?? ['patrimoine'])];
+        } else if (SNAP_CATEGORIES['cuisine'].includes(snap.title)) {
           snap.tags = ['cuisine', 'gastronomie'];
-        } else if (this.CATEGORIES['traditions'].includes(snap.title)) {
+        } else if (SNAP_CATEGORIES['traditions'].includes(snap.title)) {
           snap.tags = ['tradition', 'culture'];
         }
       });
       return [...snaps];
     });
-
-    // Lancer la récupération des vraies photos en arrière-plan
-    this.loadRealPhotos();
   }
 
-  // ── Photo initialization ──
-
-  private async loadRealPhotos(): Promise<void> {
-    if (this.photosLoaded) return;
-
-    // 1. Try loading from cache
-    const cached = this.loadPhotoCache();
-    if (cached) {
-      this.applyPhotos(cached);
-      this.photosLoaded = true;
-      return;
-    }
-
-    // 2. Fetch from Wikipedia REST API (pas besoin de clé API, pas de rate limit significatif)
-    const snapList = this.faceSnaps();
-    const urls: Record<string, string> = {};
-    const entries = snapList.filter(s => this.wikiPages[s.title]);
-    let changed = false;
-
-    // Récupération séquentielle (Wikipedia n'aime pas les rafales)
-    for (let i = 0; i < entries.length; i++) {
-      const snap = entries[i];
-      const pageTitle = this.wikiPages[snap.title];
-      if (!pageTitle) continue;
-
-      try {
-        const url = await this.wiki.getBestPhotoUrl(pageTitle);
-        if (url) {
-          urls[snap.title] = url;
-          snap.imageUrl = url;
-          changed = true;
-        }
-      } catch {
-        // silencieux — on garde le placeholder
-      }
-
-      // Appliquer au fur et à mesure pour un effet progressif
-      if (changed && (i % 3 === 2 || i === entries.length - 1)) {
-        this.faceSnaps.update(snaps => [...snaps]);
-        changed = false;
-      }
-
-      // Petit délai entre chaque requête pour respecter Wikipedia
-      await new Promise(r => setTimeout(r, 300));
-    }
-
-    // 3. Save to cache
-    if (Object.keys(urls).length > 0) {
-      this.savePhotoCache(urls);
-    }
-
-    this.photosLoaded = true;
-  }
-
-  private applyPhotos(urls: Record<string, string>): void {
-    this.faceSnaps.update(snaps => {
-      snaps.forEach(snap => {
-        if (urls[snap.title]) {
-          snap.imageUrl = urls[snap.title]!;
-        }
-      });
-      return [...snaps];
-    });
-  }
-
-  private loadPhotoCache(): Record<string, string> | null {
-    try {
-      const raw = localStorage.getItem(PHOTOS_CACHE_KEY);
-      if (!raw) return null;
-      const cache: PhotoCache = JSON.parse(raw);
-      if (Date.now() - cache.timestamp > CACHE_TTL_MS) {
-        localStorage.removeItem(PHOTOS_CACHE_KEY);
-        return null;
-      }
-      return cache.urls;
-    } catch {
-      return null;
-    }
-  }
-
-  private savePhotoCache(urls: Record<string, string>): void {
-    try {
-      const cache: PhotoCache = { timestamp: Date.now(), urls };
-      localStorage.setItem(PHOTOS_CACHE_KEY, JSON.stringify(cache));
-    } catch {
-      // localStorage might be full
-    }
-  }
-
-  // ── Getters & Mutators ──
+  // ── Lecture ───────────────────────────────────────────────────────────────
 
   getFaceSnaps() {
     return this.faceSnaps.asReadonly();
   }
 
-  getFaceSnapById(faceSnapId: string): FaceSnap {
-    const foundFaceSnap = this.faceSnaps().find((faceSnap) => faceSnap.id === faceSnapId);
-    if (!foundFaceSnap) {
-      throw new Error('FaceSnap not found!');
-    }
-    return foundFaceSnap;
+  getFaceSnapById(id: string): FaceSnap {
+    const snap = this.faceSnaps().find(s => s.id === id);
+    if (!snap) throw new Error('FaceSnap not found!');
+    return snap;
   }
 
-  /** Récupère les entrées liées à un snap (cuisine, traditions, activités) */
-  getRelatedSnaps(faceSnapId: string): { cuisine: FaceSnap[]; traditions: FaceSnap[]; activities: FaceSnap[] } {
-    const snap = this.getFaceSnapById(faceSnapId);
-    const relations = this.RELATED[snap.title];
+  getSnapByTitle(title: string): FaceSnap | undefined {
+    return this.faceSnaps().find(s => s.title === title);
+  }
+
+  getRelatedSnaps(id: string): { cuisine: FaceSnap[]; traditions: FaceSnap[]; activities: FaceSnap[] } {
+    const snap = this.getFaceSnapById(id);
+    const relations = SNAP_RELATED[snap.title];
     if (!relations) return { cuisine: [], traditions: [], activities: [] };
 
     const all = this.faceSnaps();
-    const find = (titles: string[]) => titles.map(t => all.find(s => s.title === t)).filter(Boolean) as FaceSnap[];
+    const find = (titles: string[]) =>
+      titles.map(t => all.find(s => s.title === t)).filter(Boolean) as FaceSnap[];
 
     return {
-      cuisine: find(relations.cuisine),
+      cuisine:    find(relations.cuisine),
       traditions: find(relations.traditions),
       activities: find(relations.activities),
     };
   }
 
-  /** Trouve un snap par son titre (pratique pour les relations) */
-  getSnapByTitle(title: string): FaceSnap | undefined {
-    return this.faceSnaps().find(s => s.title === title);
-  }
+  // ── Mutations ─────────────────────────────────────────────────────────────
 
-  snapFaceSnapById(faceSnapId: string, snapType: SnapType): void {
+  snapFaceSnapById(id: string, snapType: SnapType): void {
     this.faceSnaps.update(snaps => {
-      const faceSnap = snaps.find(s => s.id === faceSnapId);
-      if (faceSnap) faceSnap.snap(snapType);
+      snaps.find(s => s.id === id)?.snap(snapType);
       return [...snaps];
     });
   }
 
-  addFaceSnap(faceSnap: FaceSnap): void {
-    this.faceSnaps.update(snaps => [faceSnap, ...snaps]);
-  }
-
-  likeFaceSnap(faceSnapId: string): void {
+  likeFaceSnap(id: string): void {
     this.faceSnaps.update(snaps => {
-      const snap = snaps.find(s => s.id === faceSnapId);
-      if (snap) snap.toggleLike();
+      snaps.find(s => s.id === id)?.toggleLike();
       return [...snaps];
     });
   }
 
-  addCommentToSnap(faceSnapId: string, comment: Comment): void {
-    this.faceSnaps.update(snaps => {
-      const snap = snaps.find(s => s.id === faceSnapId);
-      if (snap) snap.addComment(comment);
-      return [...snaps];
-    });
+  addFaceSnap(snap: FaceSnap): void {
+    this.faceSnaps.update(snaps => [snap, ...snaps]);
   }
 
-  private getVilleTags(title: string): string[] {
-    const tags: Record<string, string[]> = {
-      Marrakech: ['medina', 'souk', 'patrimoine'],
-      Fès: ['medina', 'artisanat', 'patrimoine'],
-      Meknès: ['histoire', 'architecture'],
-      Rabat: ['moderne', 'histoire'],
-      Essaouira: ['mer', 'plage', 'artisanat'],
-      Tanger: ['mer', 'culture', 'moderne'],
-      Agadir: ['mer', 'plage', 'nature'],
-      'Al Hoceïma': ['mer', 'plage', 'nature'],
-      Chefchaouen: ['montagne', 'nature'],
-      Tétouan: ['medina', 'architecture'],
-      Oujda: ['culture', 'histoire'],
-      Ouarzazate: ['desert', 'patrimoine'],
-      Zagora: ['desert', 'nature'],
-      Merzouga: ['desert', 'nature'],
-    };
-    return tags[title] || ['patrimoine'];
+  addCommentToSnap(id: string, comment: Comment): void {
+    this.faceSnaps.update(snaps => {
+      snaps.find(s => s.id === id)?.addComment(comment);
+      return [...snaps];
+    });
   }
 }

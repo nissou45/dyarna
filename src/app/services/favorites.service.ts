@@ -21,7 +21,7 @@ export class FavoritesService {
       .pipe(catchError(() => throwError(() => new Error('Erreur chargement favoris'))))
       .subscribe({
         next: (res) => this.favoritesSignal.set(res.favorites),
-        error: () => {},
+        error: () => {},  // silencieux si non connecté
       });
   }
 

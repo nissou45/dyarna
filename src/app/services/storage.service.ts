@@ -1,10 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StorageService {
   private readonly LIKED_SNAPS_KEY = 'dyarna_liked_snaps';
+
+  /** Signal réactif des IDs likés — permet au computed() de se mettre à jour */
+  readonly likedIds = signal<Set<string>>(new Set(this.getLikedSnapIds()));
 
   getLikedSnapIds(): string[] {
     return this.getObject<string[]>(this.LIKED_SNAPS_KEY) ?? [];
@@ -16,15 +19,17 @@ export class StorageService {
     if (index === -1) {
       likedIds.push(snapId);
       this.saveObject(this.LIKED_SNAPS_KEY, likedIds);
+      this.likedIds.set(new Set(likedIds));
       return true;
     }
     likedIds.splice(index, 1);
     this.saveObject(this.LIKED_SNAPS_KEY, likedIds);
+    this.likedIds.set(new Set(likedIds));
     return false;
   }
 
   isSnapLiked(snapId: string): boolean {
-    return this.getLikedSnapIds().includes(snapId);
+    return this.likedIds().has(snapId);
   }
 
   saveObject<T>(key: string, value: T): void {
