@@ -79,7 +79,7 @@
     @for (faceSnap of filteredSnaps(); track faceSnap.id) {
       <app-face-snap
         [faceSnap]="faceSnap"
-        [isLiked]="isLiked(faceSnap.id)"
+        [isLiked]="likedSet().has(faceSnap.id)"
         (likeClicked)="onLikeClick($event)"
         (tagClicked)="onTagClick($event)"
       />

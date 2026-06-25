@@ -1,37 +1,38 @@
+@let snap = faceSnap();
 <article class="sn-card" (click)="onViewFaceSnap()" role="link" tabindex="0" (keydown.enter)="onViewFaceSnap()">
-  @if (faceSnap.imageUrl) {
-    <div class="sn-card__bg" [style.background-image]="'url(' + faceSnap.imageUrl + ')'"></div>
+  @if (snap.imageUrl) {
+    <div class="sn-card__bg" [style.background-image]="'url(' + snap.imageUrl + ')'"></div>
   }
   <div class="sn-card__overlay"></div>
 
-  @if (arabicName) {
-    <span dir="rtl" lang="ar" class="sn-card__arabic">{{ arabicName }}</span>
+  @if (arabicName()) {
+    <span dir="rtl" lang="ar" class="sn-card__arabic">{{ arabicName() }}</span>
   }
 
   <div class="sn-card__likes">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>
     </svg>
-    {{ faceSnap.likes }}
+    {{ snap.likes }}
   </div>
 
   <div class="sn-card__footer">
     <div class="sn-card__tags">
-      @for (tag of faceSnap.tags; track tag) {
+      @for (tag of snap.tags; track tag) {
         <span class="sn-card__tag" (click)="onTagClick($event, tag)">{{ tag }}</span>
       }
     </div>
-    <h3 class="sn-card__title">{{ faceSnap.title }}</h3>
+    <h3 class="sn-card__title">{{ snap.title }}</h3>
     <div class="sn-card__meta">
-      @if (faceSnap.location) {
+      @if (snap.location) {
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7Z"/>
           <circle cx="12" cy="9" r="2.5"/>
         </svg>
-        {{ faceSnap.location }}
+        {{ snap.location }}
         <span class="sn-card__dot">·</span>
       }
-      {{ faceSnap.snaps }} snaps
+      {{ snap.snaps }} snaps
     </div>
   </div>
 </article>

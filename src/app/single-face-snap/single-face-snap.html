@@ -91,28 +91,26 @@
 
           <!-- Onglets des plats -->
           <div class="cuisine-tabs">
-            @for (item of relatedCuisine; track item.id; let i = $index) {
+            @for (item of cuisineDishes; track item.snap.id; let i = $index) {
               <button
                 class="cuisine-tab"
                 [class.active]="activeCuisineIndex === i"
                 (click)="activeCuisineIndex = i"
-              >{{ item.title }}</button>
+              >{{ item.snap.title }}</button>
             }
           </div>
 
-          <!-- Carte du plat actif -->
-          @let activeSnap = relatedCuisine[activeCuisineIndex];
-          @if (activeSnap) {
-            @let activeDish = getDishByTitle(activeSnap.title);
-            @if (activeDish) {
-              <app-dish-detail [dish]="activeDish" />
+          <!-- Plat actif — pré-calculé dans le composant, pas d'appel de méthode ici -->
+          @let active = cuisineDishes[activeCuisineIndex];
+          @if (active) {
+            @if (active.dish) {
+              <app-dish-detail [dish]="active.dish" />
             } @else {
-              <!-- Plat sans recette détaillée : afficher la carte simple -->
-              <a class="detail-card" [routerLink]="'/' + routes.FACE_SNAPS + '/' + activeSnap.id">
-                <div class="detail-card__img" [style.background-image]="'url(' + activeSnap.imageUrl + ')'"></div>
+              <a class="detail-card" [routerLink]="'/' + routes.FACE_SNAPS + '/' + active.snap.id">
+                <div class="detail-card__img" [style.background-image]="'url(' + active.snap.imageUrl + ')'"></div>
                 <div class="detail-card__body">
-                  <strong>{{ activeSnap.title }}</strong>
-                  <span>{{ activeSnap.description }}</span>
+                  <strong>{{ active.snap.title }}</strong>
+                  <span>{{ active.snap.description }}</span>
                 </div>
               </a>
             }

@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, Signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, computed, inject, signal, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FaceSnap } from '../models/snap.model';
 import { FaceSnapComponent } from '../face-snap/face-snap';
@@ -10,26 +10,26 @@ import { FACE_SNAPS_UI } from '@core';
 @Component({
   selector: 'app-face-snap-list',
   standalone: true,
-  imports: [
-    FormsModule,
-    FaceSnapComponent,
-    UnsplashSearchComponent,
-  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FormsModule, FaceSnapComponent, UnsplashSearchComponent],
   templateUrl: './face-snap-list.html',
   styleUrl: './face-snap-list.scss',
 })
 export class FaceSnapListComponent {
   private faceSnapsService = inject(FaceSnapsService);
-  private storageService = inject(StorageService);
+  private storageService  = inject(StorageService);
 
   readonly ui = FACE_SNAPS_UI;
 
-  faceSnaps: Signal<FaceSnap[]> = this.faceSnapsService.getFaceSnaps();
+  readonly faceSnaps: Signal<FaceSnap[]> = this.faceSnapsService.getFaceSnaps();
 
-  searchQuery = signal('');
-  activeTag = signal<string | null>(null);
-  sortBy = signal<'date' | 'popularity' | 'alpha'>('popularity');
-  activeTab = signal<'villes' | 'cuisine'>('villes');
+  /** IDs des snaps likés — Set réactif, mis à jour via StorageService.likedIds signal */
+  readonly likedSet = computed(() => this.storageService.likedIds());
+
+  readonly searchQuery = signal('');
+  readonly activeTag   = signal<string | null>(null);
+  readonly sortBy      = signal<'date' | 'popularity' | 'alpha'>('popularity');
+  readonly activeTab   = signal<'villes' | 'cuisine'>('villes');
 
   showCreateForm = false;
   newSnap = {
@@ -39,40 +39,33 @@ export class FaceSnapListComponent {
     imageUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=800',
   };
 
-  /** Tous les tags disponibles dans les données */
   readonly allTags = [
     'ville', 'cuisine', 'tradition', 'medina', 'desert', 'montagne',
     'mer', 'souk', 'culture', 'nature', 'histoire', 'architecture',
     'artisanat', 'patrimoine', 'plage', 'gastronomie', 'moderne',
   ];
 
-  /** Snaps filtrés + triés — TOUS affichés (pas de pagination) */
-  filteredSnaps = computed(() => {
+  readonly filteredSnaps = computed(() => {
     let snaps = this.faceSnaps();
-    const tab = this.activeTab();
+    const tab   = this.activeTab();
     const query = this.searchQuery();
-    const tag = this.activeTag();
-    const sort = this.sortBy();
+    const tag   = this.activeTag();
+    const sort  = this.sortBy();
 
-    if (tab === 'cuisine') {
-      snaps = snaps.filter(s => s.tags.includes('cuisine'));
-    } else {
-      snaps = snaps.filter(s => s.tags.includes('ville'));
-    }
+    snaps = tab === 'cuisine'
+      ? snaps.filter(s => s.tags.includes('cuisine'))
+      : snaps.filter(s => s.tags.includes('ville'));
 
     if (query) {
       const q = query.toLowerCase();
-      snaps = snaps.filter(
-        s =>
-          s.title.toLowerCase().includes(q) ||
-          (s.location && s.location.toLowerCase().includes(q)) ||
-          s.description.toLowerCase().includes(q),
+      snaps = snaps.filter(s =>
+        s.title.toLowerCase().includes(q) ||
+        (s.location && s.location.toLowerCase().includes(q)) ||
+        s.description.toLowerCase().includes(q),
       );
     }
 
-    if (tag) {
-      snaps = snaps.filter(s => s.tags.includes(tag));
-    }
+    if (tag) snaps = snaps.filter(s => s.tags.includes(tag));
 
     if (sort === 'date') {
       snaps = [...snaps].sort((a, b) => b.createAt.getTime() - a.createAt.getTime());
@@ -85,59 +78,25 @@ export class FaceSnapListComponent {
     return snaps;
   });
 
-  onSearchChange(query: string): void {
-    this.searchQuery.set(query);
-  }
-
-  onTagClick(tag: string): void {
-    this.activeTag.set(this.activeTag() === tag ? null : tag);
-  }
-
-  clearTag(): void {
-    this.activeTag.set(null);
-  }
+  onSearchChange(query: string): void { this.searchQuery.set(query); }
+  onTagClick(tag: string): void { this.activeTag.set(this.activeTag() === tag ? null : tag); }
+  clearTag(): void { this.activeTag.set(null); }
+  onSortChange(value: string): void { this.sortBy.set(value as 'date' | 'popularity' | 'alpha'); }
+  toggleCreateForm(): void { this.showCreateForm = !this.showCreateForm; }
+  onPhotoSelected(url: string): void { this.newSnap.imageUrl = url; }
 
   onLikeClick(snapId: string): void {
     this.storageService.toggleLikeSnap(snapId);
     this.faceSnapsService.likeFaceSnap(snapId);
   }
 
-  isLiked(snapId: string): boolean {
-    return this.storageService.isSnapLiked(snapId);
-  }
-
-  onSortChange(value: string): void {
-    this.sortBy.set(value as 'date' | 'popularity' | 'alpha');
-  }
-
-  toggleCreateForm(): void {
-    this.showCreateForm = !this.showCreateForm;
-  }
-
-  onPhotoSelected(url: string): void {
-    this.newSnap.imageUrl = url;
-  }
-
   addNewSnap(): void {
     if (!this.newSnap.title || !this.newSnap.description) return;
 
-    const snap = new FaceSnap(
-      this.newSnap.title,
-      this.newSnap.description,
-      this.newSnap.imageUrl,
-      new Date(),
-      0,
-    );
-    if (this.newSnap.location) {
-      snap.setLocation(this.newSnap.location);
-    }
+    const snap = new FaceSnap(this.newSnap.title, this.newSnap.description, this.newSnap.imageUrl, new Date(), 0);
+    if (this.newSnap.location) snap.setLocation(this.newSnap.location);
     this.faceSnapsService.addFaceSnap(snap);
-    this.newSnap = {
-      title: '',
-      description: '',
-      location: '',
-      imageUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=800',
-    };
+    this.newSnap = { title: '', description: '', location: '', imageUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=800' };
     this.showCreateForm = false;
   }
 }

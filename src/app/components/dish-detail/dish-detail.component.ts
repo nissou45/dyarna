@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Dish, DishIngredient } from '../../models/dish.model';
 import { FaceSnapsService } from '../../services/face-snaps.service';
@@ -6,12 +6,13 @@ import { FaceSnapsService } from '../../services/face-snaps.service';
 @Component({
   selector: 'app-dish-detail',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink],
   templateUrl: './dish-detail.component.html',
   styleUrl: './dish-detail.component.scss',
 })
 export class DishDetailComponent {
-  @Input({ required: true }) dish!: Dish;
+  readonly dish = input.required<Dish>();
 
   private faceSnapsService = inject(FaceSnapsService);
 
@@ -39,7 +40,6 @@ export class DishDetailComponent {
   }
 
   getCityId(cityName: string): string {
-    const snap = this.faceSnapsService.getSnapByTitle(cityName);
-    return snap ? snap.id : '';
+    return this.faceSnapsService.getSnapByTitle(cityName)?.id ?? '';
   }
 }
