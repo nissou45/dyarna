@@ -1,4 +1,3 @@
-import puppeteer from 'puppeteer';
 import { PdfData, renderPdfHtml } from './itinerary-pdf.template';
 
 const PDF_CACHE_TTL_MS = 5 * 60 * 1000;
@@ -35,10 +34,11 @@ export async function generatePdf(data: PdfData, cacheKey: string): Promise<Buff
   }
 
   const html = renderPdfHtml(data);
+  const puppeteer = await import('puppeteer');
   let browser;
 
   try {
-    browser = await puppeteer.launch({
+    browser = await puppeteer.default.launch({
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
     });
