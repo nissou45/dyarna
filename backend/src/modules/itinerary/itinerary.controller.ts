@@ -79,16 +79,9 @@ export const itineraryController = {
     res.json({ itinerary, computed });
   }),
 
-  exportPdf: asyncHandler(async (req: Request, res: Response) => {
-    const userId = (req as any).user.userId;
-    const id = req.params.id as string;
-    const pdf = await itineraryService.exportPdf(id, userId);
-
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="itineraire-${id}.pdf"`,
-      'Content-Length': pdf.length.toString(),
+  exportPdf: asyncHandler(async (_req: Request, res: Response) => {
+    res.status(501).json({
+      error: 'L\'export PDF n\'est pas disponible sur la plateforme serverless. Utilisez l\'application en local ou sur un serveur dédié.',
     });
-    res.send(pdf);
   }),
 };
