@@ -33,11 +33,18 @@ if (process.env.VERCEL) {
   });
 }
 
-app.use((_req, _res, next) => {
-  if (mongoose.connection.readyState === 1) return next();
-  if (mongoose.connection.readyState === 2) {
-    mongoose.connection.once('open', () => next());
-    return;
+app.use('/api/health', (_req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+app.use(async (_req, _res, next) => {
+  for (let i = 0; i < 30; i++) {
+    if (mongoose.connection.readyState === 1) return next();
+    if (mongoose.connection.readyState === 2) {
+      await new Promise<void>((resolve) => mongoose.connection.once('open', resolve));
+      return next();
+    }
+    await new Promise((r) => setTimeout(r, 1000));
   }
   _res.status(503).json({ error: 'Base de données non connectée. Réessayez dans quelques secondes.' });
 });
@@ -82,10 +89,6 @@ app.use('/api/itineraries', itineraryRoutes);
 app.use('/api/quiz', quizRoutes);
 app.use('/api/likes', likeRoutes);
 app.use('/api/cities', citiesRoutes);
-
-app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
 
 app.use(errorHandler);
 
