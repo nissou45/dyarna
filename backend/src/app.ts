@@ -8,20 +8,6 @@ import { env } from './config/env';
 import './config/passport';
 import { connectDatabase } from './config/database';
 
-if (process.env.VERCEL) {
-  connectDatabase().catch((err) => {
-    console.error('MongoDB connection failed:', err.message);
-  });
-}
-
-app.use((_req, _res, next) => {
-  if (mongoose.connection.readyState === 1) return next();
-  if (mongoose.connection.readyState === 2) {
-    mongoose.connection.once('open', () => next());
-    return;
-  }
-  _res.status(503).json({ error: 'Base de données non connectée. Réessayez dans quelques secondes.' });
-});
 import authRoutes from './modules/auth/auth.routes';
 import favoriteRoutes from './modules/favorites/favorite.routes';
 import reviewRoutes from './modules/reviews/review.routes';
@@ -40,6 +26,21 @@ import { globalLimiter } from './middlewares/rateLimiter';
 const app = express();
 
 app.set('trust proxy', 1);
+
+if (process.env.VERCEL) {
+  connectDatabase().catch((err) => {
+    console.error('MongoDB connection failed:', err.message);
+  });
+}
+
+app.use((_req, _res, next) => {
+  if (mongoose.connection.readyState === 1) return next();
+  if (mongoose.connection.readyState === 2) {
+    mongoose.connection.once('open', () => next());
+    return;
+  }
+  _res.status(503).json({ error: 'Base de données non connectée. Réessayez dans quelques secondes.' });
+});
 app.use(helmet());
 const corsOrigins = [env.FRONTEND_URL];
 if (env.CORS_ORIGINS) {
