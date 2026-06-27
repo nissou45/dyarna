@@ -13,6 +13,7 @@ import weatherRoutes from './modules/weather/weather.routes';
 import galleryRoutes from './modules/gallery/photo.routes';
 import itineraryRoutes from './modules/itinerary/itinerary.routes';
 import quizRoutes from './modules/quiz/quiz.routes';
+import likeRoutes from './modules/likes/like.routes';
 import citiesRoutes from './modules/cities/cities.routes';
 import { initCloudinary } from './modules/gallery/providers/cloudinary.provider';
 import { requireAuth } from './middlewares/requireAuth';
@@ -22,8 +23,19 @@ import { globalLimiter } from './middlewares/rateLimiter';
 const app = express();
 
 app.use(helmet());
+const corsOrigins = [env.FRONTEND_URL];
+if (env.CORS_ORIGINS) {
+  corsOrigins.push(...env.CORS_ORIGINS.split(',').map(s => s.trim()));
+}
+
 app.use(cors({
-  origin: env.FRONTEND_URL,
+  origin: (origin, callback) => {
+    if (!origin || corsOrigins.some(o => origin.startsWith(o))) {
+      callback(null, true);
+    } else {
+      callback(new Error(`Origin ${origin} not allowed by CORS`));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -49,6 +61,7 @@ app.use('/api/weather', weatherRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/itineraries', itineraryRoutes);
 app.use('/api/quiz', quizRoutes);
+app.use('/api/likes', likeRoutes);
 app.use('/api/cities', citiesRoutes);
 
 app.get('/api/health', (_req, res) => {

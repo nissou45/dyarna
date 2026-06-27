@@ -230,3 +230,15 @@ export interface UserRank {
   score: number;
   totalPlayers: number;
 }
+
+export interface LikeResponse {
+  likesCount: number;
+}
+
+export interface LikeCheckResponse {
+  liked: boolean;
+}
+
+export interface LikeBatchResponse {
+  likes: Record<string, boolean>;
+}

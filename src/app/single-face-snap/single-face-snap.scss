@@ -278,6 +278,14 @@
   transform: translateY(-1px);
 }
 
+.detail-card-stats__btn.is-liked {
+  background: #e74c3c;
+}
+
+.detail-card-stats__btn.is-liked:hover {
+  background: #c0392b;
+}
+
 .detail-card-stats__btn--outline {
   margin-top: 10px;
   background: transparent;

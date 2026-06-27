@@ -1,12 +1,13 @@
 import { Component, OnInit, inject, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { FaceSnap, Comment } from '../models/snap.model';
 import { FaceSnapsService } from '../services/face-snaps.service';
 import { ReviewsService } from '../services/reviews.service';
-import { SnapType } from '../models/snap-type-type';
 import { FACE_SNAPS_UI, APP_ROUTES, ARABIC_CITY_NAMES } from '@core';
 import { ToastService } from '../services/toast.service';
+import { LikeService } from '../services/like.service';
+import { AuthService } from '../services/auth.service';
 import { CommentsSectionComponent } from '../comments-section/comments-section';
 import { RatingSummaryComponent } from '../reviews/rating-summary.component';
 import { ReviewListComponent } from '../reviews/review-list.component';
@@ -51,15 +52,18 @@ export class SingleFaceSnapComponent implements OnInit {
   private readonly weatherService = inject(WeatherService);
   private readonly galleryService = inject(GalleryService);
   private readonly route          = inject(ActivatedRoute);
+  private readonly router         = inject(Router);
   private readonly dishService    = inject(DishService);
   private readonly toastService   = inject(ToastService);
+  private readonly likeService    = inject(LikeService);
+  private readonly authService    = inject(AuthService);
 
   faceSnap!: FaceSnap;
   relatedCuisine: FaceSnap[]    = [];
   relatedTraditions: FaceSnap[] = [];
   relatedActivities: FaceSnap[] = [];
-  snapButtonText!: string;
-  userHasSnapped!: boolean;
+  userHasLiked!: boolean;
+  readonly isLoggedIn = this.authService.isLoggedIn;
   readonly uiConstants = FACE_SNAPS_UI;
   readonly routes      = APP_ROUTES;
 
@@ -124,8 +128,7 @@ export class SingleFaceSnapComponent implements OnInit {
   }
 
   private prepareInterface(): void {
-    this.snapButtonText = this.uiConstants.SNAP;
-    this.userHasSnapped = false;
+    this.userHasLiked = false;
   }
 
   private getFaceSnap(): void {
@@ -147,13 +150,50 @@ export class SingleFaceSnapComponent implements OnInit {
       snap,
       dish: this.dishService.getByTitle(snap.title),
     }));
+
+    // Charger état du like depuis le backend si connecté
+    if (this.authService.isLoggedIn()) {
+      this.likeService.check(this.cityId).pipe(
+        takeUntilDestroyed(this.destroyRef),
+      ).subscribe({
+        next: (res) => {
+          this.userHasLiked = res.liked;
+        },
+      });
+    }
   }
 
   onSnap(): void {
-    const snapType: SnapType = this.userHasSnapped ? 'unsnap' : 'snap';
-    this.faceSnapsService.snapFaceSnapById(this.faceSnap.id, snapType);
-    this.userHasSnapped = !this.userHasSnapped;
-    this.snapButtonText = this.userHasSnapped ? this.uiConstants.UNSNAP : this.uiConstants.SNAP;
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigateByUrl('/connexion');
+      return;
+    }
+
+    const previous = this.userHasLiked;
+    const previousCount = this.faceSnap.snaps;
+    const targetType: 'city' | 'dish' = this.isDish ? 'dish' : 'city';
+
+    this.userHasLiked = !this.userHasLiked;
+    this.faceSnap.snaps += this.userHasLiked ? 1 : -1;
+
+    const request = this.userHasLiked
+      ? this.likeService.like(this.cityId, targetType)
+      : this.likeService.unlike(this.cityId);
+
+    request.pipe(
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe({
+      next: (res) => {
+        this.faceSnap.snaps = res.likesCount;
+      },
+      error: () => {
+        this.userHasLiked = previous;
+        this.faceSnap.snaps = previousCount;
+        if (this.userHasLiked) {
+          this.toastService.error('Connectez-vous pour aimer cette destination.');
+        }
+      },
+    });
   }
 
   onShare(): void {

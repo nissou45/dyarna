@@ -11,6 +11,7 @@ const envSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string().min(1, 'GOOGLE_CLIENT_SECRET is required'),
   GOOGLE_CALLBACK_URL: z.string().url().min(1, 'GOOGLE_CALLBACK_URL is required'),
   FRONTEND_URL: z.string().url().min(1, 'FRONTEND_URL is required'),
+  CORS_ORIGINS: z.string().optional(),
   ANTHROPIC_API_KEY: z.string().optional(),
   OPENWEATHER_API_KEY: z.string().optional(),
   CLOUDINARY_CLOUD_NAME: z.string().optional(),

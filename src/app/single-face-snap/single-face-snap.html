@@ -241,11 +241,11 @@
               <div class="detail-card-stats__label">J'AIME</div>
             </div>
           </div>
-          <button class="detail-card-stats__btn" (click)="onSnap()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <button class="detail-card-stats__btn" [class.is-liked]="userHasLiked" (click)="onSnap()">
+            <svg width="16" height="16" viewBox="0 0 24 24" [attr.fill]="userHasLiked ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2">
               <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>
             </svg>
-            Snaper cette ville
+            {{ userHasLiked ? "Je n'aime plus" : "J'aime" }}
           </button>
           <button class="detail-card-stats__btn detail-card-stats__btn--outline" (click)="onShare()">Partager</button>
         </div>

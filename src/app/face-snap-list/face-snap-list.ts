@@ -1,8 +1,12 @@
-import { Component, ChangeDetectionStrategy, computed, inject, signal, Signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, computed, inject, signal, Signal, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FaceSnap } from '../models/snap.model';
 import { FaceSnapComponent } from '../face-snap/face-snap';
 import { FaceSnapsService } from '../services/face-snaps.service';
+import { LikeService } from '../services/like.service';
+import { AuthService } from '../services/auth.service';
 import { StorageService } from '../services/storage.service';
 import { UnsplashSearchComponent } from '../unsplash-search/unsplash-search';
 import { FACE_SNAPS_UI } from '@core';
@@ -16,14 +20,18 @@ import { FACE_SNAPS_UI } from '@core';
   styleUrl: './face-snap-list.scss',
 })
 export class FaceSnapListComponent {
+  private readonly destroyRef     = inject(DestroyRef);
   private faceSnapsService = inject(FaceSnapsService);
+  private likeService     = inject(LikeService);
+  private authService     = inject(AuthService);
   private storageService  = inject(StorageService);
+  private router          = inject(Router);
 
   readonly ui = FACE_SNAPS_UI;
+  readonly isLoggedIn = this.authService.isLoggedIn;
 
   readonly faceSnaps: Signal<FaceSnap[]> = this.faceSnapsService.getFaceSnaps();
 
-  /** IDs des snaps likés — Set réactif, mis à jour via StorageService.likedIds signal */
   readonly likedSet = computed(() => this.storageService.likedIds());
 
   readonly searchQuery = signal('');
@@ -86,8 +94,36 @@ export class FaceSnapListComponent {
   onPhotoSelected(url: string): void { this.newSnap.imageUrl = url; }
 
   onLikeClick(snapId: string): void {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigateByUrl('/connexion');
+      return;
+    }
+
+    const snap = this.faceSnaps().find(s => s.id === snapId);
+    if (!snap) return;
+
+    const previousLikes = snap.likes;
+    const wasLiked = this.likedSet().has(snapId);
+    const targetType: 'city' | 'dish' = snap.tags.includes('cuisine') ? 'dish' : 'city';
+
+    snap.likes = wasLiked ? snap.likes - 1 : snap.likes + 1;
     this.storageService.toggleLikeSnap(snapId);
-    this.faceSnapsService.likeFaceSnap(snapId);
+
+    const request = wasLiked
+      ? this.likeService.unlike(snapId)
+      : this.likeService.like(snapId, targetType);
+
+    request.pipe(
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe({
+      next: (res) => {
+        snap.likes = res.likesCount;
+      },
+      error: () => {
+        snap.likes = previousLikes;
+        this.storageService.toggleLikeSnap(snapId);
+      },
+    });
   }
 
   addNewSnap(): void {
