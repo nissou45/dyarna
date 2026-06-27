@@ -2,11 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
-import mongoose from 'mongoose';
 import passport from 'passport';
 import { env } from './config/env';
 import './config/passport';
-import { connectDatabase } from './config/database';
 
 import authRoutes from './modules/auth/auth.routes';
 import favoriteRoutes from './modules/favorites/favorite.routes';
@@ -27,27 +25,10 @@ const app = express();
 
 app.set('trust proxy', 1);
 
-if (process.env.VERCEL) {
-  connectDatabase().catch((err) => {
-    console.error('MongoDB connection failed:', err.message);
-  });
-}
-
 app.use('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.use(async (_req, _res, next) => {
-  for (let i = 0; i < 30; i++) {
-    if (mongoose.connection.readyState === 1) return next();
-    if (mongoose.connection.readyState === 2) {
-      await new Promise<void>((resolve) => mongoose.connection.once('open', resolve));
-      return next();
-    }
-    await new Promise((r) => setTimeout(r, 1000));
-  }
-  _res.status(503).json({ error: 'Base de données non connectée. Réessayez dans quelques secondes.' });
-});
 app.use(helmet());
 const corsOrigins = [env.FRONTEND_URL];
 if (env.CORS_ORIGINS) {
