@@ -11,6 +11,10 @@ export const citiesController = {
       category: c.category,
       lat: c.lat,
       lng: c.lng,
+      shortDescription: c.shortDescription,
+      thumbnailUrl: c.thumbnailUrl,
+      imageAttributionUrl: c.imageAttributionUrl,
+      wikiSourceUrl: c.wikiSourceUrl,
     }));
     res.json({ cities });
   }),
