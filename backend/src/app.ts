@@ -2,9 +2,17 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
+import mongoose from 'mongoose';
 import passport from 'passport';
 import { env } from './config/env';
 import './config/passport';
+import { connectDatabase } from './config/database';
+
+if (process.env.VERCEL) {
+  connectDatabase().catch((err) => {
+    console.error('MongoDB connection failed:', err);
+  });
+}
 import authRoutes from './modules/auth/auth.routes';
 import favoriteRoutes from './modules/favorites/favorite.routes';
 import reviewRoutes from './modules/reviews/review.routes';
@@ -22,6 +30,7 @@ import { globalLimiter } from './middlewares/rateLimiter';
 
 const app = express();
 
+app.set('trust proxy', 1);
 app.use(helmet());
 const corsOrigins = [env.FRONTEND_URL];
 if (env.CORS_ORIGINS) {
