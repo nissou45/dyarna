@@ -9,8 +9,9 @@ import './config/passport';
 import { connectDatabase } from './config/database';
 
 if (process.env.VERCEL) {
+  console.log('VERCEL detected, connecting to MongoDB. URI starts with:', env.MONGODB_URI.substring(0, 20));
   connectDatabase().catch((err) => {
-    console.error('MongoDB connection failed:', err);
+    console.error('MongoDB connection failed:', err.message);
   });
 }
 import authRoutes from './modules/auth/auth.routes';

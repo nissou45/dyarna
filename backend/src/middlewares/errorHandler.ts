@@ -25,6 +25,7 @@ export function errorHandler(err: Error, _req: Request, res: Response, _next: Ne
   }
 
   if (err instanceof mongoose.Error) {
+    logger.error({ err }, 'Mongoose error');
     res.status(503).json({
       error: 'Service temporairement indisponible. Veuillez réessayer.',
     });

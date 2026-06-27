@@ -22,6 +22,13 @@ const envSchema = z.object({
 function loadEnv() {
   const result = envSchema.safeParse(process.env);
   if (!result.success) {
+    if (process.env.VERCEL) {
+      logger.error('Environment variable validation failed (Vercel):');
+      for (const issue of result.error.issues) {
+        logger.error(`  - ${issue.path.join('.')}: ${issue.message}`);
+      }
+      throw new Error('Environment validation failed');
+    }
     logger.error('Environment variable validation failed:');
     for (const issue of result.error.issues) {
       logger.error(`  - ${issue.path.join('.')}: ${issue.message}`);
