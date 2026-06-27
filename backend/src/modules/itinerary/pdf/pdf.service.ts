@@ -34,7 +34,8 @@ export async function generatePdf(data: PdfData, cacheKey: string): Promise<Buff
   }
 
   const html = renderPdfHtml(data);
-  const puppeteer: any = await eval('import("puppeteer")');
+  const puppeteerPath = require.resolve('puppeteer');
+  const puppeteer: any = await eval(`import("${puppeteerPath}")`);
   let browser;
 
   try {
